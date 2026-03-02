@@ -1,12 +1,16 @@
 {
-  "name": "kzus-backend",
-  "version": "1.0.0",
-  "description": "KZUS Backend",
-  "license": "MIT",
-  "author": "Jam",
-  "type": "commonjs",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+    "name": "kzus-backend",
+    "version": "1.0.0",
+    "description": "KZUS Backend",
+    "license": "MIT",
+    "author": "Jam",
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "start": "node --watch src/server.js"
+    },
+    "dependencies": {
+        "dotenv": "^17.3.1",
+        "express": "^5.2.1"
+    }
 }
