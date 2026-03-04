@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import express from 'express'
 
-import { sequelize } from './config/db-config.js';
 import { dbConnection } from './config/db-connection.js';
+import { dbModels } from './models/index.js';
 
 const app = express();
 app.use(express.json());
@@ -13,4 +13,4 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-await dbConnection(sequelize);
+await dbConnection(dbModels().sequelize);
