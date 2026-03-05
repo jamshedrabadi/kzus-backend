@@ -1,12 +1,14 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db-config.js';
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/db-config.js";
 
-import { PlayersTable } from "./player.model.js";
+import { PlayersTable } from "./players.model.js";
+import { MapsTable } from "./maps.model.js";
 
 export const dbModels = () => {
     const models = {
         sequelize: sequelize,
-        Players: PlayersTable(sequelize, DataTypes)
+        Players: PlayersTable(sequelize, DataTypes),
+        Maps: MapsTable(sequelize, DataTypes),
     };
 
     Object.keys(models).forEach((modelName) => {

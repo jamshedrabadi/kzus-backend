@@ -1,6 +1,6 @@
-export const PlayersTable = (sequelize, DataTypes) => {
-    const Players = sequelize.define(
-        'players',
+export const MapsTable = (sequelize, DataTypes) => {
+    const Maps = sequelize.define(
+        "maps",
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -12,23 +12,27 @@ export const PlayersTable = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            country: {
+            type: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            steamId: {
+            length: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            difficulty: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
             created_at: {
                 type: DataTypes.DATE,
-                defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
             },
         },
         {
-            tableName: 'players',
+            tableName: "maps",
             timestamps: false
         },
     );
-    return Players;
+    return Maps;
 };

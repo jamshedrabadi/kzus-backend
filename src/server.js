@@ -1,8 +1,8 @@
-import 'dotenv/config';
-import express from 'express'
+import "dotenv/config";
+import express from "express"
 
-import { dbConnection } from './config/db-connection.js';
-import { dbModels } from './models/index.js';
+import { dbConnection } from "./config/db-connection.js";
+import { dbModels } from "./models/index.js";
 
 const app = express();
 app.use(express.json());
