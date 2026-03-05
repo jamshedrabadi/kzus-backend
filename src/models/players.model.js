@@ -30,5 +30,12 @@ export const PlayersTable = (sequelize, DataTypes) => {
             timestamps: false
         },
     );
+
+    Players.associate = (models) => {
+        Players.hasMany(models.Records, {
+            foreignKey: "player_id",
+        });
+    };
+
     return Players;
 };

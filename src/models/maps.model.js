@@ -1,3 +1,5 @@
+import { MAP_LENGTHS, MAP_TYPES } from "../constants/constants.js";
+
 export const MapsTable = (sequelize, DataTypes) => {
     const Maps = sequelize.define(
         "maps",
@@ -12,16 +14,22 @@ export const MapsTable = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            type: {
-                type: DataTypes.STRING,
+            difficulty_id: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
+                references: {
+                    model: "difficulty",
+                    key: "id"
+                },
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
             },
             length: {
-                type: DataTypes.STRING,
+                type: DataTypes.ENUM({ values: MAP_LENGTHS }),
                 allowNull: false,
             },
-            difficulty: {
-                type: DataTypes.STRING,
+            type: {
+                type: DataTypes.ENUM({ values: MAP_TYPES }),
                 allowNull: false,
             },
             created_at: {
@@ -34,5 +42,16 @@ export const MapsTable = (sequelize, DataTypes) => {
             timestamps: false
         },
     );
+
+    Maps.associate = (models) => {
+        Maps.hasMany(models.Records, {
+            foreignKey: "map_id",
+        });
+
+        Maps.belongsTo(models.Difficulty, {
+            foreignKey: "difficulty_id",
+        });
+    };
+
     return Maps;
 };
