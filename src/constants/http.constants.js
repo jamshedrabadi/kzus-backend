@@ -1,0 +1,7 @@
+export const RESPONSE_CODE_SUCCESS = 200;
+export const RESPONSE_CODE_CREATED = 201;
+export const RESPONSE_CODE_DATA_NOT_FOUND = 404;
+export const RESPONSE_CODE_DUPLICATE = 409;
+export const RESPONSE_CODE_INTERNAL_SERVER_ERROR = 500;
+
+export const RESPONSE_MESSAGE_DATA_NOT_FOUND = "Something went wrong.";
