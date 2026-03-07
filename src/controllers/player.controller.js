@@ -1,9 +1,5 @@
 import { createPlayerRecord } from "../services/player.service.js";
 
-export const getPlayerData = async (request, response) => {
-    response.status(200).send({ name: 'tempname' });
-}
-
 export const createPlayer = async (request, response) => {
     try {
         // validation

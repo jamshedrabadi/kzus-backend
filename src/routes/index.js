@@ -1,4 +1,5 @@
 import playerRoutes from "./player.routes.js";
+import mapRoutes from "./map.routes.js";
 
 export const importRoutes = (app) => {
     app.get('/health', (request, response) => {
@@ -6,4 +7,5 @@ export const importRoutes = (app) => {
     });
 
     app.use("/player", playerRoutes);
+    app.use("/map", mapRoutes);
 }
