@@ -12,6 +12,7 @@ export const MapsTable = (sequelize, DataTypes) => {
             },
             name: {
                 type: DataTypes.STRING,
+                unique: true,
                 allowNull: false,
             },
             difficulty_id: {

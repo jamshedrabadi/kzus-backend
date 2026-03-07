@@ -16,8 +16,9 @@ export const PlayersTable = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            steamId: {
+            steam_id: {
                 type: DataTypes.STRING,
+                unique: true,
                 allowNull: false,
             },
             created_at: {
