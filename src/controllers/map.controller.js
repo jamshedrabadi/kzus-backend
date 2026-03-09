@@ -21,13 +21,16 @@ export const createMap = async (request, response) => {
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;
         responseData.message = MAP_CREATION_SUCCESS_MESSAGE;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.error, responseData.module);
     } catch (error) {
         console.error("Error in createMap: ", error);
 
         responseData.error = error;
         responseData.module = MAP_MODULE;
-    }
 
-    return responseSender(response, responseData.status, responseData.statusCode,
-        responseData.message, responseData.error, responseData.module);
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.error, responseData.module);
+    }
 }

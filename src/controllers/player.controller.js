@@ -21,13 +21,16 @@ export const createPlayer = async (request, response) => {
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;
         responseData.message = PLAYER_CREATION_SUCCESS_MESSAGE;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.error, responseData.module);
     } catch (error) {
         console.error("Error in createPlayer: ", error);
 
         responseData.error = error;
         responseData.module = PLAYER_MODULE;
-    }
 
-    return responseSender(response, responseData.status, responseData.statusCode,
-        responseData.message, responseData.error, responseData.module);
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.error, responseData.module);
+    }
 }
