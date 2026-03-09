@@ -40,12 +40,15 @@ export const RecordsTable = (sequelize, DataTypes) => {
             },
             cp: {
                 type: DataTypes.INTEGER,
+                allowNull: false,
             },
             gc: {
                 type: DataTypes.INTEGER,
+                allowNull: false,
             },
             points: {
                 type: DataTypes.INTEGER,
+                allowNull: false,
             },
             created_at: {
                 type: DataTypes.DATE,
@@ -54,7 +57,6 @@ export const RecordsTable = (sequelize, DataTypes) => {
         },
         {
             tableName: "records",
-            timestamps: false
         },
     );
 
