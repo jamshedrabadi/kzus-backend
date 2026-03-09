@@ -39,8 +39,7 @@ export const MapsTable = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "maps",
-            timestamps: false
+            tableName: "maps"
         },
     );
 

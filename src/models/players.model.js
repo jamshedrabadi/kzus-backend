@@ -27,8 +27,7 @@ export const PlayersTable = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "players",
-            timestamps: false
+            tableName: "players"
         },
     );
 

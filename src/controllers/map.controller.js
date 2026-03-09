@@ -1,4 +1,4 @@
-import { createMapRecord } from "../services/map.service.js";
+import { storeMap } from "../services/map.service.js";
 import { responseSender } from "../utils/response.utils.js";
 import {
     RESPONSE_CODE_CREATED,
@@ -12,10 +12,11 @@ export const createMap = async (request, response) => {
     const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
 
     try {
+        const mapData = request.body;
+
         // validation here
 
-        const mapData = request.body;
-        await createMapRecord(mapData);
+        await storeMap(mapData);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;

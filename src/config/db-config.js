@@ -9,4 +9,10 @@ export const sequelize = new Sequelize(
         host: process.env.DATABASE_HOST,
         port: process.env.DATABASE_PORT,
         logging: false,
+        define: {
+            timestamps: false,
+        },
+        query: {
+            raw: true,
+        },
     });

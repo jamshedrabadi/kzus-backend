@@ -1,4 +1,4 @@
-import { createPlayerRecord } from "../services/player.service.js";
+import { storePlayer } from "../services/player.service.js";
 import { responseSender } from "../utils/response.utils.js";
 import {
     RESPONSE_CODE_CREATED,
@@ -12,10 +12,11 @@ export const createPlayer = async (request, response) => {
     const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
 
     try {
+        const playerData = request.body;
+
         // validation here
 
-        const playerData = request.body;
-        await createPlayerRecord(playerData);
+        await storePlayer(playerData);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;

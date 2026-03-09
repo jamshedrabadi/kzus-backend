@@ -22,8 +22,7 @@ export const DifficultyTable = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "difficulty",
-            timestamps: false
+            tableName: "difficulty"
         },
     );
 
