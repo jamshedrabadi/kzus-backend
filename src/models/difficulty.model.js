@@ -22,7 +22,7 @@ export const DifficultyTable = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "difficulty"
+            tableName: "difficulty",
         },
     );
 

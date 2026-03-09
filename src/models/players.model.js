@@ -27,7 +27,7 @@ export const PlayersTable = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "players"
+            tableName: "players",
         },
     );
 
