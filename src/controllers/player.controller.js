@@ -14,7 +14,7 @@ export const createPlayer = async (request, response) => {
     try {
         const playerData = request.body;
 
-        // validation here
+        // todo: validation
 
         await storePlayer(playerData);
 

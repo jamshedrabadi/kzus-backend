@@ -14,7 +14,7 @@ export const createMap = async (request, response) => {
     try {
         const mapData = request.body;
 
-        // validation here
+        // todo: validation
 
         await storeMap(mapData);
 
