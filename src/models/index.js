@@ -6,20 +6,18 @@ import { MapsTable } from "./maps.model.js";
 import { RecordsTable } from "./records.model.js";
 import { DifficultyTable } from "./difficulty.model.js";
 
-export const dbModels = () => {
-    const models = {
-        sequelize: sequelize,
-        Players: PlayersTable(sequelize, DataTypes),
-        Maps: MapsTable(sequelize, DataTypes),
-        Records: RecordsTable(sequelize, DataTypes),
-        Difficulty: DifficultyTable(sequelize, DataTypes),
-    };
+const dbModels = {
+    sequelize: sequelize,
+    Players: PlayersTable(sequelize, DataTypes),
+    Maps: MapsTable(sequelize, DataTypes),
+    Records: RecordsTable(sequelize, DataTypes),
+    Difficulty: DifficultyTable(sequelize, DataTypes),
+};
 
-    Object.keys(models).forEach((modelName) => {
-        if (models[modelName].associate) {
-            models[modelName].associate(models);
-        }
-    });
+Object.keys(dbModels).forEach((model) => {
+    if (dbModels[model].associate) {
+        dbModels[model].associate(dbModels);
+    }
+});
 
-    return models;
-}
+export default dbModels;

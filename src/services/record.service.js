@@ -1,14 +1,13 @@
-import { dbModels } from "../models/index.js";
+import dbModels from "../models/index.js";
 
 export const checkExistingRecord = async (recordData) => {
     try {
-        return await dbModels().Records.findOne({
+        return await dbModels.Records.findOne({
             attributes: ["id", "time", "points"],
             where: {
                 player_id: recordData.player_id,
                 map_id: recordData.map_id,
                 mode: recordData.mode,
-                // time: { [Op.lt]: recordData.time },
             },
         });
     } catch (error) {
@@ -19,7 +18,7 @@ export const checkExistingRecord = async (recordData) => {
 
 export const insertRecord = async (recordData) => {
     try {
-        return await dbModels().Records.create(recordData);
+        return await dbModels.Records.create(recordData);
     } catch (error) {
         console.error("Error in insertRecord: ", error);
         throw error;
