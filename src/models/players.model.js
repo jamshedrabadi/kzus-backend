@@ -13,11 +13,11 @@ export const PlayersTable = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             country: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(3),
                 allowNull: false,
             },
             steam_id: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(17),
                 unique: true,
                 allowNull: false,
             },

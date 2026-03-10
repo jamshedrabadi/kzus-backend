@@ -7,6 +7,7 @@ import {
     PLAYER_MODULE,
     PLAYER_CREATION_SUCCESS_MESSAGE,
 } from "../constants/player.constants.js";
+import { createPlayerSchema } from "../validators/player.validator.js";
 
 export const createPlayer = async (request, response) => {
     const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
@@ -14,7 +15,7 @@ export const createPlayer = async (request, response) => {
     try {
         const playerData = request.body;
 
-        // todo: validation
+        await createPlayerSchema.validateAsync(playerData);
 
         await storePlayer(playerData);
 

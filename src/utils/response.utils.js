@@ -2,7 +2,7 @@ import {
     RESPONSE_CODE_DATA_NOT_FOUND,
     RESPONSE_CODE_DUPLICATE,
     RESPONSE_CODE_INTERNAL_SERVER_ERROR,
-    RESPONSE_MESSAGE_DATA_NOT_FOUND,
+    RESPONSE_CODE_UNPROCESSABLE_ENTITY,
 } from "../constants/http.constants.js";
 import {
     PLAYER_MODULE,
@@ -17,6 +17,10 @@ import {
 import {
     UNIQUE_CONSTRAINT_ERROR,
 } from "../constants/database.constants.js";
+import {
+    RESPONSE_MESSAGE_DATA_NOT_FOUND,
+    RESPONSE_MESSAGE_VALIDATION_ERROR,
+} from "../constants/common.constants.js";
 
 export const responseSender = (response, status, statusCode, message, error, module) => {
     const responseStatus = !!status;
@@ -24,7 +28,11 @@ export const responseSender = (response, status, statusCode, message, error, mod
     let responseMessage = message;
     let responseErrors = [];
 
-    if (!responseStatus && !responseStatusCode && !responseMessage) { // Determine DB error
+    if (error.details) { // validation errors
+        responseStatusCode = RESPONSE_CODE_UNPROCESSABLE_ENTITY;
+        responseMessage = RESPONSE_MESSAGE_VALIDATION_ERROR;
+        responseErrors = error.details.map(err => err.message);
+    } else if (!responseStatus && !responseStatusCode && !responseMessage) { // Determine DB error
         const dbError = checkDatabaseError(error, module);
 
         responseStatusCode = dbError.code;
