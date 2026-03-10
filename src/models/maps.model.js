@@ -1,4 +1,4 @@
-import { MAP_LENGTHS, MAP_TYPES } from "../constants/enum.constants.js";
+import { MAP_LENGTHS, MAP_TYPES } from "../constants/map.constants.js";
 
 export const MapsTable = (sequelize, DataTypes) => {
     const Maps = sequelize.define(
