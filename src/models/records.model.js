@@ -46,6 +46,10 @@ export const RecordsTable = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            place: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
             points: {
                 type: DataTypes.INTEGER,
                 allowNull: false,

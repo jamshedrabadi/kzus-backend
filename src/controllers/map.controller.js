@@ -1,4 +1,4 @@
-import { storeMap } from "../services/map.service.js";
+import { createMapInDb } from "../services/map.service.js";
 import { responseSender } from "../utils/response.utils.js";
 import {
     RESPONSE_CODE_CREATED,
@@ -17,7 +17,7 @@ export const createMap = async (request, response) => {
 
         await createMapSchema.validateAsync(mapData);
 
-        await storeMap(mapData);
+        await createMapInDb(mapData);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;

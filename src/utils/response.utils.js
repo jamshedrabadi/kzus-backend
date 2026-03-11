@@ -7,7 +7,7 @@ import {
 import {
     PLAYER_MODULE,
     PLAYER_CREATION_FAILURE_MESSAGE,
-    DUPLICATE_PLAYER_STEAMID,
+    DUPLICATE_PLAYER_STEAMID_MESSAGE,
 } from "../constants/player.constants.js";
 import {
     MAP_MODULE,
@@ -22,13 +22,14 @@ import {
     RESPONSE_MESSAGE_VALIDATION_ERROR,
 } from "../constants/common.constants.js";
 
-export const responseSender = (response, status, statusCode, message, error, module) => {
+export const responseSender = (response, status, statusCode, message, error, module, data) => {
     const responseStatus = !!status;
     let responseStatusCode = statusCode;
     let responseMessage = message;
     let responseErrors = [];
+    let responseData = null;
 
-    if (error.details) { // validation errors
+    if (error && error.details) { // validation errors
         responseStatusCode = RESPONSE_CODE_UNPROCESSABLE_ENTITY;
         responseMessage = RESPONSE_MESSAGE_VALIDATION_ERROR;
         responseErrors = error.details.map(err => err.message);
@@ -40,13 +41,18 @@ export const responseSender = (response, status, statusCode, message, error, mod
         responseErrors = dbError.errors;
     } else {
         responseStatusCode = isNaN(statusCode) ? RESPONSE_CODE_DATA_NOT_FOUND : statusCode;
-
         responseMessage = (!message || (message.length === 0 || Object.keys(message).length === 0))
             ? { success: false, errorMessage: RESPONSE_MESSAGE_DATA_NOT_FOUND } : message;
+        responseData = data;
     }
 
     return response.status(responseStatusCode)
-        .send({ status: responseStatus, message: responseMessage, errors: responseErrors });
+        .send({
+            status: responseStatus,
+            message: responseMessage,
+            errors: responseErrors,
+            data: responseData,
+        });
 }
 
 export const checkDatabaseError = (dbError, module) => {
@@ -58,7 +64,7 @@ export const checkDatabaseError = (dbError, module) => {
         code = RESPONSE_CODE_DUPLICATE;
         message = PLAYER_CREATION_FAILURE_MESSAGE;
         // errors = [dbError.errors[0].message]
-        errors = [DUPLICATE_PLAYER_STEAMID];
+        errors = [DUPLICATE_PLAYER_STEAMID_MESSAGE];
     }
     if (dbError.name === UNIQUE_CONSTRAINT_ERROR && module === MAP_MODULE) {
         code = RESPONSE_CODE_DUPLICATE;

@@ -1,5 +1,5 @@
 import {
-    checkExistingRecord,
+    checkExistingPlayerRecord,
     insertRecord,
 } from "../services/record.service.js";
 import { responseSender } from "../utils/response.utils.js";
@@ -20,10 +20,11 @@ export const upsertRecord = async (request, response) => {
 
         await upsertRecordSchema.validateAsync(recordData);
 
-        const existingData = await checkExistingRecord(recordData);
+        const existingData = await checkExistingPlayerRecord(recordData);
         console.log("existingData --- ", existingData);
 
         if (!existingData) {
+            recordData.place = 0; // todo: remove
             recordData.points = 0; // todo: remove
             await insertRecord(recordData);
 
