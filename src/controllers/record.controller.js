@@ -10,6 +10,7 @@ import {
     RECORD_MODULE,
     RECORD_CREATION_SUCCESS_MESSAGE,
 } from "../constants/record.constants.js";
+import { upsertRecordSchema } from "../validators/record.validator.js";
 
 export const upsertRecord = async (request, response) => {
     const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
@@ -17,7 +18,7 @@ export const upsertRecord = async (request, response) => {
     try {
         const recordData = request.body;
 
-        // todo: validation
+        await upsertRecordSchema.validateAsync(recordData);
 
         const existingData = await checkExistingRecord(recordData);
         console.log("existingData --- ", existingData);

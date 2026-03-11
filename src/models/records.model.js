@@ -1,4 +1,4 @@
-import { RECORD_MODES } from "../constants/enum.constants.js";
+import { RECORD_MODES } from "../constants/record.constants.js";
 
 export const RecordsTable = (sequelize, DataTypes) => {
     const Records = sequelize.define(
