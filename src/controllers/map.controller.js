@@ -10,7 +10,7 @@ import {
 import { createMapSchema } from "../validators/map.validator.js";
 
 export const createMap = async (request, response) => {
-    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
+    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "", data: null };
 
     try {
         const mapData = request.body;
@@ -24,7 +24,7 @@ export const createMap = async (request, response) => {
         responseData.message = MAP_CREATION_SUCCESS_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module);
+            responseData.message, responseData.error, responseData.module, responseData.data);
     } catch (error) {
         console.error("Error in createMap: ", error);
 
@@ -32,6 +32,6 @@ export const createMap = async (request, response) => {
         responseData.module = MAP_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module);
+            responseData.message, responseData.error, responseData.module, responseData.data);
     }
 }

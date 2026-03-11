@@ -13,7 +13,7 @@ import {
 import { upsertRecordSchema } from "../validators/record.validator.js";
 
 export const upsertRecord = async (request, response) => {
-    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
+    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "", data: null };
 
     try {
         const recordData = request.body;
@@ -33,12 +33,8 @@ export const upsertRecord = async (request, response) => {
             responseData.message = RECORD_CREATION_SUCCESS_MESSAGE;
 
             return responseSender(response, responseData.status, responseData.statusCode,
-                responseData.message, responseData.error, responseData.module);
+                responseData.message, responseData.error, responseData.module, responseData.data);
         }
-
-        // responseData.status = true;
-        // responseData.statusCode = RESPONSE_CODE_CREATED;
-        // responseData.message = MAP_CREATION_SUCCESS_MESSAGE;
     } catch (error) {
         console.error("Error in upsertRecord: ", error);
 
@@ -46,6 +42,6 @@ export const upsertRecord = async (request, response) => {
         responseData.module = RECORD_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module);
+            responseData.message, responseData.error, responseData.module, responseData.data);
     }
 }

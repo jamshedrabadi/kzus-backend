@@ -19,7 +19,7 @@ import { createPlayerSchema } from "../validators/player.validator.js";
 import { RESPONSE_MESSAGE_DATA_NOT_FOUND } from "../constants/common.constants.js";
 
 export const createPlayer = async (request, response) => {
-    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "" };
+    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "", data: null };
 
     try {
         const playerData = request.body;
@@ -33,7 +33,7 @@ export const createPlayer = async (request, response) => {
         responseData.message = PLAYER_CREATION_SUCCESS_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module);
+            responseData.message, responseData.error, responseData.module, responseData.data);
     } catch (error) {
         console.error("Error in createPlayer: ", error);
 
@@ -41,7 +41,7 @@ export const createPlayer = async (request, response) => {
         responseData.module = PLAYER_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module);
+            responseData.message, responseData.error, responseData.module, responseData.data);
     }
 }
 
@@ -57,7 +57,7 @@ export const getPlayerData = async (request, response) => {
             responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
 
             return responseSender(response, responseData.status, responseData.statusCode,
-                responseData.message, responseData.error, responseData.module);
+                responseData.message, responseData.error, responseData.module, responseData.data);
         }
 
         const playerData = {
@@ -93,6 +93,6 @@ export const getPlayerData = async (request, response) => {
         responseData.message = PLAYER_NOT_FOUND_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module);
+            responseData.message, responseData.error, responseData.module, responseData.data);
     }
 }
