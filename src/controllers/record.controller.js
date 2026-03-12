@@ -28,7 +28,6 @@ export const upsertRecord = async (request, response) => {
         await upsertRecordSchema.validateAsync(recordData);
 
         const existingData = await checkExistingPlayerRecord(recordData);
-        // console.log("existingData --- ", existingData);
 
         if (!existingData) {
             recordData.place = 0; // todo: remove

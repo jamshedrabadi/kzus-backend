@@ -1,1 +1,3 @@
-export const UNIQUE_CONSTRAINT_ERROR = "SequelizeUniqueConstraintError";
+export const POSTGRES_VIOLATION_CODES = {
+    UNIQUE_CONSTRAINT: "23505",
+};

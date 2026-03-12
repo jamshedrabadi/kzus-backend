@@ -1,11 +1,17 @@
-import { QueryTypes } from "sequelize";
+import { desc, eq } from "drizzle-orm";
 
-import { sequelize } from "../config/db-config.js";
-import dbModels from "../models/index.js";
+import { db } from "../db/db-connection.js";
+import { players } from "../db/schema/players.schema.js";
+import { records } from "../db/schema/records.schema.js";
+import { maps } from "../db/schema/maps.schema.js";
+import { difficulty } from "../db/schema/difficulty.schema.js";
 
 export const createPlayerInDb = async (playerData) => {
     try {
-        return await dbModels.Players.create(playerData);
+        return await db
+            .insert(players)
+            .values(playerData)
+            .returning();
     } catch (error) {
         console.error("Error in createPlayerInDb: ", error);
         throw error;
@@ -14,32 +20,40 @@ export const createPlayerInDb = async (playerData) => {
 
 export const getPlayerDataFromDb = async (playerId) => {
     try {
-        return await sequelize.query(`
-            SELECT
-                p.name as player_name,
-                p.country as player_country,
-                p.steam_id as player_steam_id,
-                m.name as map_name,
-                m.difficulty_id as map_difficulty_id, -- remove later
-                r.time as record_time,
-                r.place as record_place,
-                r.created_at as record_created_at,
-                r.mode as record_mode,
-                r.cp as record_cp,
-                r.gc as record_gc
-            FROM
-                players p
-                LEFT JOIN records r ON r.player_id = p.id
-                LEFT JOIN maps m ON m.id = r.map_id
-            WHERE
-                p.id = :playerId
-            ORDER BY
-                m.difficulty_id DESC
-        `,
-        {
-            replacements: { playerId },
-            type: QueryTypes.SELECT,
-        });
+        const result = await db
+            .select({
+                player_name: players.name,
+                player_country: players.country,
+                player_steam_id: players.steam_id,
+                map_name: maps.name,
+                difficulty_order_index: difficulty.order_index,
+                difficulty_name: difficulty.id,
+                record_time: records.time,
+                record_place: records.place,
+                record_points: records.points,
+                record_created_at: records.created_at,
+                record_mode: records.mode,
+                record_cp: records.cp,
+                record_gc: records.gc,
+            })
+            .from(players)
+            .leftJoin(records,
+                eq(records.player_id, players.id),
+            )
+            .leftJoin(maps,
+                eq(maps.id, records.map_id),
+            )
+            .leftJoin(difficulty,
+                eq(difficulty.id, maps.difficulty_id),
+            )
+            .where(
+                eq(players.id, playerId),
+            )
+            .orderBy(
+                desc(difficulty.order_index),
+            )
+
+        return result;
     } catch (error) {
         console.error("Error in getPlayerDataFromDb: ", error);
         throw error;

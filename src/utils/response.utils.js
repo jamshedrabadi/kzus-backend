@@ -15,7 +15,7 @@ import {
     DUPLICATE_MAP_NAME,
 } from "../constants/map.constants.js";
 import {
-    UNIQUE_CONSTRAINT_ERROR,
+    POSTGRES_VIOLATION_CODES,
 } from "../constants/database.constants.js";
 import {
     RESPONSE_MESSAGE_DATA_NOT_FOUND,
@@ -34,7 +34,7 @@ export const responseSender = (response, status, statusCode, message, data, erro
         responseMessage = RESPONSE_MESSAGE_VALIDATION_ERROR;
         responseErrors = error.details.map(err => err.message);
     } else if (!responseStatus && !responseStatusCode && !responseMessage) { // Determine DB error
-        const dbError = checkDatabaseError(error, module);
+        const dbError = getDatabaseError(error, module);
 
         responseStatusCode = dbError.code;
         responseMessage = dbError.message;
@@ -55,21 +55,25 @@ export const responseSender = (response, status, statusCode, message, data, erro
         });
 }
 
-export const checkDatabaseError = (dbError, module) => {
+export const getDatabaseError = (dbError, module) => {
     let code = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
     let message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
     let errors = [];
 
-    if (dbError.name === UNIQUE_CONSTRAINT_ERROR && module === PLAYER_MODULE) {
+    const dbErrorCode = (dbError && dbError.cause && dbError.cause.code) || null;
+
+    if (dbErrorCode && dbErrorCode === POSTGRES_VIOLATION_CODES.UNIQUE_CONSTRAINT
+        && module === PLAYER_MODULE) {
+
         code = RESPONSE_CODE_DUPLICATE;
         message = PLAYER_CREATION_FAILURE_MESSAGE;
-        // errors = [dbError.errors[0].message]
         errors = [DUPLICATE_PLAYER_STEAMID_MESSAGE];
     }
-    if (dbError.name === UNIQUE_CONSTRAINT_ERROR && module === MAP_MODULE) {
+    if (dbErrorCode && dbErrorCode === POSTGRES_VIOLATION_CODES.UNIQUE_CONSTRAINT
+        && module === MAP_MODULE) {
+
         code = RESPONSE_CODE_DUPLICATE;
         message = MAP_CREATION_FAILURE_MESSAGE;
-        // errors = [dbError.errors[0].message]
         errors = [DUPLICATE_MAP_NAME];
     }
 

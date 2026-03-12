@@ -3,8 +3,7 @@
 import "dotenv/config";
 import express from "express"
 
-import { dbConnection } from "./config/db-connection.js";
-import dbModels from "./models/index.js";
+import { dbConnection } from "./db/db-connection.js";
 import { importRoutes } from "./routes/index.js";
 
 const app = express();
@@ -18,4 +17,4 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-await dbConnection(dbModels.sequelize);
+await dbConnection();

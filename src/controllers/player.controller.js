@@ -83,9 +83,11 @@ export const getPlayerData = async (request, response) => {
         if (playerResponse[0].map_name) {
             playerData.records = playerResponse.map(record => ({
                 map_name: record.map_name,
-                map_difficulty_id: record.map_difficulty_id,
+                difficulty_order_index: record.difficulty_order_index,
+                difficulty_id: record.difficulty_id,
                 record_time: record.record_time,
                 record_place: record.record_place,
+                record_points: record.record_points,
                 record_created_at: record.record_created_at,
                 record_mode: record.record_mode,
                 record_cp: record.record_cp,
