@@ -15,20 +15,20 @@ export const RecordsTable = (sequelize, DataTypes) => {
                 allowNull: false,
                 references: {
                     model: "players",
-                    key: "id"
+                    key: "id",
                 },
                 onDelete: "CASCADE",
-                onUpdate: "CASCADE"
+                onUpdate: "CASCADE",
             },
             map_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
                     model: "maps",
-                    key: "id"
+                    key: "id",
                 },
                 onDelete: "CASCADE",
-                onUpdate: "CASCADE"
+                onUpdate: "CASCADE",
             },
             time: {
                 type: DataTypes.INTEGER,

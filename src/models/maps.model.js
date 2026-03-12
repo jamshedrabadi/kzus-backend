@@ -20,10 +20,10 @@ export const MapsTable = (sequelize, DataTypes) => {
                 allowNull: false,
                 references: {
                     model: "difficulty",
-                    key: "id"
+                    key: "id",
                 },
                 onDelete: "CASCADE",
-                onUpdate: "CASCADE"
+                onUpdate: "CASCADE",
             },
             length: {
                 type: DataTypes.ENUM({ values: MAP_LENGTHS }),

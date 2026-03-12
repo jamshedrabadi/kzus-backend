@@ -10,7 +10,7 @@ const Joi = BaseJoi.defaults(schema =>
             errors: {
                 wrap: {
                     label: false,
-                }
+                },
             },
         })
         .messages({

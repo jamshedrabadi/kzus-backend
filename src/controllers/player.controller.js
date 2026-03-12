@@ -19,7 +19,14 @@ import { createPlayerSchema } from "../validators/player.validator.js";
 import { RESPONSE_MESSAGE_DATA_NOT_FOUND } from "../constants/common.constants.js";
 
 export const createPlayer = async (request, response) => {
-    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "", data: null };
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: PLAYER_MODULE,
+    };
 
     try {
         const playerData = request.body;
@@ -33,7 +40,7 @@ export const createPlayer = async (request, response) => {
         responseData.message = PLAYER_CREATION_SUCCESS_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module, responseData.data);
+            responseData.message, responseData.data, responseData.error, responseData.module);
     } catch (error) {
         console.error("Error in createPlayer: ", error);
 
@@ -41,12 +48,19 @@ export const createPlayer = async (request, response) => {
         responseData.module = PLAYER_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module, responseData.data);
+            responseData.message, responseData.data, responseData.error, responseData.module);
     }
 }
 
 export const getPlayerData = async (request, response) => {
-    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "", data: null };
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: PLAYER_MODULE,
+    };
 
     try {
         const playerId = request.params.id;
@@ -57,7 +71,7 @@ export const getPlayerData = async (request, response) => {
             responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
 
             return responseSender(response, responseData.status, responseData.statusCode,
-                responseData.message, responseData.error, responseData.module, responseData.data);
+                responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
         const playerData = {
@@ -85,7 +99,7 @@ export const getPlayerData = async (request, response) => {
         responseData.data = playerData;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module, responseData.data);
+            responseData.message, responseData.data, responseData.error, responseData.module);
     } catch (error) {
         console.error("Error in getPlayerData: ", error);
 
@@ -93,6 +107,6 @@ export const getPlayerData = async (request, response) => {
         responseData.message = PLAYER_NOT_FOUND_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module, responseData.data);
+            responseData.message, responseData.data, responseData.error, responseData.module);
     }
 }

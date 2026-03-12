@@ -36,10 +36,10 @@ export const getPlayerDataFromDb = async (playerId) => {
             ORDER BY
                 m.difficulty_id DESC
         `,
-            {
-                replacements: { playerId },
-                type: QueryTypes.SELECT,
-            });
+        {
+            replacements: { playerId },
+            type: QueryTypes.SELECT,
+        });
     } catch (error) {
         console.error("Error in getPlayerDataFromDb: ", error);
         throw error;

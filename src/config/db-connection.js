@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 export const dbConnection = async (sequelize) => {
     try {
         await sequelize.authenticate();

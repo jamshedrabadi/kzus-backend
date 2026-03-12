@@ -13,7 +13,14 @@ import {
 import { upsertRecordSchema } from "../validators/record.validator.js";
 
 export const upsertRecord = async (request, response) => {
-    const responseData = { status: false, statusCode: 0, message: "", error: null, module: "", data: null };
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: RECORD_MODULE,
+    };
 
     try {
         const recordData = request.body;
@@ -21,7 +28,7 @@ export const upsertRecord = async (request, response) => {
         await upsertRecordSchema.validateAsync(recordData);
 
         const existingData = await checkExistingPlayerRecord(recordData);
-        console.log("existingData --- ", existingData);
+        // console.log("existingData --- ", existingData);
 
         if (!existingData) {
             recordData.place = 0; // todo: remove
@@ -33,7 +40,7 @@ export const upsertRecord = async (request, response) => {
             responseData.message = RECORD_CREATION_SUCCESS_MESSAGE;
 
             return responseSender(response, responseData.status, responseData.statusCode,
-                responseData.message, responseData.error, responseData.module, responseData.data);
+                responseData.message, responseData.data, responseData.error, responseData.module);
         }
     } catch (error) {
         console.error("Error in upsertRecord: ", error);
@@ -42,6 +49,6 @@ export const upsertRecord = async (request, response) => {
         responseData.module = RECORD_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.error, responseData.module, responseData.data);
+            responseData.message, responseData.data, responseData.error, responseData.module);
     }
 }

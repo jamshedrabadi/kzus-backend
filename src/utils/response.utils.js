@@ -22,7 +22,7 @@ import {
     RESPONSE_MESSAGE_VALIDATION_ERROR,
 } from "../constants/common.constants.js";
 
-export const responseSender = (response, status, statusCode, message, error, module, data) => {
+export const responseSender = (response, status, statusCode, message, data, error, module) => {
     const responseStatus = !!status;
     let responseStatusCode = statusCode;
     let responseMessage = message;
