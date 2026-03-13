@@ -1,3 +1,7 @@
+import {
+    formatDbDateToDate,
+} from "../utils/common.utils.js";
+
 export const mapCreatePlayerRequest = (playerData) => {
     const mappedPlayerData = {
         name: playerData.name,
@@ -20,13 +24,14 @@ export const mapGetPlayerResponse = (playerData) => {
                 return acc;
             };
             const record = {
+                mapId: rec.map_id,
                 mapName: rec.map_name,
                 difficultyOrderIndex: rec.difficulty_order_index,
                 difficultyName: rec.difficulty_name,
                 time: rec.record_time,
                 place: rec.record_place,
                 points: rec.record_points,
-                createdAt: rec.record_created_at,
+                createdAt: formatDbDateToDate(rec.record_created_at),
                 cp: rec.record_cp,
                 gc: rec.record_gc,
             };

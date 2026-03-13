@@ -2,9 +2,9 @@ import { desc, eq } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { players } from "../db/schema/players.schema.js";
-import { records } from "../db/schema/records.schema.js";
 import { maps } from "../db/schema/maps.schema.js";
 import { difficulty } from "../db/schema/difficulty.schema.js";
+import { records } from "../db/schema/records.schema.js";
 
 export const createPlayerInDb = async (playerData) => {
     try {
@@ -25,6 +25,7 @@ export const getPlayerDataFromDb = async (playerId) => {
                 player_name: players.name,
                 player_country: players.country,
                 player_steam_id: players.steam_id,
+                map_id: maps.id,
                 map_name: maps.name,
                 difficulty_order_index: difficulty.order_index,
                 difficulty_name: difficulty.name,
