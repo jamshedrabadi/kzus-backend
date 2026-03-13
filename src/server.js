@@ -2,12 +2,19 @@
 
 import "dotenv/config";
 import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 
 import { dbConnection } from "./db/db-connection.js";
 import { importRoutes } from "./routes/index.js";
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(helmet());
+
+app.use(morgan('dev'));
 
 importRoutes(app);
 
@@ -18,3 +25,10 @@ app.listen(PORT, () => {
 });
 
 await dbConnection();
+
+/*
+ * read up on docker
+ * implement husky / lint-staged in the future
+ * implement jest / supertest for testing in the future
+ * implement login in the future
+ */
