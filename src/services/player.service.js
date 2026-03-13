@@ -27,7 +27,7 @@ export const getPlayerDataFromDb = async (playerId) => {
                 player_steam_id: players.steam_id,
                 map_name: maps.name,
                 difficulty_order_index: difficulty.order_index,
-                difficulty_name: difficulty.id,
+                difficulty_name: difficulty.name,
                 record_time: records.time,
                 record_place: records.place,
                 record_points: records.points,

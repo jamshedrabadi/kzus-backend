@@ -2,7 +2,17 @@ import {
     createPlayerInDb,
     getPlayerDataFromDb,
 } from "../services/player.service.js";
-import { responseSender } from "../utils/response.utils.js";
+import {
+    responseSender,
+
+} from "../utils/response.utils.js";
+import {
+    createPlayerSchema,
+} from "../validators/player.validator.js";
+import {
+    mapCreatePlayerRequest,
+    mapGetPlayerResponse,
+} from "../mappers/player.mapper.js";
 import {
     RESPONSE_CODE_CREATED,
     RESPONSE_CODE_DATA_NOT_FOUND,
@@ -15,8 +25,9 @@ import {
     PLAYER_FOUND_MESSAGE,
     PLAYER_NOT_FOUND_MESSAGE,
 } from "../constants/player.constants.js";
-import { createPlayerSchema } from "../validators/player.validator.js";
-import { RESPONSE_MESSAGE_DATA_NOT_FOUND } from "../constants/common.constants.js";
+import {
+    RESPONSE_MESSAGE_DATA_NOT_FOUND,
+} from "../constants/common.constants.js";
 
 export const createPlayer = async (request, response) => {
     const responseData = {
@@ -33,7 +44,9 @@ export const createPlayer = async (request, response) => {
 
         await createPlayerSchema.validateAsync(playerData);
 
-        await createPlayerInDb(playerData);
+        const mappedPlayerData = mapCreatePlayerRequest(playerData);
+
+        await createPlayerInDb(mappedPlayerData);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;
@@ -68,37 +81,18 @@ export const getPlayerData = async (request, response) => {
         const playerResponse = await getPlayerDataFromDb(playerId);
         if (!playerResponse.length) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
-            responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
+            responseData.message = PLAYER_NOT_FOUND_MESSAGE;
 
             return responseSender(response, responseData.status, responseData.statusCode,
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const playerData = {
-            name: playerResponse[0].player_name,
-            country: playerResponse[0].player_country,
-            steam_id: playerResponse[0].player_steam_id,
-            records: [],
-        };
-        if (playerResponse[0].map_name) {
-            playerData.records = playerResponse.map(record => ({
-                map_name: record.map_name,
-                difficulty_order_index: record.difficulty_order_index,
-                difficulty_id: record.difficulty_id,
-                record_time: record.record_time,
-                record_place: record.record_place,
-                record_points: record.record_points,
-                record_created_at: record.record_created_at,
-                record_mode: record.record_mode,
-                record_cp: record.record_cp,
-                record_gc: record.record_gc,
-            }));
-        }
+        const mappedPlayerResponse = mapGetPlayerResponse(playerResponse);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
         responseData.message = PLAYER_FOUND_MESSAGE;
-        responseData.data = playerData;
+        responseData.data = mappedPlayerResponse;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
@@ -106,7 +100,7 @@ export const getPlayerData = async (request, response) => {
         console.error("Error in getPlayerData: ", error);
 
         responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
-        responseData.message = PLAYER_NOT_FOUND_MESSAGE;
+        responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

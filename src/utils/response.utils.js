@@ -26,7 +26,7 @@ export const responseSender = (response, status, statusCode, message, data, erro
     const responseStatus = !!status;
     let responseStatusCode = statusCode;
     let responseMessage = message;
-    let responseErrors = [];
+    let responseErrors = null;
     let responseData = null;
 
     if (error && error.details) { // validation errors

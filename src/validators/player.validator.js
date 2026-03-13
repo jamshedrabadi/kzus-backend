@@ -18,7 +18,7 @@ export const createPlayerSchema = Joi.object({
             "string.length": VALIDATION_ERROR_MESSAGES.ERR_MSG_007,
             "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_008,
         }),
-    steam_id: Joi.string().trim().required()
+    steamId: Joi.string().trim().required()
         .pattern(/^\d{17}$/)
         .messages({
             "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_009,
