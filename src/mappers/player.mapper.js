@@ -26,9 +26,9 @@ export const mapGetPlayerResponse = (playerData) => {
                 time: rec.record_time,
                 place: rec.record_place,
                 points: rec.record_points,
-                date: rec.record_created_at,
-                cps: rec.record_cp,
-                gcs: rec.record_gc,
+                createdAt: rec.record_created_at,
+                cp: rec.record_cp,
+                gc: rec.record_gc,
             };
 
             acc[rec.record_mode].push(record);

@@ -22,7 +22,7 @@ export const checkExistingPlayerRecord = async (recordData) => {
             )
             .limit(1);
 
-        return result[0] ?? null;
+        return result[0] || null;
     } catch (error) {
         console.error("Error in checkExistingPlayerRecord: ", error);
         throw error;

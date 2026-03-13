@@ -5,7 +5,7 @@ import {
 } from "../constants/record.constants.js";
 
 export const upsertRecordSchema = Joi.object({
-    player_id: Joi.number().integer().required()
+    playerId: Joi.number().integer().required()
         .positive()
         .messages({
             "number.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_001,
@@ -13,7 +13,7 @@ export const upsertRecordSchema = Joi.object({
             "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_003,
             "number.positive": VALIDATION_ERROR_MESSAGES.ERR_MSG_004,
         }),
-    map_id: Joi.number().integer().required()
+    mapId: Joi.number().integer().required()
         .positive()
         .messages({
             "number.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_005,

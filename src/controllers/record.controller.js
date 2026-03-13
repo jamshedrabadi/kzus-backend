@@ -2,7 +2,15 @@ import {
     checkExistingPlayerRecord,
     insertRecord,
 } from "../services/record.service.js";
-import { responseSender } from "../utils/response.utils.js";
+import {
+    responseSender,
+} from "../utils/response.utils.js";
+import {
+    upsertRecordSchema,
+} from "../validators/record.validator.js";
+import {
+    mapUpsertRecordRequest,
+} from "../mappers/record.mapper.js";
 import {
     RESPONSE_CODE_CREATED,
 } from "../constants/http.constants.js";
@@ -10,7 +18,6 @@ import {
     RECORD_MODULE,
     RECORD_CREATION_SUCCESS_MESSAGE,
 } from "../constants/record.constants.js";
-import { upsertRecordSchema } from "../validators/record.validator.js";
 
 export const upsertRecord = async (request, response) => {
     const responseData = {
@@ -27,12 +34,14 @@ export const upsertRecord = async (request, response) => {
 
         await upsertRecordSchema.validateAsync(recordData);
 
-        const existingData = await checkExistingPlayerRecord(recordData);
+        const mappedRecordData = mapUpsertRecordRequest(recordData); // change in check
+
+        const existingData = await checkExistingPlayerRecord(mappedRecordData);
 
         if (!existingData) {
-            recordData.place = 0; // todo: remove
-            recordData.points = 0; // todo: remove
-            await insertRecord(recordData);
+            mappedRecordData.place = 0; // todo: remove
+            mappedRecordData.points = 0; // todo: remove
+            await insertRecord(mappedRecordData);
 
             responseData.status = true;
             responseData.statusCode = RESPONSE_CODE_CREATED;
