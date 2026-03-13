@@ -12,7 +12,7 @@ export const createMapSchema = Joi.object({
             "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_002,
             "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_003,
         }),
-    difficulty_id: Joi.number().integer().required()
+    difficultyId: Joi.number().integer().required()
         .positive()
         .messages({
             "number.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_004,
