@@ -4,6 +4,8 @@ import {
     serial,
     integer,
     timestamp,
+    uniqueIndex,
+    index,
 } from "drizzle-orm/pg-core";
 
 import { players } from "./players.schema.js";
@@ -36,7 +38,17 @@ export const records = pgTable("records", {
     place:
         integer().notNull(),
     points:
-        integer().notNull(),
+        integer().notNull().default(0),
     created_at:
         timestamp().defaultNow(),
-});
+},
+(table) => ({
+    playerMapUnique: uniqueIndex("records_player_map_mode_unique")
+        .on(table.player_id, table.map_id, table.mode),
+
+    mapModePlaceIdx: index("records_map_mode_place_idx")
+        .on(table.map_id, table.mode, table.place),
+
+    mapModeTimeIdx: index("records_map_mode_time_idx")
+        .on(table.map_id, table.mode, table.time),
+}));
