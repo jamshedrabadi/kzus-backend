@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 
+import "dotenv/config";
 import pg from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 
