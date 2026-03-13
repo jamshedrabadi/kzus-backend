@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import "dotenv/config";
-import express from "express"
+import express from "express";
 
 import { dbConnection } from "./db/db-connection.js";
 import { importRoutes } from "./routes/index.js";

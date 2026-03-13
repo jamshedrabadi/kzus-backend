@@ -53,7 +53,7 @@ export const responseSender = (response, status, statusCode, message, data, erro
             errors: responseErrors,
             data: responseData,
         });
-}
+};
 
 export const getDatabaseError = (dbError, module) => {
     let code = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
@@ -78,4 +78,4 @@ export const getDatabaseError = (dbError, module) => {
     }
 
     return { code, message, errors };
-}
+};

@@ -27,7 +27,7 @@ export const checkExistingPlayerRecord = async (recordData) => {
         console.error("Error in checkExistingPlayerRecord: ", error);
         throw error;
     }
-}
+};
 
 export const insertRecord = async (recordData) => {
     try {
@@ -39,4 +39,4 @@ export const insertRecord = async (recordData) => {
         console.error("Error in insertRecord: ", error);
         throw error;
     }
-}
+};

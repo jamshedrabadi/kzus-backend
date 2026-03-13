@@ -42,6 +42,7 @@ export default defineConfig([
             "@stylistic/array-bracket-spacing": ["error", "never"],
             "@stylistic/quote-props": ["error", "consistent-as-needed"],
             "@stylistic/multiline-comment-style": ["error", "starred-block"],
+            "@stylistic/semi": ["error", "always"],
         },
     },
 ]);

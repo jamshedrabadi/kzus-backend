@@ -41,4 +41,4 @@ export const createMap = async (request, response) => {
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
     }
-}
+};

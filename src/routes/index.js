@@ -10,4 +10,4 @@ export const importRoutes = (app) => {
     app.use("/player", playerRoutes);
     app.use("/map", mapRoutes);
     app.use("/record", recordRoutes);
-}
+};

@@ -50,7 +50,7 @@ export const createPlayer = async (request, response) => {
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
     }
-}
+};
 
 export const getPlayerData = async (request, response) => {
     const responseData = {
@@ -111,4 +111,4 @@ export const getPlayerData = async (request, response) => {
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
     }
-}
+};

@@ -19,7 +19,7 @@ export const dbConnection = async () => {
         console.error("Error connecting to PostgreSQL DB: ", error);
         process.exit(1);
     }
-}
+};
 
 export const db = drizzle(pool);
 

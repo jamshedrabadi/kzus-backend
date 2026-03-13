@@ -16,7 +16,7 @@ export const createPlayerInDb = async (playerData) => {
         console.error("Error in createPlayerInDb: ", error);
         throw error;
     }
-}
+};
 
 export const getPlayerDataFromDb = async (playerId) => {
     try {
@@ -51,11 +51,11 @@ export const getPlayerDataFromDb = async (playerId) => {
             )
             .orderBy(
                 desc(difficulty.order_index),
-            )
+            );
 
         return result;
     } catch (error) {
         console.error("Error in getPlayerDataFromDb: ", error);
         throw error;
     }
-}
+};

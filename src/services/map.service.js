@@ -11,4 +11,4 @@ export const createMapInDb = async (mapData) => {
         console.error("Error in createMapInDb: ", error);
         throw error;
     }
-}
+};
