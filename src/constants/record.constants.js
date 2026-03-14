@@ -1,6 +1,9 @@
 export const RECORD_MODULE = "record";
 
+export const RECORD_BASE_POINTS = 100;
+
 export const RECORD_CREATION_SUCCESS_MESSAGE = "Record inserted successfully.";
+export const RECORD_BETTER_RECORD_EXISTS_MESSAGE = "Player has a better record on this map.";
 
 export const RECORD_MODES = [
     "pro",

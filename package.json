@@ -7,12 +7,12 @@
     "type": "module",
     "main": "server.js",
     "scripts": {
-        "start": "node src/server.js",
-        "db:seed": "node src/db/seeds/seed.js",
-        "dev-start": "node --watch src/server.js",
-        "db:dev-seed": "node src/db/seeds/dev.seed.js",
         "lint": "npx eslint ./src",
-        "db:push": "npx drizzle-kit push"
+        "db:push": "npx drizzle-kit push",
+        "db:seed": "node src/db/seeds/seed.js",
+        "db:seed-dev": "node src/db/seeds/dev.seed.js",
+        "start": "node src/server.js",
+        "start-dev": "node --watch src/server.js"
     },
     "dependencies": {
         "dotenv": "^17.3.1",

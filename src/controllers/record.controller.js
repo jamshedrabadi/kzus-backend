@@ -1,6 +1,5 @@
 import {
-    checkExistingPlayerRecord,
-    insertRecord,
+    upsertRecordInDb,
 } from "../services/record.service.js";
 import {
     responseSender,
@@ -36,20 +35,14 @@ export const upsertRecord = async (request, response) => {
 
         const mappedRecordData = mapUpsertRecordRequest(recordData); // change in check
 
-        const existingData = await checkExistingPlayerRecord(mappedRecordData);
+        await upsertRecordInDb(mappedRecordData);
 
-        if (!existingData) {
-            mappedRecordData.place = 0; // todo: remove
-            mappedRecordData.points = 0; // todo: remove
-            await insertRecord(mappedRecordData);
+        responseData.status = true;
+        responseData.statusCode = RESPONSE_CODE_CREATED;
+        responseData.message = RECORD_CREATION_SUCCESS_MESSAGE;
 
-            responseData.status = true;
-            responseData.statusCode = RESPONSE_CODE_CREATED;
-            responseData.message = RECORD_CREATION_SUCCESS_MESSAGE;
-
-            return responseSender(response, responseData.status, responseData.statusCode,
-                responseData.message, responseData.data, responseData.error, responseData.module);
-        }
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
     } catch (error) {
         console.error("Error in upsertRecord: ", error);
 
