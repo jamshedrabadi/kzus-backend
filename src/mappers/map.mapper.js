@@ -23,7 +23,7 @@ export const mapGetMapResponse = (mapData) => {
             difficultyName: mapData[0].difficulty_name,
         },
         records: mapData.reduce((acc, map) => {
-            if (!map.map_name) {
+            if (!map.player_id) {
                 return acc;
             };
             const record = {

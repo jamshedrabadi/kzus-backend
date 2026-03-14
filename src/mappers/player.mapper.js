@@ -20,7 +20,7 @@ export const mapGetPlayerResponse = (playerData) => {
             steamId: playerData[0].player_steam_id,
         },
         records: playerData.reduce((acc, rec) => {
-            if (!rec.map_name) {
+            if (!rec.map_id) {
                 return acc;
             };
             const record = {
