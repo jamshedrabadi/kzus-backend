@@ -4,16 +4,21 @@ import { db } from "../db/db-connection.js";
 import { records } from "../db/schema/records.schema.js";
 import {
     RECORD_BASE_POINTS,
+    RECORD_MODE_LOCK_VALUES,
 } from "../constants/record.constants.js";
 
 export const upsertRecordInDb = async (recordData) => {
     try {
-        await db.transaction(async (tx) => {
+        return await db.transaction(async (tx) => {
+            // locking mechanism for race condition (auto release on txn commit)
+            const txnLockKey = (recordData.map_id * 10) + RECORD_MODE_LOCK_VALUES[recordData.mode];
+            await tx.execute(sql`SELECT pg_advisory_xact_lock(${txnLockKey})`);
+
             const existingRecord = await checkExistingRecord(tx, recordData);
 
             const playerRecord = existingRecord[0];
             if (playerRecord && recordData.time >= playerRecord.time) { // slow record scenario
-                return ;
+                return { success: false };
             }
 
             const newRank = await getNewRank(tx, recordData);
@@ -50,7 +55,7 @@ export const upsertRecordInDb = async (recordData) => {
                     tx, recordData, totalRecords, pointsCalcStart, pointsCalcEnd);
             }
 
-            return; // transaction done
+            return { success: true }; // transaction done
         });
     } catch (error) {
         console.error("Error in upsertRecordInDb: ", error);
@@ -102,7 +107,7 @@ export const getRecordsOnMap = async (tx, recordData) => {
 };
 
 export const incrementSlowerTimes = async (tx, recordData, newRank, oldRank = null) => {
-    await tx.execute(sql`
+    return await tx.execute(sql`
         UPDATE records
         SET place = place + 1
         WHERE map_id = ${recordData.map_id}
@@ -113,7 +118,7 @@ export const incrementSlowerTimes = async (tx, recordData, newRank, oldRank = nu
 };
 
 export const insertRecord = async (tx, recordData, newRank) => {
-    await tx.insert(records).values({
+    return await tx.insert(records).values({
         ...recordData,
         place: newRank,
         points: 0,
@@ -121,7 +126,7 @@ export const insertRecord = async (tx, recordData, newRank) => {
 };
 
 export const updateRecord = async (tx, recordData, newRank, playerRecordId) => {
-    await tx
+    return await tx
         .update(records)
         .set({
             time: recordData.time,
@@ -134,7 +139,7 @@ export const updateRecord = async (tx, recordData, newRank, playerRecordId) => {
 
 export const recalculatePoints = async (
     tx, recordData, totalRecords, pointsCalcStart, pointsCalcEnd) => {
-    await tx.execute(sql`
+    return await tx.execute(sql`
         UPDATE records r
         SET points = FLOOR(
             ${RECORD_BASE_POINTS}

@@ -12,10 +12,12 @@ import {
 } from "../mappers/record.mapper.js";
 import {
     RESPONSE_CODE_CREATED,
+    RESPONSE_CODE_DUPLICATE,
 } from "../constants/http.constants.js";
 import {
     RECORD_MODULE,
     RECORD_CREATION_SUCCESS_MESSAGE,
+    RECORD_BETTER_RECORD_EXISTS_MESSAGE,
 } from "../constants/record.constants.js";
 
 export const upsertRecord = async (request, response) => {
@@ -35,7 +37,14 @@ export const upsertRecord = async (request, response) => {
 
         const mappedRecordData = mapUpsertRecordRequest(recordData); // change in check
 
-        await upsertRecordInDb(mappedRecordData);
+        const upsertedRecord = await upsertRecordInDb(mappedRecordData);
+        if (!upsertedRecord.success) {
+            responseData.statusCode = RESPONSE_CODE_DUPLICATE;
+            responseData.message = RECORD_BETTER_RECORD_EXISTS_MESSAGE;
+
+            return responseSender(response, responseData.status, responseData.statusCode,
+                responseData.message, responseData.data, responseData.error, responseData.module);
+        }
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;

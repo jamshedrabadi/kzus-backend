@@ -10,6 +10,11 @@ export const RECORD_MODES = [
     "nub",
 ];
 
+export const RECORD_MODE_LOCK_VALUES = {
+    pro: 1,
+    nub: 2,
+};
+
 export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_001: "Record Player ID must be a number.",
     ERR_MSG_002: "Record Player ID must be an integer.",
