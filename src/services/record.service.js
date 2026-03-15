@@ -1,7 +1,9 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, gte, lt, lte, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { records } from "../db/schema/records.schema.js";
+import { maps } from "../db/schema/maps.schema.js";
+import { difficulty } from "../db/schema/difficulty.schema.js";
 import {
     RECORD_BASE_POINTS,
     RECORD_MODE_LOCK_VALUES,
@@ -84,45 +86,66 @@ export const checkExistingRecord = async (tx, recordData) => {
 };
 
 export const getNewRank = async (tx, recordData) => {
-    const rank = await tx.execute(sql`
-        SELECT COUNT(*) + 1 AS rank
-        FROM records
-        WHERE map_id = ${recordData.map_id}
-        AND mode = ${recordData.mode}
-        AND time < ${recordData.time}
-    `);
+    const rankResult = await tx
+        .select({
+            rank: sql`count(*) + 1`,
+        })
+        .from(records)
+        .where(
+            and(
+                eq(records.map_id, recordData.map_id),
+                eq(records.mode, recordData.mode),
+                lte(records.time, recordData.time),
+            ),
+        );
 
-    return Number(rank.rows[0].rank);
+    return Number(rankResult[0].rank);
 };
 
 export const getRecordsOnMap = async (tx, recordData) => {
-    const recordsOnMap = await tx.execute(sql`
-        SELECT COUNT(*) AS total
-        FROM records
-        WHERE map_id = ${recordData.map_id}
-        AND mode = ${recordData.mode}
-    `);
+    const recordsResult = await tx
+        .select({
+            total: sql`count(*)`,
+        })
+        .from(records)
+        .where(
+            and(
+                eq(records.map_id, recordData.map_id),
+                eq(records.mode, recordData.mode),
+            ),
+        );
 
-    return Number(recordsOnMap.rows[0].total);
+    return Number(recordsResult[0].total);
 };
 
 export const incrementSlowerTimes = async (tx, recordData, newRank, oldRank = null) => {
-    return await tx.execute(sql`
-        UPDATE records
-        SET place = place + 1
-        WHERE map_id = ${recordData.map_id}
-        AND mode = ${recordData.mode}
-        AND place >= ${newRank}
-        ${oldRank ? sql`AND place < ${oldRank}` : sql``}
-    `);
+    const conditions = [
+        eq(records.map_id, recordData.map_id),
+        eq(records.mode, recordData.mode),
+        gte(records.place, newRank),
+    ];
+    if (oldRank) {
+        conditions.push(lt(records.place, oldRank));
+    }
+
+    return await tx
+        .update(records)
+        .set({
+            place: sql`${records.place} + 1`,
+        })
+        .where(
+            and(...conditions),
+        );
 };
 
 export const insertRecord = async (tx, recordData, newRank) => {
-    return await tx.insert(records).values({
-        ...recordData,
-        place: newRank,
-        points: 0,
-    });
+    return await tx
+        .insert(records)
+        .values({
+            ...recordData,
+            place: newRank,
+            points: 0,
+        });
 };
 
 export const updateRecord = async (tx, recordData, newRank, playerRecordId) => {
@@ -139,19 +162,30 @@ export const updateRecord = async (tx, recordData, newRank, playerRecordId) => {
 
 export const recalculatePoints = async (
     tx, recordData, totalRecords, pointsCalcStart, pointsCalcEnd) => {
-    return await tx.execute(sql`
-        UPDATE records r
-        SET points = FLOOR(
-            ${RECORD_BASE_POINTS}
-            * d.multiplier
-            * SQRT(${totalRecords})
-            * (1 / SQRT(r.place))
+
+    return await tx
+        .update(records)
+        .set({
+            points: sql`
+                FLOOR(
+                    ${RECORD_BASE_POINTS}
+                    * ${difficulty.multiplier}
+                    * SQRT(${totalRecords})
+                    * (1 / SQRT(${records.place}))
+                )`,
+        })
+        .from(maps)
+        .innerJoin(difficulty,
+            eq(maps.difficulty_id, difficulty.id),
         )
-        FROM maps m
-        JOIN difficulty d ON m.difficulty_id = d.id
-        WHERE r.map_id = m.id
-        AND r.map_id = ${recordData.map_id}
-        AND r.mode = 'pro'
-        AND r.place BETWEEN ${pointsCalcStart} AND ${pointsCalcEnd}
-    `);
+        .where(
+            and(
+                eq(records.map_id, maps.id),
+                eq(records.map_id, recordData.map_id),
+                eq(records.map_id, recordData.map_id),
+                eq(records.mode, 'pro'),
+                gte(records.place, pointsCalcStart),
+                lte(records.place, pointsCalcEnd),
+            ),
+        );
 };
