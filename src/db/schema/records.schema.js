@@ -41,6 +41,8 @@ export const records = pgTable("records", {
 
     gc: integer("gc").notNull(),
 
+    improvements: integer("improvements").notNull().default(0),
+
     created_at: timestamp("created_at").defaultNow().notNull(),
 
     updated_at: timestamp("updated_at"),

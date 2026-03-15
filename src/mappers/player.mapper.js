@@ -34,6 +34,7 @@ export const mapGetPlayerResponse = (playerData) => {
                 createdAt: formatDbDateToDate(rec.record_created_at),
                 cp: rec.record_cp,
                 gc: rec.record_gc,
+                improvements: rec.record_improvements,
             };
 
             acc[rec.record_mode].push(record);

@@ -22,23 +22,24 @@ export const mapGetMapResponse = (mapData) => {
             difficultyOrderIndex: mapData[0].difficulty_order_index,
             difficultyName: mapData[0].difficulty_name,
         },
-        records: mapData.reduce((acc, map) => {
-            if (!map.player_id) {
+        records: mapData.reduce((acc, rec) => {
+            if (!rec.player_id) {
                 return acc;
             };
             const record = {
-                playerId: map.player_id,
-                playerName: map.player_name,
-                playerCountry: map.player_country,
-                time: map.record_time,
-                place: map.record_place,
-                points: map.record_points,
-                createdAt: formatDbDateToDate(map.record_created_at),
-                cp: map.record_cp,
-                gc: map.record_gc,
+                playerId: rec.player_id,
+                playerName: rec.player_name,
+                playerCountry: rec.player_country,
+                time: rec.record_time,
+                place: rec.record_place,
+                points: rec.record_points,
+                createdAt: formatDbDateToDate(rec.record_created_at),
+                cp: rec.record_cp,
+                gc: rec.record_gc,
+                improvements: rec.record_improvements,
             };
 
-            acc[map.record_mode].push(record);
+            acc[rec.record_mode].push(record);
 
             return acc;
         }, { pro: [], nub: [] }),

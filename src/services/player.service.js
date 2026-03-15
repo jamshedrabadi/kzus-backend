@@ -36,6 +36,7 @@ export const getPlayerDataFromDb = async (playerId) => {
                 record_mode: records.mode,
                 record_cp: records.cp,
                 record_gc: records.gc,
+                record_improvements: records.improvements,
             })
             .from(players)
             .leftJoin(records,

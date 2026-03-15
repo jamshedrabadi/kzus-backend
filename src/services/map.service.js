@@ -37,6 +37,7 @@ export const getMapDataFromDb = async (mapId) => {
                 record_mode: records.mode,
                 record_cp: records.cp,
                 record_gc: records.gc,
+                record_improvements: records.improvements,
             })
             .from(maps)
             .leftJoin(records,
