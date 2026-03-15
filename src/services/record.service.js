@@ -155,6 +155,7 @@ export const updateRecord = async (tx, recordData, newRank, playerRecordId) => {
             time: recordData.time,
             place: newRank,
             improvements: sql`${records.improvements} + 1`,
+            updated_at: new Date(),
         })
         .where(
             eq(records.id, playerRecordId),
