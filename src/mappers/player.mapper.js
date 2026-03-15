@@ -2,7 +2,7 @@ import {
     formatDbDateToDate,
 } from "../utils/common.utils.js";
 
-export const mapCreatePlayerRequest = (playerData) => {
+export const mapCreateOrUpdatePlayerRequest = (playerData) => {
     const mappedPlayerData = {
         name: playerData.name,
         country: playerData.country,

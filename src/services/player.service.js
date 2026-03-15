@@ -8,12 +8,36 @@ import { records } from "../db/schema/records.schema.js";
 
 export const createPlayerInDb = async (playerData) => {
     try {
-        return await db
+        const playerResponse = await db
             .insert(players)
             .values(playerData)
             .returning();
+
+        return playerResponse[0].id;
     } catch (error) {
         console.error("Error in createPlayerInDb: ", error);
+        throw error;
+    }
+};
+
+export const updatePlayerInDb = async (playerId, playerData) => {
+    try {
+        const playerResponse = await db
+            .update(players)
+            .set({
+                name: playerData.name,
+                country: playerData.country,
+                steam_id: playerData.steam_id,
+                updated_at: new Date(),
+            })
+            .where(
+                eq(players.id, playerId),
+            )
+            .returning();
+
+        return playerResponse[0].id;
+    } catch (error) {
+        console.error("Error in updatePlayerInDb: ", error);
         throw error;
     }
 };

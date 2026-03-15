@@ -6,7 +6,7 @@ import {
 } from "../constants/http.constants.js";
 import {
     PLAYER_MODULE,
-    PLAYER_CREATION_FAILURE_MESSAGE,
+    PLAYER_SAVE_FAILURE_MESSAGE,
     DUPLICATE_PLAYER_STEAMID_MESSAGE,
 } from "../constants/player.constants.js";
 import {
@@ -66,7 +66,7 @@ export const getDatabaseError = (dbError, module) => {
         && module === PLAYER_MODULE) {
 
         code = RESPONSE_CODE_DUPLICATE;
-        message = PLAYER_CREATION_FAILURE_MESSAGE;
+        message = PLAYER_SAVE_FAILURE_MESSAGE;
         errors = [DUPLICATE_PLAYER_STEAMID_MESSAGE];
     }
     if (dbErrorCode && dbErrorCode === POSTGRES_VIOLATION_CODES.UNIQUE_CONSTRAINT

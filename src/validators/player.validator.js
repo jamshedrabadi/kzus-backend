@@ -1,7 +1,7 @@
 import Joi from "../lib/joi.js";
 import { VALIDATION_ERROR_MESSAGES } from "../constants/player.constants.js";
 
-export const createPlayerSchema = Joi.object({
+export const createOrUpdatePlayerSchema = Joi.object({
     name: Joi.string().trim().required()
         .messages({
             "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_001,
