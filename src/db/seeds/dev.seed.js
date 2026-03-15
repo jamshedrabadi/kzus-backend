@@ -48,18 +48,18 @@ export const seedDev = async () => {
         { name: "map5", difficulty_id: "10", length: "middle", type: "special" },
     ]);
     await db.insert(records).values([
-        { player_id: "1", map_id: "1", time: "6500", mode: "pro", cp: 0, gc: 0, place: 2, points: 0 },
-        { player_id: "1", map_id: "2", time: "7500", mode: "pro", cp: 0, gc: 0, place: 2, points: 0 },
-        { player_id: "2", map_id: "1", time: "6000", mode: "pro", cp: 0, gc: 0, place: 1, points: 0 },
-        { player_id: "2", map_id: "2", time: "7000", mode: "pro", cp: 0, gc: 0, place: 1, points: 0 },
-        { player_id: "2", map_id: "3", time: "6500", mode: "pro", cp: 0, gc: 0, place: 1, points: 0 },
-        { player_id: "2", map_id: "5", time: "8500", mode: "pro", cp: 0, gc: 0, place: 2, points: 0 },
-        { player_id: "3", map_id: "5", time: "5000", mode: "pro", cp: 0, gc: 0, place: 1, points: 0 },
-        { player_id: "4", map_id: "1", time: "100", mode: "nub", cp: 5, gc: 55, place: 1, points: 0 },
-        { player_id: "5", map_id: "1", time: "10000", mode: "pro", cp: 0, gc: 0, place: 3, points: 0 },
-        { player_id: "5", map_id: "5", time: "11000", mode: "pro", cp: 0, gc: 0, place: 3, points: 0 },
-        { player_id: "5", map_id: "4", time: "4000", mode: "nub", cp: 6, gc: 66, place: 1, points: 0 },
-        { player_id: "3", map_id: "4", time: "4000", mode: "pro", cp: 0, gc: 0, place: 1, points: 0 },
+        { player_id: "1", map_id: "1", time: "6500", place: 2, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "1", map_id: "2", time: "7500", place: 2, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "2", map_id: "1", time: "6000", place: 1, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "2", map_id: "2", time: "7000", place: 1, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "2", map_id: "3", time: "6500", place: 1, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "2", map_id: "5", time: "8500", place: 2, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "3", map_id: "5", time: "5000", place: 1, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "4", map_id: "1", time: "100", place: 1, points: 0, mode: "nub", cp: 5, gc: 55, improvements: 0 },
+        { player_id: "5", map_id: "1", time: "10000", place: 3, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "5", map_id: "5", time: "11000", place: 3, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
+        { player_id: "5", map_id: "4", time: "4000", place: 1, points: 0, mode: "nub", cp: 6, gc: 66, improvements: 0 },
+        { player_id: "3", map_id: "4", time: "4000", place: 1, points: 0, mode: "pro", cp: 0, gc: 0, improvements: 0 },
     ]);
     console.log("Dev data seeded");
 };

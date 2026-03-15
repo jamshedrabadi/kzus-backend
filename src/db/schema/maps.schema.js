@@ -1,6 +1,7 @@
 import {
     pgTable,
     pgEnum,
+    uniqueIndex,
     index,
     serial,
     varchar,
@@ -36,6 +37,9 @@ export const maps = pgTable("maps", {
 
     updated_at: timestamp("updated_at"),
 }, (table) => [
+    uniqueIndex("maps_name_unique")
+        .on(table.name),
+
     index("maps_difficulty_idx")
         .on(table.difficulty_id),
 ]);
