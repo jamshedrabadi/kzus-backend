@@ -1,7 +1,8 @@
 export const MAP_MODULE = "map";
 
 export const MAP_CREATION_SUCCESS_MESSAGE = "Map created successfully.";
-export const MAP_CREATION_FAILURE_MESSAGE = "Error creating map.";
+export const MAP_UPDATION_SUCCESS_MESSAGE = "Map updated successfully.";
+export const MAP_SAVE_FAILURE_MESSAGE = "Error saving map data.";
 export const DUPLICATE_MAP_NAME = "Map with this name already exists.";
 export const MAP_FOUND_MESSAGE = "Map data found.";
 export const MAP_NOT_FOUND_MESSAGE = "Map not found.";

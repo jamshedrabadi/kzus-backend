@@ -11,7 +11,7 @@ import {
 } from "../constants/player.constants.js";
 import {
     MAP_MODULE,
-    MAP_CREATION_FAILURE_MESSAGE,
+    MAP_SAVE_FAILURE_MESSAGE,
     DUPLICATE_MAP_NAME,
 } from "../constants/map.constants.js";
 import {
@@ -73,7 +73,7 @@ export const getDatabaseError = (dbError, module) => {
         && module === MAP_MODULE) {
 
         code = RESPONSE_CODE_DUPLICATE;
-        message = MAP_CREATION_FAILURE_MESSAGE;
+        message = MAP_SAVE_FAILURE_MESSAGE;
         errors = [DUPLICATE_MAP_NAME];
     }
 

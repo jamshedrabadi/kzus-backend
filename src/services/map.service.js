@@ -8,12 +8,37 @@ import { records } from "../db/schema/records.schema.js";
 
 export const createMapInDb = async (mapData) => {
     try {
-        return await db
+        const mapResponse = await db
             .insert(maps)
             .values(mapData)
             .returning();
+
+        return mapResponse[0].id;
     } catch (error) {
         console.error("Error in createMapInDb: ", error);
+        throw error;
+    }
+};
+
+export const updateMapInDb = async (mapId, mapData) => {
+    try {
+        const mapResponse = await db
+            .update(maps)
+            .set({
+                name: mapData.name,
+                difficulty_id: mapData.difficulty_id,
+                length: mapData.length,
+                type: mapData.type,
+                updated_at: new Date(),
+            })
+            .where(
+                eq(maps.id, mapId),
+            )
+            .returning();
+
+        return mapResponse[0].id;
+    } catch (error) {
+        console.error("Error in updateMapInDb: ", error);
         throw error;
     }
 };

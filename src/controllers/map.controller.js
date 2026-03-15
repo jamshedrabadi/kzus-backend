@@ -1,26 +1,28 @@
 import {
     createMapInDb,
+    updateMapInDb,
     getMapDataFromDb,
 } from "../services/map.service.js";
 import {
     responseSender,
 } from "../utils/response.utils.js";
 import {
-    createMapSchema,
+    createOrUpdateMapSchema,
 } from "../validators/map.validator.js";
 import {
-    mapCreateMapRequest,
+    mapCreateOrUpdateMapRequest,
     mapGetMapResponse,
 } from "../mappers/map.mapper.js";
 import {
+    RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
     RESPONSE_CODE_DATA_NOT_FOUND,
     RESPONSE_CODE_INTERNAL_SERVER_ERROR,
-    RESPONSE_CODE_SUCCESS,
 } from "../constants/http.constants.js";
 import {
     MAP_MODULE,
     MAP_CREATION_SUCCESS_MESSAGE,
+    MAP_UPDATION_SUCCESS_MESSAGE,
     MAP_FOUND_MESSAGE,
     MAP_NOT_FOUND_MESSAGE,
 } from "../constants/map.constants.js";
@@ -41,20 +43,59 @@ export const createMap = async (request, response) => {
     try {
         const mapData = request.body;
 
-        await createMapSchema.validateAsync(mapData);
+        await createOrUpdateMapSchema.validateAsync(mapData);
 
-        const mappedMapData = mapCreateMapRequest(mapData);
+        const mappedMapData = mapCreateOrUpdateMapRequest(mapData);
 
-        await createMapInDb(mappedMapData);
+        const createMapResponse = await createMapInDb(mappedMapData);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_CREATED;
         responseData.message = MAP_CREATION_SUCCESS_MESSAGE;
+        responseData.data = { mapId: createMapResponse };
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
     } catch (error) {
         console.error("Error in createMap: ", error);
+
+        responseData.error = error;
+        responseData.module = MAP_MODULE;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+    }
+};
+
+export const updateMap = async (request, response) => {
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: MAP_MODULE,
+    };
+
+    try {
+        const mapId = request.params.id;
+        const mapData = request.body;
+
+        await createOrUpdateMapSchema.validateAsync(mapData);
+
+        const mappedMapData = mapCreateOrUpdateMapRequest(mapData);
+
+        const updateMapResponse = await updateMapInDb(mapId, mappedMapData);
+
+        responseData.status = true;
+        responseData.statusCode = RESPONSE_CODE_SUCCESS;
+        responseData.message = MAP_UPDATION_SUCCESS_MESSAGE;
+        responseData.data = { mapId: updateMapResponse };
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+    } catch (error) {
+        console.error("Error in updateMap: ", error);
 
         responseData.error = error;
         responseData.module = MAP_MODULE;

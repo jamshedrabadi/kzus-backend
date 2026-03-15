@@ -5,7 +5,7 @@ import {
     MAP_TYPES,
 } from "../constants/map.constants.js";
 
-export const createMapSchema = Joi.object({
+export const createOrUpdateMapSchema = Joi.object({
     name: Joi.string().trim().required()
         .messages({
             "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_001,
