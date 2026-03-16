@@ -28,7 +28,9 @@ export const mapGetMapResponse = (mapData) => {
             const record = {
                 playerId: rec.player_id,
                 playerName: rec.player_name,
-                playerCountry: rec.player_country,
+                countryId: rec.country_id,
+                countryName: rec.country_name,
+                countryCode: rec.country_code,
                 time: rec.record_time,
                 place: rec.record_place,
                 points: rec.record_points,

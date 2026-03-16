@@ -1,3 +1,4 @@
+import countryRoutes from "./country.routes.js";
 import playerRoutes from "./player.routes.js";
 import mapRoutes from "./map.routes.js";
 import recordRoutes from "./record.routes.js";
@@ -7,6 +8,7 @@ export const importRoutes = (app) => {
         response.status(200).send({ message: "done" });
     });
 
+    app.use("/country", countryRoutes);
     app.use("/player", playerRoutes);
     app.use("/map", mapRoutes);
     app.use("/record", recordRoutes);

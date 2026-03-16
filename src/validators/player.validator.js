@@ -8,15 +8,13 @@ export const createOrUpdatePlayerSchema = Joi.object({
             "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_002,
             "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_003,
         }),
-    country: Joi.string().trim().required()
-        .length(3)
-        .pattern(/^[A-Z]{3}$/)
+    countryId: Joi.number().integer().required()
+        .positive()
         .messages({
-            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_004,
-            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_005,
+            "number.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_004,
+            "number.integer": VALIDATION_ERROR_MESSAGES.ERR_MSG_005,
             "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_006,
-            "string.length": VALIDATION_ERROR_MESSAGES.ERR_MSG_007,
-            "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_008,
+            "number.positive": VALIDATION_ERROR_MESSAGES.ERR_MSG_007,
         }),
     steamId: Joi.string().trim().required()
         .pattern(/^\d{17}$/)

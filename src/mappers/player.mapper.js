@@ -5,7 +5,7 @@ import {
 export const mapCreateOrUpdatePlayerRequest = (playerData) => {
     const mappedPlayerData = {
         name: playerData.name,
-        country: playerData.country,
+        country_id: playerData.countryId,
         steam_id: playerData.steamId,
     };
 
@@ -16,8 +16,10 @@ export const mapGetPlayerResponse = (playerData) => {
     const mappedPlayerData = {
         player: {
             name: playerData[0].player_name,
-            country: playerData[0].player_country,
             steamId: playerData[0].player_steam_id,
+            countryId: playerData[0].country_id,
+            countryName: playerData[0].country_name,
+            countryCode: playerData[0].country_code,
         },
         records: playerData.reduce((acc, rec) => {
             if (!rec.map_id) {

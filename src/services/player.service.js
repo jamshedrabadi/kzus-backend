@@ -4,6 +4,7 @@ import { db } from "../db/db-connection.js";
 import { players } from "../db/schema/players.schema.js";
 import { maps } from "../db/schema/maps.schema.js";
 import { difficulty } from "../db/schema/difficulty.schema.js";
+import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
 
 export const createPlayerInDb = async (playerData) => {
@@ -26,7 +27,7 @@ export const updatePlayerInDb = async (playerId, playerData) => {
             .update(players)
             .set({
                 name: playerData.name,
-                country: playerData.country,
+                country_id: playerData.country_id,
                 steam_id: playerData.steam_id,
                 updated_at: new Date(),
             })
@@ -47,8 +48,10 @@ export const getPlayerDataFromDb = async (playerId) => {
         const result = await db
             .select({
                 player_name: players.name,
-                player_country: players.country,
                 player_steam_id: players.steam_id,
+                country_id: country.id,
+                country_name: country.name,
+                country_code: country.code,
                 map_id: maps.id,
                 map_name: maps.name,
                 difficulty_name: difficulty.name,

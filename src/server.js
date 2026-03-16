@@ -25,10 +25,3 @@ app.listen(PORT, () => {
 });
 
 await dbConnection();
-
-/*
- * read up on docker
- * implement husky / lint-staged in the future
- * implement jest / supertest for testing in the future
- * implement login in the future
- */
