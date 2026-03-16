@@ -1,5 +1,6 @@
 import {
     COUNTRY_FLAG_DIMENSION,
+    COUNTRY_FLAG_URL,
 } from "../constants/country.constants.js";
 
 export const mapGetCountryListResponse = (countryData) => {
@@ -9,7 +10,7 @@ export const mapGetCountryListResponse = (countryData) => {
             countryName: country.country_name,
             countryCode: country.country_code,
             countryFlag:
-                `https://flagcdn.com/${COUNTRY_FLAG_DIMENSION}/${country.country_code}.png`,
+                `${COUNTRY_FLAG_URL}/${COUNTRY_FLAG_DIMENSION}/${country.country_code}.png`,
 
         };
     });

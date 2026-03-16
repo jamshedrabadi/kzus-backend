@@ -1,6 +1,10 @@
 import {
     formatDbDateToDate,
 } from "../utils/common.utils.js";
+import {
+    COUNTRY_FLAG_DIMENSION,
+    COUNTRY_FLAG_URL,
+} from "../constants/country.constants.js";
 
 export const mapCreateOrUpdatePlayerRequest = (playerData) => {
     const mappedPlayerData = {
@@ -20,6 +24,8 @@ export const mapGetPlayerResponse = (playerData) => {
             countryId: playerData[0].country_id,
             countryName: playerData[0].country_name,
             countryCode: playerData[0].country_code,
+            countryFlag:
+                `${COUNTRY_FLAG_URL}/${COUNTRY_FLAG_DIMENSION}/${playerData[0].country_code}.png`,
         },
         records: playerData.reduce((acc, rec) => {
             if (!rec.map_id) {

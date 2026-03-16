@@ -1,6 +1,10 @@
 import {
     formatDbDateToDate,
 } from "../utils/common.utils.js";
+import {
+    COUNTRY_FLAG_DIMENSION,
+    COUNTRY_FLAG_URL,
+} from "../constants/country.constants.js";
 
 export const mapCreateOrUpdateMapRequest = (mapData) => {
     const mappedMapData = {
@@ -31,6 +35,8 @@ export const mapGetMapResponse = (mapData) => {
                 countryId: rec.country_id,
                 countryName: rec.country_name,
                 countryCode: rec.country_code,
+                countryFlag:
+                    `${COUNTRY_FLAG_URL}/${COUNTRY_FLAG_DIMENSION}/${rec.country_code}.png`,
                 time: rec.record_time,
                 place: rec.record_place,
                 points: rec.record_points,
