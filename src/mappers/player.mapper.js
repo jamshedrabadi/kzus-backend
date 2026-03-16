@@ -26,7 +26,6 @@ export const mapGetPlayerResponse = (playerData) => {
             const record = {
                 mapId: rec.map_id,
                 mapName: rec.map_name,
-                difficultyOrderIndex: rec.difficulty_order_index,
                 difficultyName: rec.difficulty_name,
                 time: rec.record_time,
                 place: rec.record_place,

@@ -50,7 +50,6 @@ export const getMapDataFromDb = async (mapId) => {
                 map_name: maps.name,
                 map_length: maps.length,
                 map_type: maps.type,
-                difficulty_order_index: difficulty.order_index,
                 difficulty_name: difficulty.name,
                 player_id: players.id,
                 player_name: players.name,

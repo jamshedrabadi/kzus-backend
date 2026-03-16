@@ -19,7 +19,6 @@ export const mapGetMapResponse = (mapData) => {
             name: mapData[0].map_name,
             length: mapData[0].map_length,
             type: mapData[0].map_type,
-            difficultyOrderIndex: mapData[0].difficulty_order_index,
             difficultyName: mapData[0].difficulty_name,
         },
         records: mapData.reduce((acc, rec) => {
