@@ -1,3 +1,4 @@
+import difficultyRoutes from "./difficulty.routes.js";
 import countryRoutes from "./country.routes.js";
 import playerRoutes from "./player.routes.js";
 import mapRoutes from "./map.routes.js";
@@ -8,6 +9,7 @@ export const importRoutes = (app) => {
         response.status(200).send({ message: "done" });
     });
 
+    app.use("/difficulty", difficultyRoutes);
     app.use("/country", countryRoutes);
     app.use("/player", playerRoutes);
     app.use("/map", mapRoutes);
