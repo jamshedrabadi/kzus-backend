@@ -54,10 +54,8 @@ export const mapGetMapResponse = (mapData, mapStats) => {
         }, { pro: [], nub: [] }),
         stats: {
             totalRuns: convertToNumber(mapStats.total_runs),
-            averageTime: convertToDecimalNumber(mapStats.average_time),
-            medianTime: convertToDecimalNumber(mapStats.median_time),
-            averageImprovements: convertToDecimalNumber(mapStats.average_improvements),
             timeSpread: convertToNumber(mapStats.time_spread),
+            averageImprovements: convertToDecimalNumber(mapStats.average_improvements),
         },
     };
 
