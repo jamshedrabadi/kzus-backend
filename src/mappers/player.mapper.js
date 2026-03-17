@@ -53,10 +53,13 @@ export const mapGetPlayerResponse = (playerData, playerStats) => {
         stats: {
             mapsCompleted: convertToNumber(playerStats.maps_completed),
             totalPoints: convertToNumber(playerStats.total_points),
+            averagePointsPerMap: convertToDecimalNumber(playerStats.average_points_per_map),
             top1Times: convertToNumber(playerStats.top1_times),
             top2Times: convertToNumber(playerStats.top2_times),
             top3Times: convertToNumber(playerStats.top3_times),
             averageRank: convertToDecimalNumber(playerStats.average_rank),
+            bestRank: convertToNumber(playerStats.best_rank),
+            worstRank: convertToNumber(playerStats.worst_rank),
             totalImprovements: convertToNumber(playerStats.total_improvements),
         },
     };

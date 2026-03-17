@@ -97,10 +97,13 @@ export const getPlayerStatsFromDb = async (playerId) => {
             .select({
                 maps_completed: sql`COUNT(*)`,
                 total_points: sql`SUM(points)`,
+                average_points_per_map: sql`AVG(points)`,
                 top1_times: sql`COUNT(*) FILTER (WHERE place = 1)`,
                 top2_times: sql`COUNT(*) FILTER (WHERE place = 2)`,
                 top3_times: sql`COUNT(*) FILTER (WHERE place = 3)`,
                 average_rank: sql`AVG(place)`,
+                best_rank: sql`MIN(place)`,
+                worst_rank: sql`MAX(place)`,
                 total_improvements: sql`SUM(improvements)`,
             })
             .from(records)

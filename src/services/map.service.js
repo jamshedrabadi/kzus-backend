@@ -97,7 +97,9 @@ export const getMapStatsFromDb = async (mapId) => {
             .select({
                 total_runs: sql`COUNT(*)`,
                 average_time: sql`AVG(time)`,
+                median_time: sql`PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY time)`,
                 average_improvements: sql`AVG(improvements)`,
+                time_spread: sql`MAX(time) - MIN(time)`,
             })
             .from(records)
             .where(
