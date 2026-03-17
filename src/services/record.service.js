@@ -88,7 +88,7 @@ export const checkExistingRecord = async (tx, recordData) => {
 export const getNewRank = async (tx, recordData) => {
     const rankResult = await tx
         .select({
-            rank: sql`count(*) + 1`,
+            rank: sql`COUNT(*) + 1`,
         })
         .from(records)
         .where(
@@ -105,7 +105,7 @@ export const getNewRank = async (tx, recordData) => {
 export const getRecordsOnMap = async (tx, recordData) => {
     const recordsResult = await tx
         .select({
-            total: sql`count(*)`,
+            total: sql`COUNT(*)`,
         })
         .from(records)
         .where(

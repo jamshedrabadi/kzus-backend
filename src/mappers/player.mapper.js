@@ -1,5 +1,7 @@
 import {
     formatDbDateToDate,
+    convertToNumber,
+    convertToDecimalNumber,
 } from "../utils/common.utils.js";
 import {
     COUNTRY_FLAG_DIMENSION,
@@ -16,7 +18,7 @@ export const mapCreateOrUpdatePlayerRequest = (playerData) => {
     return mappedPlayerData;
 };
 
-export const mapGetPlayerResponse = (playerData) => {
+export const mapGetPlayerResponse = (playerData, playerStats) => {
     const mappedPlayerData = {
         player: {
             name: playerData[0].player_name,
@@ -48,6 +50,15 @@ export const mapGetPlayerResponse = (playerData) => {
 
             return acc;
         }, { pro: [], nub: [] }),
+        stats: {
+            mapsCompleted: convertToNumber(playerStats.maps_completed),
+            totalPoints: convertToNumber(playerStats.total_points),
+            top1Times: convertToNumber(playerStats.top1_times),
+            top2Times: convertToNumber(playerStats.top2_times),
+            top3Times: convertToNumber(playerStats.top3_times),
+            averageRank: convertToDecimalNumber(playerStats.average_rank),
+            totalImprovements: convertToNumber(playerStats.total_improvements),
+        },
     };
 
     return mappedPlayerData;

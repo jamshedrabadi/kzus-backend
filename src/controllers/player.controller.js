@@ -2,6 +2,7 @@ import {
     createPlayerInDb,
     updatePlayerInDb,
     getPlayerDataFromDb,
+    getPlayerStatsFromDb,
 } from "../services/player.service.js";
 import {
     responseSender,
@@ -118,7 +119,10 @@ export const getPlayerData = async (request, response) => {
     try {
         const playerId = request.params.id;
 
-        const playerResponse = await getPlayerDataFromDb(playerId);
+        const [playerResponse, playerStatsResponse] = await Promise.all([
+            getPlayerDataFromDb(playerId),
+            getPlayerStatsFromDb(playerId),
+        ]);
         if (!playerResponse.length) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = PLAYER_NOT_FOUND_MESSAGE;
@@ -127,7 +131,7 @@ export const getPlayerData = async (request, response) => {
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const mappedPlayerResponse = mapGetPlayerResponse(playerResponse);
+        const mappedPlayerResponse = mapGetPlayerResponse(playerResponse, playerStatsResponse);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;

@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { players } from "../db/schema/players.schema.js";
@@ -87,6 +87,31 @@ export const getPlayerDataFromDb = async (playerId) => {
         return result;
     } catch (error) {
         console.error("Error in getPlayerDataFromDb: ", error);
+        throw error;
+    }
+};
+
+export const getPlayerStatsFromDb = async (playerId) => {
+    try {
+        const result = await db
+            .select({
+                maps_completed: sql`COUNT(*)`,
+                total_points: sql`SUM(points)`,
+                top1: sql`COUNT(*) FILTER (WHERE place = 1)`,
+                top2: sql`COUNT(*) FILTER (WHERE place = 2)`,
+                top3: sql`COUNT(*) FILTER (WHERE place = 3)`,
+                average_rank: sql`AVG(place)`,
+                total_improvements: sql`SUM(improvements)`,
+            })
+            .from(records)
+            .where(
+                eq(records.player_id, playerId),
+                eq(records.mode, 'pro'),
+            );
+
+        return result[0];
+    } catch (error) {
+        console.error("Error in getPlayerStatsFromDb: ", error);
         throw error;
     }
 };
