@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { maps } from "../db/schema/maps.schema.js";
@@ -87,6 +87,27 @@ export const getMapDataFromDb = async (mapId) => {
         return result;
     } catch (error) {
         console.error("Error in getMapDataFromDb: ", error);
+        throw error;
+    }
+};
+
+export const getMapStatsFromDb = async (mapId) => {
+    try {
+        const result = await db
+            .select({
+                total_runs: sql`COUNT(*)`,
+                average_time: sql`AVG(time)`,
+                average_improvements: sql`AVG(improvements)`,
+            })
+            .from(records)
+            .where(
+                eq(records.map_id, mapId),
+                eq(records.mode, 'pro'),
+            );
+
+        return result[0];
+    } catch (error) {
+        console.error("Error in getMapStatsFromDb: ", error);
         throw error;
     }
 };

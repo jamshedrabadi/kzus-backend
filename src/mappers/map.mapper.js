@@ -1,5 +1,7 @@
 import {
     formatDbDateToDate,
+    convertToNumber,
+    convertToDecimalNumber,
 } from "../utils/common.utils.js";
 import {
     COUNTRY_FLAG_DIMENSION,
@@ -17,7 +19,7 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
     return mappedMapData;
 };
 
-export const mapGetMapResponse = (mapData) => {
+export const mapGetMapResponse = (mapData, mapStats) => {
     const mappedMapData = {
         map: {
             name: mapData[0].map_name,
@@ -50,6 +52,11 @@ export const mapGetMapResponse = (mapData) => {
 
             return acc;
         }, { pro: [], nub: [] }),
+        stats: {
+            totalRuns: convertToNumber(mapStats.total_runs),
+            averageTime: convertToDecimalNumber(mapStats.average_time),
+            averageImprovements: convertToDecimalNumber(mapStats.average_improvements),
+        },
     };
 
     return mappedMapData;

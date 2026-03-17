@@ -2,6 +2,7 @@ import {
     createMapInDb,
     updateMapInDb,
     getMapDataFromDb,
+    getMapStatsFromDb,
 } from "../services/map.service.js";
 import {
     responseSender,
@@ -118,7 +119,10 @@ export const getMapData = async (request, response) => {
     try {
         const mapId = request.params.id;
 
-        const mapResponse = await getMapDataFromDb(mapId);
+        const [mapResponse, mapStatsResponse] = await Promise.all([
+            getMapDataFromDb(mapId),
+            getMapStatsFromDb(mapId),
+        ]);
         if (!mapResponse.length) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = MAP_NOT_FOUND_MESSAGE;
@@ -127,7 +131,7 @@ export const getMapData = async (request, response) => {
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const mappedMapResponse = mapGetMapResponse(mapResponse);
+        const mappedMapResponse = mapGetMapResponse(mapResponse, mapStatsResponse);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
