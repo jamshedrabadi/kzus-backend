@@ -23,8 +23,11 @@ export const mapGetMapResponse = (mapData, mapStats) => {
     const mappedMapData = {
         map: {
             name: mapData[0].map_name,
+            difficultyId: mapData[0].difficulty_id,
             difficultyName: mapData[0].difficulty_name,
+            lengthId: mapData[0].length_id,
             lengthName: mapData[0].length_name,
+            typeId: mapData[0].type_id,
             typeName: mapData[0].type_name,
         },
         records: mapData.reduce((acc, rec) => {
