@@ -12,8 +12,8 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
     const mappedMapData = {
         name: mapData.name,
         difficulty_id: mapData.difficultyId,
-        length_id: mapData.length_id,
-        type_id: mapData.type_id,
+        length_id: mapData.lengthId,
+        type_id: mapData.typeId,
     };
 
     return mappedMapData;
