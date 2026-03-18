@@ -15,3 +15,12 @@ export const convertToDecimalNumber = (value, decimals = 2) => {
     const num = Number(value);
     return !Number.isNaN(num) ? Number(num.toFixed(decimals)) : 0;
 };
+
+export const parseIds = (value) => {
+    return value
+        ? value
+            .split(",")
+            .map((v) => Number(v.trim()))
+            .filter((v) => !isNaN(v))
+        : null;
+};

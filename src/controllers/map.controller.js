@@ -3,17 +3,24 @@ import {
     updateMapInDb,
     getMapDataFromDb,
     getMapStatsFromDb,
+    getMapListCountFromDb,
+    getMapListFromDb,
 } from "../services/map.service.js";
 import {
     responseSender,
 } from "../utils/response.utils.js";
 import {
     createOrUpdateMapSchema,
+    getMapListSchema,
 } from "../validators/map.validator.js";
 import {
     mapCreateOrUpdateMapRequest,
     mapGetMapResponse,
+    mapGetMapListResponse,
 } from "../mappers/map.mapper.js";
+import {
+    parseIds,
+} from "../utils/common.utils.js";
 import {
     RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
@@ -26,6 +33,8 @@ import {
     MAP_UPDATION_SUCCESS_MESSAGE,
     MAP_FOUND_MESSAGE,
     MAP_NOT_FOUND_MESSAGE,
+    MAP_LIST_FOUND_MESSAGE,
+    MAP_LIST_NOT_FOUND_MESSAGE,
 } from "../constants/map.constants.js";
 import {
     RESPONSE_MESSAGE_DATA_NOT_FOUND,
@@ -145,6 +154,63 @@ export const getMapData = async (request, response) => {
 
         responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
         responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+    }
+};
+
+export const getMapList = async (request, response) => {
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: MAP_MODULE,
+    };
+
+    try {
+        const requestParams = request.query;
+
+        await getMapListSchema.validateAsync(requestParams);
+
+        const queryParams = {
+            difficultyIds: parseIds(request.query.difficulty),
+            lengthIds: parseIds(request.query.length),
+            typeIds: parseIds(request.query.type),
+            text: request.query.text?.trim() || null,
+            limit: Number(request.query.limit),
+            offset: (Number(request.query.page) - 1) * Number(request.query.limit),
+        };
+
+        const mapListCountResponse = await getMapListCountFromDb(queryParams);
+        if (!mapListCountResponse) {
+            responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
+            responseData.message = MAP_LIST_NOT_FOUND_MESSAGE;
+
+            return responseSender(response, responseData.status, responseData.statusCode,
+                responseData.message, responseData.data, responseData.error, responseData.module);
+        }
+
+        const mapListResponse = await getMapListFromDb(queryParams);
+
+        const mappedMapListResponse = mapGetMapListResponse(mapListResponse);
+
+        responseData.status = true;
+        responseData.statusCode = RESPONSE_CODE_SUCCESS;
+        responseData.message = MAP_LIST_FOUND_MESSAGE;
+        responseData.data = { totalRecords: mapListCountResponse, data: mappedMapListResponse };
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+
+    } catch (error) {
+        console.error("Error in getMapList: ", error);
+
+        responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
+        responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
+        responseData.error = error;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

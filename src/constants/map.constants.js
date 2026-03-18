@@ -6,6 +6,8 @@ export const MAP_SAVE_FAILURE_MESSAGE = "Error saving map data.";
 export const DUPLICATE_MAP_NAME = "Map with this name already exists.";
 export const MAP_FOUND_MESSAGE = "Map data found.";
 export const MAP_NOT_FOUND_MESSAGE = "Map not found.";
+export const MAP_LIST_FOUND_MESSAGE = "Map list found.";
+export const MAP_LIST_NOT_FOUND_MESSAGE = "Map list not found.";
 
 export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_001: "Map name must be a string.",
@@ -23,4 +25,23 @@ export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_013: "Map type ID must be an integer.",
     ERR_MSG_014: "Map type ID is required.",
     ERR_MSG_015: "Map type ID must be a positive integer.",
+    ERR_MSG_016: "Difficulty must be a string.",
+    ERR_MSG_017: "Difficulty cannot be empty.",
+    ERR_MSG_018: "Difficulty must be a list of positive integers separated by commas (e.g., 1,2).",
+    ERR_MSG_019: "Length must be a string.",
+    ERR_MSG_020: "Length cannot be empty.",
+    ERR_MSG_021: "Length must be a list of positive integers separated by commas (e.g., 1,2).",
+    ERR_MSG_022: "Type must be a string.",
+    ERR_MSG_023: "Type cannot be empty.",
+    ERR_MSG_024: "Type must be a list of positive integers separated by commas (e.g., 1,2).",
+    ERR_MSG_025: "Text must be a string.",
+    ERR_MSG_026: "Text cannot be empty.",
+    ERR_MSG_027: "Page must be a string.",
+    ERR_MSG_028: "Page cannot be empty.",
+    ERR_MSG_029: "Page is required.",
+    ERR_MSG_030: "Page must be a positive integer.",
+    ERR_MSG_031: "Limit must be a string.",
+    ERR_MSG_032: "Limit cannot be empty.",
+    ERR_MSG_033: "Limit is required.",
+    ERR_MSG_034: "Limit must be a positive integer.",
 };

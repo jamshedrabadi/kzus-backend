@@ -64,3 +64,21 @@ export const mapGetMapResponse = (mapData, mapStats) => {
 
     return mappedMapData;
 };
+
+export const mapGetMapListResponse = (mapList) => {
+    const mappedMapList = mapList.map((map) => {
+        return {
+            mapId: map.map_id,
+            mapName: map.map_name,
+            difficultyId: map.difficulty_id,
+            difficultyName: map.difficulty_name,
+            lengthId: map.length_id,
+            lengthName: map.length_name,
+            typeId: map.type_id,
+            typeName: map.type_name,
+            createdAt: formatDbDateToDate(map.created_at),
+        };
+    });
+
+    return mappedMapList;
+};
