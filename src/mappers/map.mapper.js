@@ -12,8 +12,8 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
     const mappedMapData = {
         name: mapData.name,
         difficulty_id: mapData.difficultyId,
-        length: mapData.length,
-        type: mapData.type,
+        length_id: mapData.length_id,
+        type_id: mapData.type_id,
     };
 
     return mappedMapData;
@@ -23,9 +23,9 @@ export const mapGetMapResponse = (mapData, mapStats) => {
     const mappedMapData = {
         map: {
             name: mapData[0].map_name,
-            length: mapData[0].map_length,
-            type: mapData[0].map_type,
             difficultyName: mapData[0].difficulty_name,
+            lengthName: mapData[0].length_name,
+            typeName: mapData[0].type_name,
         },
         records: mapData.reduce((acc, rec) => {
             if (!rec.player_id) {

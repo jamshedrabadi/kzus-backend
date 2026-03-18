@@ -4,6 +4,8 @@ import { db } from "../db/db-connection.js";
 import { players } from "../db/schema/players.schema.js";
 import { maps } from "../db/schema/maps.schema.js";
 import { difficulty } from "../db/schema/difficulty.schema.js";
+import { length } from "../db/schema/length.schema.js";
+import { type } from "../db/schema/type.schema.js";
 import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
 
@@ -55,6 +57,8 @@ export const getPlayerDataFromDb = async (playerId) => {
                 map_id: maps.id,
                 map_name: maps.name,
                 difficulty_name: difficulty.name,
+                length_name: length.name,
+                type_name: type.name,
                 record_time: records.time,
                 record_place: records.place,
                 record_points: records.points,
@@ -76,6 +80,12 @@ export const getPlayerDataFromDb = async (playerId) => {
             )
             .leftJoin(difficulty,
                 eq(difficulty.id, maps.difficulty_id),
+            )
+            .leftJoin(length,
+                eq(length.id, maps.length_id),
+            )
+            .leftJoin(type,
+                eq(type.id, maps.type_id),
             )
             .where(
                 eq(players.id, playerId),

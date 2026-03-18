@@ -1,6 +1,5 @@
 import {
     pgTable,
-    pgEnum,
     uniqueIndex,
     index,
     serial,
@@ -10,13 +9,8 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { difficulty } from "./difficulty.schema.js";
-import {
-    MAP_LENGTHS,
-    MAP_TYPES,
-} from "../../constants/map.constants.js";
-
-export const lengthEnum = pgEnum("length", MAP_LENGTHS);
-export const typeEnum = pgEnum("type", MAP_TYPES);
+import { length } from "./length.schema.js";
+import { type } from "./type.schema.js";
 
 export const maps = pgTable("maps", {
     id: serial("id").primaryKey(),
@@ -29,9 +23,17 @@ export const maps = pgTable("maps", {
             onUpdate: "cascade",
         }),
 
-    length: lengthEnum("length").notNull(),
+    length_id: integer("length_id").notNull()
+        .references(() => length.id, {
+            onDelete: "cascade",
+            onUpdate: "cascade",
+        }),
 
-    type: typeEnum("type").notNull(),
+    type_id: integer("type_id").notNull()
+        .references(() => type.id, {
+            onDelete: "cascade",
+            onUpdate: "cascade",
+        }),
 
     created_at: timestamp("created_at").defaultNow().notNull(),
 

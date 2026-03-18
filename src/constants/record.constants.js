@@ -16,14 +16,14 @@ export const RECORD_MODE_LOCK_VALUES = {
 };
 
 export const VALIDATION_ERROR_MESSAGES = {
-    ERR_MSG_001: "Record Player ID must be a number.",
-    ERR_MSG_002: "Record Player ID must be an integer.",
-    ERR_MSG_003: "Record Player ID is required.",
-    ERR_MSG_004: "Record Player ID must be a positive integer.",
-    ERR_MSG_005: "Record Map ID must be a number.",
-    ERR_MSG_006: "Record Map ID must be an integer.",
-    ERR_MSG_007: "Record Map ID is required.",
-    ERR_MSG_008: "Record Map ID must be a positive integer.",
+    ERR_MSG_001: "Record player ID must be a number.",
+    ERR_MSG_002: "Record player ID must be an integer.",
+    ERR_MSG_003: "Record player ID is required.",
+    ERR_MSG_004: "Record player ID must be a positive integer.",
+    ERR_MSG_005: "Record map ID must be a number.",
+    ERR_MSG_006: "Record map ID must be an integer.",
+    ERR_MSG_007: "Record map ID is required.",
+    ERR_MSG_008: "Record map ID must be a positive integer.",
     ERR_MSG_009: "Record time must be a number.",
     ERR_MSG_010: "Record time must be an integer.",
     ERR_MSG_011: "Record time is required.",

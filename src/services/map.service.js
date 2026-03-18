@@ -3,6 +3,8 @@ import { eq, sql } from "drizzle-orm";
 import { db } from "../db/db-connection.js";
 import { maps } from "../db/schema/maps.schema.js";
 import { difficulty } from "../db/schema/difficulty.schema.js";
+import { length } from "../db/schema/length.schema.js";
+import { type } from "../db/schema/type.schema.js";
 import { players } from "../db/schema/players.schema.js";
 import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
@@ -28,8 +30,8 @@ export const updateMapInDb = async (mapId, mapData) => {
             .set({
                 name: mapData.name,
                 difficulty_id: mapData.difficulty_id,
-                length: mapData.length,
-                type: mapData.type,
+                length_id: mapData.length_id,
+                type_id: mapData.type_id,
                 updated_at: new Date(),
             })
             .where(
@@ -49,9 +51,9 @@ export const getMapDataFromDb = async (mapId) => {
         const result = await db
             .select({
                 map_name: maps.name,
-                map_length: maps.length,
-                map_type: maps.type,
                 difficulty_name: difficulty.name,
+                length_name: length.name,
+                type_name: type.name,
                 player_id: players.id,
                 player_name: players.name,
                 country_id: country.id,
@@ -78,6 +80,12 @@ export const getMapDataFromDb = async (mapId) => {
             )
             .leftJoin(difficulty,
                 eq(difficulty.id, maps.difficulty_id),
+            )
+            .leftJoin(length,
+                eq(length.id, maps.length_id),
+            )
+            .leftJoin(type,
+                eq(type.id, maps.type_id),
             )
             .where(
                 eq(maps.id, mapId),

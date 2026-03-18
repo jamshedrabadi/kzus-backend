@@ -37,6 +37,8 @@ export const mapGetPlayerResponse = (playerData, playerStats) => {
                 mapId: rec.map_id,
                 mapName: rec.map_name,
                 difficultyName: rec.difficulty_name,
+                lengthName: rec.length_name,
+                typeName: rec.type_name,
                 time: rec.record_time,
                 place: rec.record_place,
                 points: rec.record_points,

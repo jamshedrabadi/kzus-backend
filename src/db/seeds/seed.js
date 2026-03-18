@@ -4,6 +4,8 @@ import "dotenv/config";
 
 import { db } from "../db-connection.js";
 import { difficulty } from "../schema/difficulty.schema.js";
+import { length } from "../schema/length.schema.js";
+import { type } from "../schema/type.schema.js";
 import { country } from "../schema/country.schema.js";
 
 export const seed = async () => {
@@ -21,6 +23,26 @@ export const seed = async () => {
     ]);
 
     console.log("Difficulty data seeded.");
+
+    await db.insert(length).values([
+        { name: "very-short" },
+        { name: "short" },
+        { name: "middle" },
+        { name: "long" },
+        { name: "very-long" },
+    ]);
+
+    console.log("Length data seeded.");
+
+    await db.insert(type).values([
+        { name: "climb" },
+        { name: "bhop" },
+        { name: "slide" },
+        { name: "mix" },
+        { name: "special" },
+    ]);
+
+    console.log("Type data seeded.");
 
     await db.insert(country).values([
         { name: "Andorra", code: "ad" },

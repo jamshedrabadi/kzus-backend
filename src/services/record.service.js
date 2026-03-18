@@ -184,7 +184,6 @@ export const recalculatePoints = async (
             and(
                 eq(records.map_id, maps.id),
                 eq(records.map_id, recordData.map_id),
-                eq(records.map_id, recordData.map_id),
                 eq(records.mode, 'pro'),
                 gte(records.place, pointsCalcStart),
                 lte(records.place, pointsCalcEnd),

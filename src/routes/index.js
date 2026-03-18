@@ -1,4 +1,6 @@
 import difficultyRoutes from "./difficulty.routes.js";
+import lengthRoutes from "./length.routes.js";
+import typeRoutes from "./type.routes.js";
 import countryRoutes from "./country.routes.js";
 import playerRoutes from "./player.routes.js";
 import mapRoutes from "./map.routes.js";
@@ -10,6 +12,8 @@ export const importRoutes = (app) => {
     });
 
     app.use("/difficulty", difficultyRoutes);
+    app.use("/length", lengthRoutes);
+    app.use("/type", typeRoutes);
     app.use("/country", countryRoutes);
     app.use("/player", playerRoutes);
     app.use("/map", mapRoutes);
