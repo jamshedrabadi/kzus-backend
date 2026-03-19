@@ -56,6 +56,9 @@ export const records = pgTable("records", {
     index("records_map_mode_time_idx")
         .on(table.map_id, table.mode, table.time),
 
+    index("records_map_mode_rank_idx")
+        .on(table.map_id, table.mode, table.rank),
+
     index("records_player_mode_idx")
         .on(table.player_id, table.mode),
 
