@@ -9,7 +9,7 @@ const pool = new pg.Pool({
     max: process.env.DATABASE_POOL_MAX, // keep around 10-20
     idleTimeoutMillis: process.env.DATABASE_IDLE_TIMEOUT, // close connection after 30s idle
     connectionTimeoutMillis: process.env.DATABASE_CONNECTION_TIMEOUT, // timeout after 5s
-    application_name: "kzus", // helps debugging
+    application_name: "kz-community", // helps debugging
 });
 
 export const dbConnection = async () => {
