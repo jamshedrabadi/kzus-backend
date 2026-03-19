@@ -4,8 +4,8 @@ import {
     convertToDecimalNumber,
 } from "../utils/common.utils.js";
 import {
-    COUNTRY_FLAG_DIMENSION,
     COUNTRY_FLAG_URL,
+    COUNTRY_FLAG_EXTENSION,
 } from "../constants/country.constants.js";
 
 export const mapCreateOrUpdateMapRequest = (mapData) => {
@@ -40,8 +40,7 @@ export const mapGetMapResponse = (mapData, mapStats) => {
                 countryId: rec.country_id,
                 countryName: rec.country_name,
                 countryCode: rec.country_code,
-                countryFlag:
-                    `${COUNTRY_FLAG_URL}/${COUNTRY_FLAG_DIMENSION}/${rec.country_code}.png`,
+                countryFlag: `${COUNTRY_FLAG_URL}${rec.country_code}${COUNTRY_FLAG_EXTENSION}`,
                 time: rec.record_time,
                 place: rec.record_place,
                 points: rec.record_points,
