@@ -22,7 +22,7 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
 export const mapGetMapResponse = (mapData, mapStats) => {
     const mappedMapData = {
         map: {
-            name: mapData[0].map_name,
+            mapName: mapData[0].map_name,
             difficultyId: mapData[0].difficulty_id,
             difficultyName: mapData[0].difficulty_name,
             lengthId: mapData[0].length_id,
@@ -41,13 +41,13 @@ export const mapGetMapResponse = (mapData, mapStats) => {
                 countryName: rec.country_name,
                 countryCode: rec.country_code,
                 countryFlag: `${COUNTRY_FLAG_URL}${rec.country_code}${COUNTRY_FLAG_EXTENSION}`,
-                time: rec.record_time,
-                place: rec.record_place,
-                points: rec.record_points,
-                createdAt: formatDbDateToDate(rec.record_created_at),
-                cp: rec.record_cp,
-                gc: rec.record_gc,
-                improvements: rec.record_improvements,
+                recordTime: rec.record_time,
+                recordPlace: rec.record_place,
+                recordPoints: rec.record_points,
+                recordDate: formatDbDateToDate(rec.record_created_at),
+                recordCp: rec.record_cp,
+                recordGc: rec.record_gc,
+                recordImprovements: rec.record_improvements,
             };
 
             acc[rec.record_mode].push(record);
@@ -75,7 +75,7 @@ export const mapGetMapListResponse = (mapList) => {
             lengthName: map.length_name,
             typeId: map.type_id,
             typeName: map.type_name,
-            createdAt: formatDbDateToDate(map.created_at),
+            recordDate: formatDbDateToDate(map.created_at),
         };
     });
 

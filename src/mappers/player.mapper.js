@@ -41,13 +41,13 @@ export const mapGetPlayerResponse = (playerData, playerStats) => {
                 lengthName: rec.length_name,
                 typeId: rec.type_id,
                 typeName: rec.type_name,
-                time: rec.record_time,
-                place: rec.record_place,
-                points: rec.record_points,
-                createdAt: formatDbDateToDate(rec.record_created_at),
-                cp: rec.record_cp,
-                gc: rec.record_gc,
-                improvements: rec.record_improvements,
+                recordTime: rec.record_time,
+                recordPlace: rec.record_place,
+                recordPoints: rec.record_points,
+                recordDate: formatDbDateToDate(rec.record_created_at),
+                recordCp: rec.record_cp,
+                recordGc: rec.record_gc,
+                recordImprovements: rec.record_improvements,
             };
 
             acc[rec.record_mode].push(record);

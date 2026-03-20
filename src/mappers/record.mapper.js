@@ -23,7 +23,7 @@ export const mapGetRecordListResponse = (recordList) => {
             playerId: record.player_id,
             playerName: record.player_name,
             recordTime: record.record_time,
-            recordDate: formatDbDateToDate(record.record_date),
+            recordDate: record.record_date ? formatDbDateToDate(record.record_date) : null,
             difficultyId: record.difficulty_id,
             difficultyName: record.difficulty_name,
             lengthId: record.length_id,
