@@ -8,15 +8,11 @@ import {
 } from "../utils/response.utils.js";
 import {
     upsertRecordSchema,
-    getRecordListSchema,
 } from "../validators/record.validator.js";
 import {
     mapUpsertRecordRequest,
     mapGetRecordListResponse,
 } from "../mappers/record.mapper.js";
-import {
-    parseIds,
-} from "../utils/common.utils.js";
 import {
     RESPONSE_CODE_CREATED,
     RESPONSE_CODE_DATA_NOT_FOUND,
@@ -89,22 +85,7 @@ export const getRecordList = async (request, response) => {
     };
 
     try {
-        const requestParams = request.query;
-
-        await getRecordListSchema.validateAsync(requestParams);
-
-        const queryParams = {
-            difficultyIds: parseIds(request.query.difficulty),
-            lengthIds: parseIds(request.query.length),
-            typeIds: parseIds(request.query.type),
-            text: request.query.text?.trim() || null,
-            limit: Number(request.query.limit),
-            offset: (Number(request.query.page) - 1) * Number(request.query.limit),
-            sortColumn: request.query.sortColumn?.trim(),
-            sortDirection: request.query.sortDirection?.trim(),
-        };
-
-        const recordListCountResponse = await getRecordListCountFromDb(queryParams);
+        const recordListCountResponse = await getRecordListCountFromDb();
         if (!recordListCountResponse) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = RECORD_LIST_NOT_FOUND_MESSAGE;
@@ -113,7 +94,7 @@ export const getRecordList = async (request, response) => {
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const recordListResponse = await getRecordListFromDb(queryParams);
+        const recordListResponse = await getRecordListFromDb();
 
         const mappedRecordListResponse = mapGetRecordListResponse(recordListResponse);
 

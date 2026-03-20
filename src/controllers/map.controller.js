@@ -11,16 +11,12 @@ import {
 } from "../utils/response.utils.js";
 import {
     createOrUpdateMapSchema,
-    getMapListSchema,
 } from "../validators/map.validator.js";
 import {
     mapCreateOrUpdateMapRequest,
     mapGetMapResponse,
     mapGetMapListResponse,
 } from "../mappers/map.mapper.js";
-import {
-    parseIds,
-} from "../utils/common.utils.js";
 import {
     RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
@@ -171,20 +167,7 @@ export const getMapList = async (request, response) => {
     };
 
     try {
-        const requestParams = request.query;
-
-        await getMapListSchema.validateAsync(requestParams);
-
-        const queryParams = {
-            difficultyIds: parseIds(request.query.difficulty),
-            lengthIds: parseIds(request.query.length),
-            typeIds: parseIds(request.query.type),
-            text: request.query.text?.trim() || null,
-            limit: Number(request.query.limit),
-            offset: (Number(request.query.page) - 1) * Number(request.query.limit),
-        };
-
-        const mapListCountResponse = await getMapListCountFromDb(queryParams);
+        const mapListCountResponse = await getMapListCountFromDb();
         if (!mapListCountResponse) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = MAP_LIST_NOT_FOUND_MESSAGE;
@@ -193,7 +176,7 @@ export const getMapList = async (request, response) => {
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const mapListResponse = await getMapListFromDb(queryParams);
+        const mapListResponse = await getMapListFromDb();
 
         const mappedMapListResponse = mapGetMapListResponse(mapListResponse);
 

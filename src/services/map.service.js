@@ -1,4 +1,4 @@
-import { and, eq, ilike, inArray, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { maps } from "../db/schema/maps.schema.js";
@@ -124,24 +124,9 @@ export const getMapStatsFromDb = async (mapId) => {
     }
 };
 
-export const getMapListCountFromDb = async (queryParams) => {
+export const getMapListCountFromDb = async () => {
     try {
-        const conditions = [];
-
-        if (queryParams.difficultyIds) {
-            conditions.push(inArray(maps.difficulty_id, queryParams.difficultyIds));
-        }
-        if (queryParams.lengthIds) {
-            conditions.push(inArray(maps.length_id, queryParams.lengthIds));
-        }
-        if (queryParams.typeIds) {
-            conditions.push(inArray(maps.type_id, queryParams.typeIds));
-        }
-        if (queryParams.text) {
-            conditions.push(ilike(maps.name, `%${queryParams.text}%`));
-        }
-
-        const query = db
+        const result = await db
             .select({
                 total: sql`COUNT(*)`,
             })
@@ -154,17 +139,7 @@ export const getMapListCountFromDb = async (queryParams) => {
             )
             .leftJoin(type,
                 eq(type.id, maps.type_id),
-            )
-            .limit(queryParams.limit)
-            .offset(queryParams.offset);
-
-        if (conditions.length > 0) {
-            query.where(
-                and(...conditions),
             );
-        }
-
-        const result = await query;
 
         return result[0].total;
     } catch (error) {
@@ -173,23 +148,8 @@ export const getMapListCountFromDb = async (queryParams) => {
     }
 };
 
-export const getMapListFromDb = async (queryParams) => {
+export const getMapListFromDb = async () => {
     try {
-        const conditions = [];
-
-        if (queryParams.difficultyIds) {
-            conditions.push(inArray(maps.difficulty_id, queryParams.difficultyIds));
-        }
-        if (queryParams.lengthIds) {
-            conditions.push(inArray(maps.length_id, queryParams.lengthIds));
-        }
-        if (queryParams.typeIds) {
-            conditions.push(inArray(maps.type_id, queryParams.typeIds));
-        }
-        if (queryParams.text) {
-            conditions.push(ilike(maps.name, `%${queryParams.text}%`));
-        }
-
         const result = db
             .select({
                 map_id: maps.id,
@@ -212,15 +172,7 @@ export const getMapListFromDb = async (queryParams) => {
             .leftJoin(type,
                 eq(type.id, maps.type_id),
             )
-            .orderBy(maps.name)
-            .limit(queryParams.limit)
-            .offset(queryParams.offset);
-
-        if (conditions.length > 0) {
-            result.where(
-                and(...conditions),
-            );
-        }
+            .orderBy(maps.name);
 
         return await result;
     } catch (error) {
