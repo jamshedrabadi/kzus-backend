@@ -239,9 +239,7 @@ export const getRecordListCountFromDb = async (queryParams) => {
             )
             .leftJoin(players,
                 eq(players.id, records.player_id),
-            )
-            .limit(queryParams.limit)
-            .offset(queryParams.offset);
+            );
 
         if (conditions.length > 0) {
             query.where(
