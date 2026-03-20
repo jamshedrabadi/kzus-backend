@@ -1,9 +1,12 @@
-import { and, eq, gte, lt, lte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, lt, lte, or, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { records } from "../db/schema/records.schema.js";
 import { maps } from "../db/schema/maps.schema.js";
+import { players } from "../db/schema/players.schema.js";
 import { difficulty } from "../db/schema/difficulty.schema.js";
+import { length } from "../db/schema/length.schema.js";
+import { type } from "../db/schema/type.schema.js";
 import {
     RECORD_BASE_POINTS,
     RECORD_MODE_LOCK_VALUES,
@@ -189,4 +192,155 @@ export const recalculatePoints = async (
                 lte(records.place, pointsCalcEnd),
             ),
         );
+};
+
+export const getRecordListCountFromDb = async (queryParams) => {
+    try {
+        const conditions = [];
+
+        if (queryParams.difficultyIds) {
+            conditions.push(inArray(maps.difficulty_id, queryParams.difficultyIds));
+        }
+        if (queryParams.lengthIds) {
+            conditions.push(inArray(maps.length_id, queryParams.lengthIds));
+        }
+        if (queryParams.typeIds) {
+            conditions.push(inArray(maps.type_id, queryParams.typeIds));
+        }
+        if (queryParams.text) {
+            conditions.push(
+                or(
+                    ilike(maps.name, `%${queryParams.text}%`),
+                    ilike(players.name, `%${queryParams.text}%`),
+                ),
+            );
+        }
+
+        const query = db
+            .select({
+                total: sql`COUNT(*)`,
+            })
+            .from(maps)
+            .leftJoin(difficulty,
+                eq(difficulty.id, maps.difficulty_id),
+            )
+            .leftJoin(length,
+                eq(length.id, maps.length_id),
+            )
+            .leftJoin(type,
+                eq(type.id, maps.type_id),
+            )
+            .leftJoin(records,
+                and(
+                    eq(records.map_id, maps.id),
+                    eq(records.mode, 'pro'),
+                    eq(records.place, 1),
+                ),
+            )
+            .leftJoin(players,
+                eq(players.id, records.player_id),
+            )
+            .limit(queryParams.limit)
+            .offset(queryParams.offset);
+
+        if (conditions.length > 0) {
+            query.where(
+                and(...conditions),
+            );
+        }
+
+        const result = await query;
+
+        return result[0].total;
+    } catch (error) {
+        console.error("Error in getMapListCountFromDb: ", error);
+        throw error;
+    }
+};
+
+export const getRecordListFromDb = async (queryParams) => {
+    try {
+        const conditions = [];
+
+        if (queryParams.difficultyIds) {
+            conditions.push(inArray(maps.difficulty_id, queryParams.difficultyIds));
+        }
+        if (queryParams.lengthIds) {
+            conditions.push(inArray(maps.length_id, queryParams.lengthIds));
+        }
+        if (queryParams.typeIds) {
+            conditions.push(inArray(maps.type_id, queryParams.typeIds));
+        }
+        if (queryParams.text) {
+            conditions.push(
+                or(
+                    ilike(maps.name, `%${queryParams.text}%`),
+                    ilike(players.name, `%${queryParams.text}%`),
+                ),
+            );
+        }
+
+        const query = db
+            .select({
+                map_id: maps.id,
+                map_name: maps.name,
+                player_id: players.id,
+                player_name: players.name,
+                record_time: records.time,
+                record_date: sql`COALESCE(${records.updated_at}, ${records.created_at})`,
+                difficulty_id: difficulty.id,
+                difficulty_name: difficulty.name,
+                length_id: length.id,
+                length_name: length.name,
+                type_id: type.id,
+                type_name: type.name,
+            })
+            .from(maps)
+            .leftJoin(difficulty,
+                eq(difficulty.id, maps.difficulty_id),
+            )
+            .leftJoin(length,
+                eq(length.id, maps.length_id),
+            )
+            .leftJoin(type,
+                eq(type.id, maps.type_id),
+            )
+            .leftJoin(records,
+                and(
+                    eq(records.map_id, maps.id),
+                    eq(records.mode, 'pro'),
+                    eq(records.place, 1),
+                ),
+            )
+            .leftJoin(players,
+                eq(players.id, records.player_id),
+            )
+            .limit(queryParams.limit)
+            .offset(queryParams.offset);
+
+        if (conditions.length > 0) {
+            query.where(
+                and(...conditions),
+            );
+        }
+
+        const mapSortColumn = {
+            map: maps.name,
+            player: players.name,
+            time: records.time,
+            date: sql`COALESCE(${records.updated_at}, ${records.created_at})`,
+            difficulty: difficulty.id,
+            length: length.id,
+            type: type.id,
+        };
+        const orderByColumn = mapSortColumn[queryParams.sortColumn];
+        queryParams.sortDirection === 'asc'
+            ? query.orderBy(asc(orderByColumn))
+            : query.orderBy(desc(orderByColumn));
+
+        return await query;
+    } catch (error) {
+        console.error("Error in getRecordListFromDb: ", error);
+        throw error;
+    }
 };

@@ -54,3 +54,64 @@ export const upsertRecordSchema = Joi.object({
             "number.min": VALIDATION_ERROR_MESSAGES.ERR_MSG_024,
         }),
 });
+
+export const getRecordListSchema = Joi.object({
+    difficulty: Joi.string().trim().allow("").optional()
+        .regex(/^[1-9]\d*(,[1-9]\d*)*$/) // comma separated positive integers
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_025,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_026,
+            "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_027,
+        }),
+    length: Joi.string().trim().allow("").optional()
+        .regex(/^[1-9]\d*(,[1-9]\d*)*$/) // comma separated positive integers
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_028,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_029,
+            "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_030,
+        }),
+    type: Joi.string().trim().allow("").optional()
+        .regex(/^[1-9]\d*(,[1-9]\d*)*$/) // comma separated positive integers
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_031,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_032,
+            "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_033,
+        }),
+    text: Joi.string().trim().allow("").optional()
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_034,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_035,
+        }),
+    page: Joi.string().trim().required()
+        .regex(/^[1-9]\d*$/) // positive integer
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_036,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_037,
+            "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_038,
+            "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_039,
+        }),
+    limit: Joi.string().trim().required()
+        .regex(/^[1-9]\d*$/) // positive integer
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_040,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_041,
+            "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_042,
+            "string.pattern.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_043,
+        }),
+    sortColumn: Joi.string().trim().required()
+        .valid("map", "player", "time", "date", "difficulty", "length", "type")
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_044,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_045,
+            "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_046,
+            "any.only": VALIDATION_ERROR_MESSAGES.ERR_MSG_047,
+        }),
+    sortDirection: Joi.string().trim().required()
+        .valid("asc", "desc")
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_048,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_049,
+            "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_050,
+            "any.only": VALIDATION_ERROR_MESSAGES.ERR_MSG_051,
+        }),
+});
