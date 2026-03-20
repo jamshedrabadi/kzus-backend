@@ -66,7 +66,7 @@ export const getMapDataFromDb = async (mapId) => {
                 record_time: records.time,
                 record_place: records.place,
                 record_points: records.points,
-                record_created_at: records.created_at,
+                record_date: sql`COALESCE(${records.updated_at}, ${records.created_at})`,
                 record_mode: records.mode,
                 record_cp: records.cp,
                 record_gc: records.gc,

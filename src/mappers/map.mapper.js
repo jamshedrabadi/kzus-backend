@@ -45,7 +45,7 @@ export const mapGetMapResponse = (mapData, mapStats) => {
                 recordTime: rec.record_time,
                 recordPlace: rec.record_place,
                 recordPoints: rec.record_points,
-                recordDate: formatDbDateToDate(rec.record_created_at),
+                recordDate: formatDbDateToDate(rec.record_date),
                 recordCp: rec.record_cp,
                 recordGc: rec.record_gc,
                 recordImprovements: rec.record_improvements,
@@ -76,7 +76,7 @@ export const mapGetMapListResponse = (mapList) => {
             lengthName: map.length_name,
             typeId: map.type_id,
             typeName: map.type_name,
-            recordDate: formatDbDateToDate(map.created_at),
+            mapCreationDate: formatDbDateToDate(map.created_at),
         };
     });
 
