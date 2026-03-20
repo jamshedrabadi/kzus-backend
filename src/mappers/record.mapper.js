@@ -1,7 +1,3 @@
-import {
-    formatDbDateToDate,
-} from "../utils/common.utils.js";
-
 export const mapUpsertRecordRequest = (recordData) => {
     const mappedRecordData = {
         player_id: recordData.playerId,
@@ -23,7 +19,7 @@ export const mapGetRecordListResponse = (recordList) => {
             playerId: record.player_id,
             playerName: record.player_name,
             recordTime: record.record_time,
-            recordDate: record.record_date ? formatDbDateToDate(record.record_date) : null,
+            recordDate: record.record_date,
             difficultyId: record.difficulty_id,
             difficultyName: record.difficulty_name,
             lengthId: record.length_id,
