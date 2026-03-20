@@ -3,6 +3,7 @@ import {
     updatePlayerInDb,
     getPlayerDataFromDb,
     getPlayerStatsFromDb,
+    getPlayerListFromDb,
 } from "../services/player.service.js";
 import {
     responseSender,
@@ -12,6 +13,7 @@ import {
 } from "../validators/player.validator.js";
 import {
     mapCreateOrUpdatePlayerRequest,
+    mapGetPlayerListResponse,
     mapGetPlayerResponse,
 } from "../mappers/player.mapper.js";
 import {
@@ -26,6 +28,8 @@ import {
     PLAYER_UPDATION_SUCCESS_MESSAGE,
     PLAYER_FOUND_MESSAGE,
     PLAYER_NOT_FOUND_MESSAGE,
+    PLAYER_LIST_FOUND_MESSAGE,
+    PLAYER_LIST_NOT_FOUND_MESSAGE,
 } from "../constants/player.constants.js";
 import {
     RESPONSE_MESSAGE_DATA_NOT_FOUND,
@@ -145,6 +149,48 @@ export const getPlayerData = async (request, response) => {
 
         responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
         responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+    }
+};
+
+export const getPlayerList = async (request, response) => {
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: PLAYER_MODULE,
+    };
+
+    try {
+        const playerListResponse = await getPlayerListFromDb();
+        if (!playerListResponse.length) {
+            responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
+            responseData.message = PLAYER_LIST_NOT_FOUND_MESSAGE;
+
+            return responseSender(response, responseData.status, responseData.statusCode,
+                responseData.message, responseData.data, responseData.error, responseData.module);
+        }
+
+        const mappedPlayerListResponse = mapGetPlayerListResponse(playerListResponse);
+
+        responseData.status = true;
+        responseData.statusCode = RESPONSE_CODE_SUCCESS;
+        responseData.message = PLAYER_LIST_FOUND_MESSAGE;
+        responseData.data = mappedPlayerListResponse;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+
+    } catch (error) {
+        console.error("Error in getPlayerList: ", error);
+
+        responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
+        responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
+        responseData.error = error;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

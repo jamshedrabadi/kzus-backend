@@ -6,6 +6,8 @@ export const PLAYER_SAVE_FAILURE_MESSAGE = "Error saving player data.";
 export const DUPLICATE_PLAYER_STEAMID_MESSAGE = "Player with this steam id already exists.";
 export const PLAYER_FOUND_MESSAGE = "Player data found.";
 export const PLAYER_NOT_FOUND_MESSAGE = "Player not found.";
+export const PLAYER_LIST_FOUND_MESSAGE = "Player list found.";
+export const PLAYER_LIST_NOT_FOUND_MESSAGE = "Player list not found.";
 
 export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_001: "Player name must be a string.",

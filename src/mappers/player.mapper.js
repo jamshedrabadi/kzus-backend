@@ -70,3 +70,24 @@ export const mapGetPlayerResponse = (playerData, playerStats) => {
 
     return mappedPlayerData;
 };
+
+export const mapGetPlayerListResponse = (playerList) => {
+    const mappedPlayerList = playerList.map((player) => {
+        return {
+            playerId: player.player_id,
+            playerName: player.player_name,
+            countryId: player.country_id,
+            countryName: player.country_name,
+            countryCode: player.country_code,
+            countryFlag: `${COUNTRY_FLAG_URL}${player.country_code}${COUNTRY_FLAG_EXTENSION}`,
+            proRuns: Number(player.pro_runs),
+            top1Count: Number(player.top1_count),
+            top2Count: Number(player.top2_count),
+            top3Count: Number(player.top3_count),
+            totalPoints: Number(player.total_points),
+            lastRecordDateTime: player.last_record_date_time,
+        };
+    });
+
+    return mappedPlayerList;
+};

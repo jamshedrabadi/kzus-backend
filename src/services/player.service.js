@@ -132,3 +132,47 @@ export const getPlayerStatsFromDb = async (playerId) => {
         throw error;
     }
 };
+
+export const getPlayerListFromDb = async () => {
+    try {
+        const result = db
+            .select({
+                player_id: players.id,
+                player_name: players.name,
+                country_id: country.id,
+                country_name: country.name,
+                country_code: country.code,
+                pro_runs: sql`COUNT(*)`,
+                top1_count: sql`COUNT(*) FILTER (WHERE ${records.place} = 1)`,
+                top2_count: sql`COUNT(*) FILTER (WHERE ${records.place} = 2)`,
+                top3_count: sql`COUNT(*) FILTER (WHERE ${records.place} = 3)`,
+                total_points: sql`SUM(${records.points})`,
+                last_record_date_time: sql`MAX(COALESCE(${records.updated_at}, ${records.created_at}))`,
+            })
+            .from(records)
+            .innerJoin(players,
+                eq(players.id, records.player_id),
+            )
+            .innerJoin(country,
+                eq(country.id, players.country_id),
+            )
+            .where(
+                eq(records.mode, "pro"),
+            )
+            .groupBy(
+                players.id,
+                players.name,
+                country.id,
+                country.name,
+                country.code,
+            )
+            .orderBy(
+                desc(sql`SUM(${records.points})`),
+            );
+
+        return await result;
+    } catch (error) {
+        console.error("Error in getPlayerListFromDb: ", error);
+        throw error;
+    }
+};
