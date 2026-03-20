@@ -35,9 +35,9 @@ export const maps = pgTable("maps", {
             onUpdate: "cascade",
         }),
 
-    created_at: timestamp("created_at").defaultNow().notNull(),
+    created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 
-    updated_at: timestamp("updated_at"),
+    updated_at: timestamp("updated_at", { withTimezone: true }),
 }, (table) => [
     uniqueIndex("maps_name_unique")
         .on(table.name),

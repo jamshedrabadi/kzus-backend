@@ -32,7 +32,7 @@ export const updateMapInDb = async (mapId, mapData) => {
                 difficulty_id: mapData.difficulty_id,
                 length_id: mapData.length_id,
                 type_id: mapData.type_id,
-                updated_at: new Date(),
+                updated_at: sql`NOW()`,
             })
             .where(
                 eq(maps.id, mapId),

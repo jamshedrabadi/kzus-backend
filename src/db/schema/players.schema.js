@@ -23,9 +23,9 @@ export const players = pgTable("players", {
 
     steam_id: varchar("steam_id", { length: 17 }).notNull(),
 
-    created_at: timestamp("created_at").defaultNow().notNull(),
+    created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 
-    updated_at: timestamp("updated_at"),
+    updated_at: timestamp("updated_at", { withTimezone: true }),
 }, (table) => [
     uniqueIndex("players_steam_id_unique")
         .on(table.steam_id),

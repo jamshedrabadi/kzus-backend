@@ -43,9 +43,9 @@ export const records = pgTable("records", {
 
     improvements: integer("improvements").notNull().default(0),
 
-    created_at: timestamp("created_at").defaultNow().notNull(),
+    created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 
-    updated_at: timestamp("updated_at"),
+    updated_at: timestamp("updated_at", { withTimezone: true }),
 }, (table) => [
     uniqueIndex("records_player_map_mode_unique")
         .on(table.player_id, table.map_id, table.mode),
@@ -55,9 +55,6 @@ export const records = pgTable("records", {
 
     index("records_map_mode_time_idx")
         .on(table.map_id, table.mode, table.time),
-
-    index("records_map_mode_rank_idx")
-        .on(table.map_id, table.mode, table.rank),
 
     index("records_player_mode_idx")
         .on(table.player_id, table.mode),

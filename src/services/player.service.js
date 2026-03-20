@@ -31,7 +31,7 @@ export const updatePlayerInDb = async (playerId, playerData) => {
                 name: playerData.name,
                 country_id: playerData.country_id,
                 steam_id: playerData.steam_id,
-                updated_at: new Date(),
+                updated_at: sql`NOW()`,
             })
             .where(
                 eq(players.id, playerId),
