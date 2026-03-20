@@ -49,6 +49,7 @@ export const getPlayerDataFromDb = async (playerId) => {
     try {
         const result = await db
             .select({
+                player_id: players.id,
                 player_name: players.name,
                 player_steam_id: players.steam_id,
                 country_id: country.id,

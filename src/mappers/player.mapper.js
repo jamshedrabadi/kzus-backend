@@ -21,7 +21,8 @@ export const mapCreateOrUpdatePlayerRequest = (playerData) => {
 export const mapGetPlayerResponse = (playerData, playerStats) => {
     const mappedPlayerData = {
         player: {
-            name: playerData[0].player_name,
+            playerId: playerData[0].player_id,
+            playerName: playerData[0].player_name,
             steamId: playerData[0].player_steam_id,
             countryId: playerData[0].country_id,
             countryName: playerData[0].country_name,

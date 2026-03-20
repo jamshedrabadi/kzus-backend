@@ -22,6 +22,7 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
 export const mapGetMapResponse = (mapData, mapStats) => {
     const mappedMapData = {
         map: {
+            mapId: mapData[0].map_id,
             mapName: mapData[0].map_name,
             difficultyId: mapData[0].difficulty_id,
             difficultyName: mapData[0].difficulty_name,

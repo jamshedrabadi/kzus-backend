@@ -50,6 +50,7 @@ export const getMapDataFromDb = async (mapId) => {
     try {
         const result = await db
             .select({
+                map_id: maps.id,
                 map_name: maps.name,
                 difficulty_id: difficulty.id,
                 difficulty_name: difficulty.name,

@@ -105,7 +105,6 @@ export const getRecordList = async (request, response) => {
         };
 
         const recordListCountResponse = await getRecordListCountFromDb(queryParams);
-        console.log("recordListCountResponse --- ", recordListCountResponse);
         if (!recordListCountResponse) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = RECORD_LIST_NOT_FOUND_MESSAGE;
@@ -115,7 +114,6 @@ export const getRecordList = async (request, response) => {
         }
 
         const recordListResponse = await getRecordListFromDb(queryParams);
-        console.log("recordListResponse --- ", recordListResponse);
 
         const mappedRecordListResponse = mapGetRecordListResponse(recordListResponse);
 
