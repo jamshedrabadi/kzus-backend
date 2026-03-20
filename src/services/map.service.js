@@ -124,30 +124,6 @@ export const getMapStatsFromDb = async (mapId) => {
     }
 };
 
-export const getMapListCountFromDb = async () => {
-    try {
-        const result = await db
-            .select({
-                total: sql`COUNT(*)`,
-            })
-            .from(maps)
-            .leftJoin(difficulty,
-                eq(difficulty.id, maps.difficulty_id),
-            )
-            .leftJoin(length,
-                eq(length.id, maps.length_id),
-            )
-            .leftJoin(type,
-                eq(type.id, maps.type_id),
-            );
-
-        return result[0].total;
-    } catch (error) {
-        console.error("Error in getMapListCountFromDb: ", error);
-        throw error;
-    }
-};
-
 export const getMapListFromDb = async () => {
     try {
         const result = db

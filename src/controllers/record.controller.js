@@ -1,6 +1,5 @@
 import {
     upsertRecordInDb,
-    getRecordListCountFromDb,
     getRecordListFromDb,
 } from "../services/record.service.js";
 import {
@@ -85,8 +84,8 @@ export const getRecordList = async (request, response) => {
     };
 
     try {
-        const recordListCountResponse = await getRecordListCountFromDb();
-        if (!recordListCountResponse) {
+        const recordListResponse = await getRecordListFromDb();
+        if (!recordListResponse.length) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = RECORD_LIST_NOT_FOUND_MESSAGE;
 
@@ -94,15 +93,12 @@ export const getRecordList = async (request, response) => {
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const recordListResponse = await getRecordListFromDb();
-
         const mappedRecordListResponse = mapGetRecordListResponse(recordListResponse);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
         responseData.message = RECORD_LIST_FOUND_MESSAGE;
-        responseData.data =
-            { totalRecords: recordListCountResponse, data: mappedRecordListResponse };
+        responseData.data = mappedRecordListResponse;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

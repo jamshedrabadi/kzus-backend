@@ -194,40 +194,6 @@ export const recalculatePoints = async (
         );
 };
 
-export const getRecordListCountFromDb = async () => {
-    try {
-        const result = await db
-            .select({
-                total: sql`COUNT(*)`,
-            })
-            .from(maps)
-            .leftJoin(difficulty,
-                eq(difficulty.id, maps.difficulty_id),
-            )
-            .leftJoin(length,
-                eq(length.id, maps.length_id),
-            )
-            .leftJoin(type,
-                eq(type.id, maps.type_id),
-            )
-            .leftJoin(records,
-                and(
-                    eq(records.map_id, maps.id),
-                    eq(records.mode, 'pro'),
-                    eq(records.place, 1),
-                ),
-            )
-            .leftJoin(players,
-                eq(players.id, records.player_id),
-            );
-
-        return result[0].total;
-    } catch (error) {
-        console.error("Error in getMapListCountFromDb: ", error);
-        throw error;
-    }
-};
-
 export const getRecordListFromDb = async () => {
     try {
         const query = db

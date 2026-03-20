@@ -3,7 +3,6 @@ import {
     updateMapInDb,
     getMapDataFromDb,
     getMapStatsFromDb,
-    getMapListCountFromDb,
     getMapListFromDb,
 } from "../services/map.service.js";
 import {
@@ -167,8 +166,8 @@ export const getMapList = async (request, response) => {
     };
 
     try {
-        const mapListCountResponse = await getMapListCountFromDb();
-        if (!mapListCountResponse) {
+        const mapListResponse = await getMapListFromDb();
+        if (!mapListResponse.length) {
             responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
             responseData.message = MAP_LIST_NOT_FOUND_MESSAGE;
 
@@ -176,14 +175,12 @@ export const getMapList = async (request, response) => {
                 responseData.message, responseData.data, responseData.error, responseData.module);
         }
 
-        const mapListResponse = await getMapListFromDb();
-
         const mappedMapListResponse = mapGetMapListResponse(mapListResponse);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
         responseData.message = MAP_LIST_FOUND_MESSAGE;
-        responseData.data = { totalRecords: mapListCountResponse, data: mappedMapListResponse };
+        responseData.data = mappedMapListResponse;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
