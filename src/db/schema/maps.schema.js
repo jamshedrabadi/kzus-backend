@@ -1,7 +1,6 @@
 import {
     pgTable,
     uniqueIndex,
-    index,
     serial,
     varchar,
     integer,
@@ -41,7 +40,4 @@ export const maps = pgTable("maps", {
 }, (table) => [
     uniqueIndex("maps_name_unique")
         .on(table.name),
-
-    index("maps_difficulty_idx")
-        .on(table.difficulty_id),
 ]);

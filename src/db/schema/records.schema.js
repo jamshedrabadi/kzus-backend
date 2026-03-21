@@ -11,7 +11,6 @@ import {
 import { players } from "./players.schema.js";
 import { maps } from "./maps.schema.js";
 import { RECORD_MODES } from "../../constants/record.constants.js";
-import { sql } from "drizzle-orm";
 
 export const modeEnum = pgEnum("mode", RECORD_MODES);
 
@@ -51,28 +50,15 @@ export const records = pgTable("records", {
     uniqueIndex("records_player_map_mode_unique")
         .on(table.player_id, table.map_id, table.mode),
 
-    index("records_map_mode_place_idx")
-        .on(table.map_id, table.mode, table.place),
+    index("records_player_mode_idx")
+        .on(table.player_id, table.mode),
+
+    index("records_map_mode_idx")
+        .on(table.map_id, table.mode),
 
     index("records_map_mode_time_idx")
         .on(table.map_id, table.mode, table.time),
 
-    index("records_player_mode_idx")
-        .on(table.player_id, table.mode),
-
-    index("records_player_idx")
-        .on(table.player_id),
-
-    index("idx_records_pro_player")
-        .on(table.player_id)
-        .where(sql`${table.mode} = 'pro'`),
-
-    index("idx_records_pro_covering")
-        .on(table.player_id, table.place)
-        .include(table.points, table.updated_at, table.created_at)
-        .where(sql`${table.mode} = 'pro'`),
-
-    index("idx_records_pro_points")
-        .on(table.points)
-        .where(sql`${table.mode} = 'pro'`),
+    index("records_map_mode_place_idx")
+        .on(table.map_id, table.mode, table.place),
 ]);
