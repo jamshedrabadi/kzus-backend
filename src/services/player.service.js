@@ -8,6 +8,9 @@ import { length } from "../db/schema/length.schema.js";
 import { type } from "../db/schema/type.schema.js";
 import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
+import {
+    RECORD_MODE_PRO,
+} from "../constants/record.constants.js";
 
 export const createPlayerInDb = async (playerData) => {
     try {
@@ -123,7 +126,7 @@ export const getPlayerStatsFromDb = async (playerId) => {
             .from(records)
             .where(
                 eq(records.player_id, playerId),
-                eq(records.mode, 'pro'),
+                eq(records.mode, RECORD_MODE_PRO),
             );
 
         return result[0];
@@ -157,7 +160,7 @@ export const getPlayerListFromDb = async () => {
                 eq(country.id, players.country_id),
             )
             .where(
-                eq(records.mode, "pro"),
+                eq(records.mode, RECORD_MODE_PRO),
             )
             .groupBy(
                 players.id,

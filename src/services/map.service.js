@@ -8,6 +8,9 @@ import { type } from "../db/schema/type.schema.js";
 import { players } from "../db/schema/players.schema.js";
 import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
+import {
+    RECORD_MODE_PRO,
+} from "../constants/record.constants.js";
 
 export const createMapInDb = async (mapData) => {
     try {
@@ -114,7 +117,7 @@ export const getMapStatsFromDb = async (mapId) => {
             .from(records)
             .where(
                 eq(records.map_id, mapId),
-                eq(records.mode, 'pro'),
+                eq(records.mode, RECORD_MODE_PRO),
             );
 
         return result[0];

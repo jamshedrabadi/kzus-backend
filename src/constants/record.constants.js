@@ -7,6 +7,9 @@ export const RECORD_BETTER_RECORD_EXISTS_MESSAGE = "Player has a better record o
 export const RECORD_LIST_FOUND_MESSAGE = "Record list found.";
 export const RECORD_LIST_NOT_FOUND_MESSAGE = "Record list not found.";
 
+export const RECORD_MODE_PRO = "pro";
+export const RECORD_MODE_NUB = "nub";
+
 export const RECORD_MODES = [
     "pro",
     "nub",

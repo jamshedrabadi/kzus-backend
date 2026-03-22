@@ -10,6 +10,7 @@ import { type } from "../db/schema/type.schema.js";
 import {
     RECORD_BASE_POINTS,
     RECORD_MODE_LOCK_VALUES,
+    RECORD_MODE_PRO,
 } from "../constants/record.constants.js";
 
 export const upsertRecordInDb = async (recordData) => {
@@ -55,7 +56,7 @@ export const upsertRecordInDb = async (recordData) => {
             }
 
             // pro records require point re-calculations
-            if (recordData.mode === "pro" && pointsCalcStart && pointsCalcEnd) {
+            if (recordData.mode === RECORD_MODE_PRO && pointsCalcStart && pointsCalcEnd) {
                 await recalculatePoints(
                     tx, recordData, totalRecords, pointsCalcStart, pointsCalcEnd);
             }
@@ -187,7 +188,7 @@ export const recalculatePoints = async (
             and(
                 eq(records.map_id, maps.id),
                 eq(records.map_id, recordData.map_id),
-                eq(records.mode, 'pro'),
+                eq(records.mode, RECORD_MODE_PRO),
                 gte(records.place, pointsCalcStart),
                 lte(records.place, pointsCalcEnd),
             ),
@@ -224,7 +225,7 @@ export const getRecordListFromDb = async () => {
             .leftJoin(records,
                 and(
                     eq(records.map_id, maps.id),
-                    eq(records.mode, 'pro'),
+                    eq(records.mode, RECORD_MODE_PRO),
                     eq(records.place, 1),
                 ),
             )
