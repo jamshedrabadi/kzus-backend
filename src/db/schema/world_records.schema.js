@@ -24,9 +24,9 @@ export const worldRecords = pgTable("world_records", {
 
     map_name: varchar("map_name", { length: 255 }).notNull(),
 
-    time: integer("time"),
+    time: integer("time").notNull(),
 
-    player_name: varchar("player_name", { length: 255 }),
+    player_name: varchar("player_name", { length: 255 }).notNull(),
 
     country_id: integer("country_id")
         .references(() => country.id, {
@@ -36,7 +36,7 @@ export const worldRecords = pgTable("world_records", {
 
     country_code: varchar("country_code", { length: 255 }),
 
-    record_date: date("record_date"),
+    record_date: date("record_date").notNull(),
 }, (table) => [
     uniqueIndex("world_records_source_map_unique")
         .on(table.source, table.map_name),
