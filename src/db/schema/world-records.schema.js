@@ -26,7 +26,7 @@ export const records = pgTable("world_records", {
 
     time: integer("time"),
 
-    player_name: varchar("map_name", { length: 255 }),
+    player_name: varchar("player_name", { length: 255 }),
 
     country_id: integer("country_id")
         .references(() => country.id, {
