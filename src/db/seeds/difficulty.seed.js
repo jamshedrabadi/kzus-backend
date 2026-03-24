@@ -6,6 +6,8 @@ import { db } from "../db-connection.js";
 import { difficulty } from "../schema/difficulty.schema.js";
 
 export const seedDifficulty = async () => {
+    console.log("\nSeeding Difficulty data...");
+
     await db.execute(sql`DELETE FROM difficulty;`);
     await db.execute(sql`ALTER SEQUENCE difficulty_id_seq RESTART WITH 1;`);
 

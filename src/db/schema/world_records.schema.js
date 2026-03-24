@@ -11,7 +11,7 @@ import {
 import { maps } from "./maps.schema.js";
 import { country } from "./country.schema.js";
 
-export const records = pgTable("world_records", {
+export const worldRecords = pgTable("world_records", {
     id: serial("id").primaryKey(),
 
     source: varchar("source", { length: 255 }).notNull(),

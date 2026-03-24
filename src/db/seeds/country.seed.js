@@ -6,6 +6,8 @@ import { db } from "../db-connection.js";
 import { country } from "../schema/country.schema.js";
 
 export const seedCountry = async () => {
+    console.log("\nSeeding Country data...");
+
     await db.execute(sql`DELETE FROM country;`);
     await db.execute(sql`ALTER SEQUENCE country_id_seq RESTART WITH 1;`);
 

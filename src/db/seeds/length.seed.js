@@ -6,6 +6,8 @@ import { db } from "../db-connection.js";
 import { length } from "../schema/length.schema.js";
 
 export const seedLength = async () => {
+    console.log("\nSeeding Length data...");
+
     await db.execute(sql`DELETE FROM length;`);
     await db.execute(sql`ALTER SEQUENCE length_id_seq RESTART WITH 1;`);
 
