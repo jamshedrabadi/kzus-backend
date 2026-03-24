@@ -45,6 +45,8 @@ export const insertWorldRecordData = async (worldRecordData) => {
             worldRecordData.map((wr) => sql`(
                 ${wr.source}::text,
                 ${wr.map_name}::text,
+                ${wr.base_map_name}::text,
+                ${wr.map_route}::text,
                 ${wr.time}::int,
                 ${wr.player_name}::text,
                 ${wr.country_code}::text,
@@ -58,6 +60,8 @@ export const insertWorldRecordData = async (worldRecordData) => {
                 source,
                 map_id,
                 map_name,
+                base_map_name,
+                map_route,
                 time,
                 player_name,
                 country_id,
@@ -68,6 +72,8 @@ export const insertWorldRecordData = async (worldRecordData) => {
                 val.source AS source,
                 maps.id AS map_id,
                 val.map_name AS map_name,
+                val.base_map_name AS base_map_name,
+                val.map_route AS map_route,
                 val.time AS time,
                 val.player_name AS player_name,
                 country.id AS country_id,
@@ -78,12 +84,14 @@ export const insertWorldRecordData = async (worldRecordData) => {
             ) AS val (
                 source,
                 map_name,
+                base_map_name,
+                map_route,
                 time,
                 player_name,
                 country_code,
                 record_date
             )
-            LEFT JOIN maps ON maps.name = val.map_name
+            LEFT JOIN maps ON maps.name = val.base_map_name
             LEFT JOIN country ON country.code = val.country_code
         `);
     } catch (error) {

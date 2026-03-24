@@ -19,9 +19,13 @@ export const parseApiTextResponse = (textResponse, apiName) => {
         const [map, time, player, country, date] = parts;
 
         if (Number(time)) { // if time is 0, then no wr on map
+            const routeData = parseMapAndRoute(map);
+
             result.push({
                 source: apiName,
                 map_name: map,
+                base_map_name: routeData.baseMapName,
+                map_route: routeData.mapRoute,
                 time: convertSecondsToMs(time),
                 player_name: player,
                 country_code: country !== 'n-a' ? country : null,
@@ -68,4 +72,13 @@ export const convertFromKzcomDate = (date) => { // dd/mm/yyyy to yyyy-mm-dd (ISO
 
 export const convertFromCosyDate = (date) => { // unix time to yyyy-mm-dd (ISO)
     return new Date(Math.round(Number(date) * 1000)).toISOString().slice(0, 10);
+};
+
+export const parseMapAndRoute = (mapName) => {
+    const match = mapName.match(/^(.+?)(\[(.+)\])?$/); // only for maps like "xyz" or "xyz[xyz]"
+
+    const baseMapName = match[1];
+    const mapRoute = match[3] || null;
+
+    return { baseMapName, mapRoute };
 };

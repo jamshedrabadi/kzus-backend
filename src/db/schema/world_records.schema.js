@@ -24,6 +24,10 @@ export const worldRecords = pgTable("world_records", {
 
     map_name: varchar("map_name", { length: 255 }).notNull(),
 
+    base_map_name: varchar("base_map_name", { length: 255 }).notNull(),
+
+    map_route: varchar("map_route", { length: 255 }),
+
     time: integer("time").notNull(),
 
     player_name: varchar("player_name", { length: 255 }).notNull(),
