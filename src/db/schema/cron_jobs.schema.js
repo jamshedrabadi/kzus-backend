@@ -19,7 +19,7 @@ export const cronJobs = pgTable("cron_jobs", {
 
     status: statusEnum("status").notNull(),
 
-    records_processed: integer("records_processed"),
+    records_processed: integer("records_processed").default(0),
 
     started_at: timestamp("started_at", { withTimezone: true }).notNull(),
 

@@ -5,13 +5,27 @@ import {
     parseApiTextResponse,
 } from "../mappers/world_record.mapper.js";
 import {
+    storeCronJobInDb,
+} from "./cron_job.service.js";
+import {
     KREEDZCOM_API_URL,
     COSYCLIMBING_API_URL,
     API_NAME_KZCOM,
     API_NAME_COSY,
+    WORLD_RECORD_CRON_JOB,
 } from "../constants/world_record.constants.js";
+import {
+    CRON_JOB_STATUS_SUCCESS,
+    CRON_JOB_STATUS_FAILURE,
+} from "../constants/cron_job.constants.js";
 
-export const syncWorldRecords = async () => {
+export const syncWorldRecords = async (cronJobFlag = false) => {
+    const cronJobData = {
+        job_name: WORLD_RECORD_CRON_JOB,
+        status: CRON_JOB_STATUS_FAILURE,
+        started_at: new Date(),
+    };
+
     try {
         const worldRecordData = await fetchWorldRecordApisData();
 
@@ -26,8 +40,23 @@ export const syncWorldRecords = async () => {
 
         // eslint-disable-next-line no-console
         console.log("World Record data synced.");
+
+        if (cronJobFlag) {
+            cronJobData.status = CRON_JOB_STATUS_SUCCESS;
+            cronJobData.records_processed = worldRecordData.length;
+            cronJobData.finished_at = new Date();
+
+            await storeCronJobInDb(cronJobData);
+        }
     } catch (error) {
         console.error("Error in syncWorldRecords: ", error);
+
+        if (cronJobFlag) {
+            cronJobData.error_message = error.message;
+            cronJobData.finished_at = new Date();
+
+            await storeCronJobInDb(cronJobData);
+        }
     }
 };
 

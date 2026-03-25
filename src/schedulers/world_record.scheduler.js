@@ -12,7 +12,7 @@ cron.schedule(WORLD_RECORD_CRON_SCHEDULE, async () => {
     console.log("[CRON] World Record sync started");
 
     try {
-        await syncWorldRecords();
+        await syncWorldRecords(true);
         console.log("[CRON] World Record sync completed");
     } catch (error) {
         console.error("[CRON] World Record sync failed:", error);

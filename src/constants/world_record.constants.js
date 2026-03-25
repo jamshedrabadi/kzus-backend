@@ -1,5 +1,7 @@
 export const WORLD_RECORD_MODULE = "world_record";
 
+export const WORLD_RECORD_CRON_JOB = "world_record_sync";
+
 export const WORLD_RECORD_CRON_SCHEDULE = "1 0 * * *"; // 12:01 AM Daily
 export const WORLD_RECORD_CRON_TIMEZONE = "UTC"; // use UTC timezone
 
