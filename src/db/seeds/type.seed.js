@@ -8,16 +8,17 @@ import { type } from "../schema/type.schema.js";
 export const seedType = async () => {
     console.log("\nSeeding Type data...");
 
-    await db.execute(sql`DELETE FROM type;`);
-    await db.execute(sql`ALTER SEQUENCE type_id_seq RESTART WITH 1;`);
+    await db.transaction(async (tx) => {
+        await tx.execute(sql`TRUNCATE TABLE type RESTART IDENTITY;`);
 
-    await db.insert(type).values([
-        { name: "climb" },
-        { name: "bhop" },
-        { name: "slide" },
-        { name: "mix" },
-        { name: "special" },
-    ]);
+        await tx.insert(type).values([
+            { name: "climb" },
+            { name: "bhop" },
+            { name: "slide" },
+            { name: "mix" },
+            { name: "special" },
+        ]);
+    });
 
     console.log("Type data seeded.");
 };

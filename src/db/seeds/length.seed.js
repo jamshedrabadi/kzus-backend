@@ -8,16 +8,17 @@ import { length } from "../schema/length.schema.js";
 export const seedLength = async () => {
     console.log("\nSeeding Length data...");
 
-    await db.execute(sql`DELETE FROM length;`);
-    await db.execute(sql`ALTER SEQUENCE length_id_seq RESTART WITH 1;`);
+    await db.transaction(async (tx) => {
+        await tx.execute(sql`TRUNCATE TABLE length RESTART IDENTITY;`);
 
-    await db.insert(length).values([
-        { name: "very-short" },
-        { name: "short" },
-        { name: "middle" },
-        { name: "long" },
-        { name: "very-long" },
-    ]);
+        await tx.insert(length).values([
+            { name: "very-short" },
+            { name: "short" },
+            { name: "middle" },
+            { name: "long" },
+            { name: "very-long" },
+        ]);
+    });
 
     console.log("Length data seeded.");
 };
