@@ -18,7 +18,7 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
     return mappedMapData;
 };
 
-export const mapGetMapResponse = (mapData, mapStats) => {
+export const mapGetMapResponse = (mapData, mapStats, mapWorldRecords) => {
     const mappedMapData = {
         map: {
             mapId: mapData[0].map_id,
@@ -59,6 +59,15 @@ export const mapGetMapResponse = (mapData, mapStats) => {
             timeSpread: convertToNumber(mapStats.time_spread),
             averageImprovements: convertToDecimalNumber(mapStats.average_improvements),
         },
+        worldRecords: mapWorldRecords.map((wr) => ({
+            source: wr.source,
+            mapRoute: wr.map_route,
+            time: wr.time,
+            countryCode: wr.country_code,
+            countryFlag: `${COUNTRY_FLAG_URL}${wr.country_code}${COUNTRY_FLAG_EXTENSION}`,
+            playerName: wr.player_name,
+            recordDate: wr.record_date,
+        })),
     };
 
     return mappedMapData;

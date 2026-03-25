@@ -8,6 +8,7 @@ import { type } from "../db/schema/type.schema.js";
 import { players } from "../db/schema/players.schema.js";
 import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
+import { worldRecords } from "../db/schema/world_records.schema.js";
 import {
     RECORD_MODE_PRO,
 } from "../constants/record.constants.js";
@@ -123,6 +124,29 @@ export const getMapStatsFromDb = async (mapId) => {
         return result[0];
     } catch (error) {
         console.error("Error in getMapStatsFromDb: ", error);
+        throw error;
+    }
+};
+
+export const getMapWorldRecordsFromDb = async (mapId) => {
+    try {
+        const result = await db
+            .select({
+                source: worldRecords.source,
+                map_route: worldRecords.map_route,
+                time: worldRecords.time,
+                player_name: worldRecords.player_name,
+                country_code: worldRecords.country_code,
+                record_date: worldRecords.record_date,
+            })
+            .from(worldRecords)
+            .where(
+                eq(worldRecords.map_id, mapId),
+            );
+
+        return result;
+    } catch (error) {
+        console.error("Error in getMapWorldRecordsFromDb: ", error);
         throw error;
     }
 };
