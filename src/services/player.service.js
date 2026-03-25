@@ -1,4 +1,4 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { players } from "../db/schema/players.schema.js";
@@ -125,8 +125,10 @@ export const getPlayerStatsFromDb = async (playerId) => {
             })
             .from(records)
             .where(
-                eq(records.player_id, playerId),
-                eq(records.mode, RECORD_MODE_PRO),
+                and(
+                    eq(records.player_id, playerId),
+                    eq(records.mode, RECORD_MODE_PRO),
+                ),
             );
 
         return result[0];

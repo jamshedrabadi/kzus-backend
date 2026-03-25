@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { maps } from "../db/schema/maps.schema.js";
@@ -117,8 +117,10 @@ export const getMapStatsFromDb = async (mapId) => {
             })
             .from(records)
             .where(
-                eq(records.map_id, mapId),
-                eq(records.mode, RECORD_MODE_PRO),
+                and(
+                    eq(records.map_id, mapId),
+                    eq(records.mode, RECORD_MODE_PRO),
+                ),
             );
 
         return result[0];
