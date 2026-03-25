@@ -11,6 +11,24 @@ import {
     API_NAME_COSY,
 } from "../constants/world_record.constants.js";
 
+export const syncWorldRecords = async () => {
+    try {
+        const worldRecordData = await fetchWorldRecordApisData();
+
+        if (!worldRecordData?.length) {
+            console.error("World Record data not found.");
+        }
+
+        await truncateWorldRecords();
+        await insertWorldRecordData(worldRecordData);
+
+        // eslint-disable-next-line no-console
+        console.log("World Record data synced.");
+    } catch (error) {
+        console.error("Error in syncWorldRecords: ", error);
+    }
+};
+
 export const fetchWorldRecordApisData = async () => {
     try {
         const [
@@ -36,6 +54,16 @@ export const getApiTextResponse = async (url) => {
         return await response.text();
     } catch (error) {
         console.error("Error in getApiTextResponse: ", error);
+    }
+};
+
+export const truncateWorldRecords = async () => {
+    try {
+        return await db.execute(sql`
+            TRUNCATE TABLE world_records RESTART IDENTITY
+        `);
+    } catch (error) {
+        console.error("Error in truncateWorldRecords: ", error);
     }
 };
 
