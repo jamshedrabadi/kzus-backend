@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 
 import "dotenv/config";
+import "./schedulers/world_record.scheduler.js";
+
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
