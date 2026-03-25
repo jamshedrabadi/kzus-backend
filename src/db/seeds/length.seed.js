@@ -9,7 +9,7 @@ export const seedLength = async () => {
     console.log("\nSeeding Length data...");
 
     await db.transaction(async (tx) => {
-        await tx.execute(sql`TRUNCATE TABLE length RESTART IDENTITY;`);
+        await tx.execute(sql`TRUNCATE TABLE length RESTART IDENTITY CASCADE;`);
 
         await tx.insert(length).values([
             { name: "very-short" },

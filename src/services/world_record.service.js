@@ -90,7 +90,7 @@ export const getApiTextResponse = async (url) => {
 
 export const truncateWorldRecords = async (tx) => {
     try {
-        return await tx.execute(sql`TRUNCATE TABLE world_records RESTART IDENTITY`);
+        return await tx.execute(sql`TRUNCATE TABLE world_records RESTART IDENTITY CASCADE`);
     } catch (error) {
         console.error("Error in truncateWorldRecords: ", error);
     }

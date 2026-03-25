@@ -9,7 +9,7 @@ export const seedCountry = async () => {
     console.log("\nSeeding Country data...");
 
     await db.transaction(async (tx) => {
-        await tx.execute(sql`TRUNCATE TABLE country RESTART IDENTITY;`);
+        await tx.execute(sql`TRUNCATE TABLE country RESTART IDENTITY CASCADE;`);
 
         await tx.insert(country).values([
             { name: "Andorra", code: "ad" },

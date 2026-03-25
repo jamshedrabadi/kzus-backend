@@ -9,7 +9,7 @@ export const seedDifficulty = async () => {
     console.log("\nSeeding Difficulty data...");
 
     await db.transaction(async (tx) => {
-        await tx.execute(sql`TRUNCATE TABLE difficulty RESTART IDENTITY;`);
+        await tx.execute(sql`TRUNCATE TABLE difficulty RESTART IDENTITY CASCADE;`);
 
         await tx.insert(difficulty).values([
             { name: "beginner", multiplier: "0.25" },
