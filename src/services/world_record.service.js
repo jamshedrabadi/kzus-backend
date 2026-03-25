@@ -19,8 +19,10 @@ export const syncWorldRecords = async () => {
             console.error("World Record data not found.");
         }
 
-        await truncateWorldRecords();
-        await insertWorldRecordData(worldRecordData);
+        await db.transaction(async (tx) => {
+            await truncateWorldRecords(tx);
+            await insertWorldRecordData(worldRecordData, tx);
+        });
 
         // eslint-disable-next-line no-console
         console.log("World Record data synced.");
@@ -57,9 +59,9 @@ export const getApiTextResponse = async (url) => {
     }
 };
 
-export const truncateWorldRecords = async () => {
+export const truncateWorldRecords = async (tx) => {
     try {
-        return await db.execute(sql`
+        return await tx.execute(sql`
             TRUNCATE TABLE world_records RESTART IDENTITY
         `);
     } catch (error) {
@@ -67,7 +69,7 @@ export const truncateWorldRecords = async () => {
     }
 };
 
-export const insertWorldRecordData = async (worldRecordData) => {
+export const insertWorldRecordData = async (worldRecordData, tx) => {
     try {
         const values = sql.join(
             worldRecordData.map((wr) => sql`(
@@ -83,7 +85,7 @@ export const insertWorldRecordData = async (worldRecordData) => {
             sql`, `,
         );
 
-        await db.execute(sql`
+        await tx.execute(sql`
             INSERT INTO world_records (
                 source,
                 map_id,
