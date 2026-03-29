@@ -8,6 +8,9 @@ import {
     timestamp,
 } from "drizzle-orm/pg-core";
 
+import { country } from "./country.schema.js";
+import { maps } from "./maps.schema.js";
+
 export const servers = pgTable("servers", {
     id: serial("id").primaryKey(),
 
@@ -17,17 +20,27 @@ export const servers = pgTable("servers", {
 
     port: varchar("port", { length: 5 }).notNull(),
 
-    country: varchar("country", { length: 255 }).notNull(),
-
-    current_map: varchar("current_map", { length: 100 }).notNull(),
-
-    current_players: integer("current_players").default(0).notNull(),
+    country_id: integer("country_id").notNull()
+        .references(() => country.id, {
+            onDelete: "cascade",
+            onUpdate: "cascade",
+        }),
 
     max_players: integer("max_players").default(0).notNull(),
 
-    is_active: boolean("is_active").default(true).notNull(),
+    current_players: integer("current_players").default(0).notNull(),
+
+    map_id: integer("map_id").notNull()
+        .references(() => maps.id, {
+            onDelete: "cascade",
+            onUpdate: "cascade",
+        }),
 
     last_seen: timestamp("last_seen_at", { withTimezone: true }),
+
+    display_server: boolean("is_active").default(true).notNull(),
+
+    display_order: integer("display_order"),
 
     created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 }, (table) => [
