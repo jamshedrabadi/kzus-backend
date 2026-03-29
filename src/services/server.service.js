@@ -42,3 +42,23 @@ export const getServerListFromDb = async () => {
         throw error;
     }
 };
+
+export const updatePlayerCountInDb = async (serverId, serverData) => {
+    try {
+        const serverResponse = await db
+            .update(servers)
+            .set({
+                current_players: serverData.current_players,
+                last_seen_at: sql`NOW()`,
+            })
+            .where(
+                eq(servers.id, serverId),
+            )
+            .returning();
+
+        return serverResponse[0].id;
+    } catch (error) {
+        console.error("Error in updatePlayerCountInDb: ", error);
+        throw error;
+    }
+};

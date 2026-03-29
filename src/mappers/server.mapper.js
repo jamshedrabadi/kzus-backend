@@ -26,3 +26,11 @@ export const mapGetServerListResponse = (serverData) => {
 
     return mappedPlayerData;
 };
+
+export const mapUpdatePlayerCountRequest = (serverData) => {
+    const mappedServerData = {
+        current_players: serverData.currentPlayers,
+    };
+
+    return mappedServerData;
+};
