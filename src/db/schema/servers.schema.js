@@ -30,15 +30,15 @@ export const servers = pgTable("servers", {
 
     current_players: integer("current_players").default(0).notNull(),
 
-    map_id: integer("map_id").notNull()
+    map_id: integer("map_id")
         .references(() => maps.id, {
             onDelete: "cascade",
             onUpdate: "cascade",
         }),
 
-    last_seen: timestamp("last_seen_at", { withTimezone: true }),
+    last_seen_at: timestamp("last_seen_at", { withTimezone: true }),
 
-    display_server: boolean("is_active").default(true).notNull(),
+    display_server: boolean("display_server").default(true).notNull(),
 
     display_order: integer("display_order"),
 
