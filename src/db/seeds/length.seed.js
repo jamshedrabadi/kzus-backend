@@ -14,7 +14,7 @@ export const seedLength = async () => {
         await tx.insert(length).values([
             { name: "very-short" },
             { name: "short" },
-            { name: "middle" },
+            { name: "average" },
             { name: "long" },
             { name: "very-long" },
         ]);
