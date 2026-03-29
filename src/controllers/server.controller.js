@@ -5,6 +5,7 @@ import {
     getServerListFromDb,
     updatePlayerCountInDb,
     updateMapNameInDb,
+    updateHeartbeatInDb,
 } from "../services/server.service.js";
 import {
     mapGetServerListResponse,
@@ -23,6 +24,8 @@ import {
     SERVER_PLAYER_COUNT_UPDATION_FAILURE_MESSAGE,
     SERVER_MAP_NAME_UPDATION_SUCCESS_MESSAGE,
     SERVER_MAP_NAME_UPDATION_FAILURE_MESSAGE,
+    SERVER_HEARTBEAT_UPDATION_SUCCESS_MESSAGE,
+    SERVER_HEARTBEAT_UPDATION_FAILURE_MESSAGE,
 } from "../constants/server.constants.js";
 import {
     RESPONSE_CODE_DATA_NOT_FOUND,
@@ -145,6 +148,40 @@ export const updateMapName = async (request, response) => {
         responseData.error = error;
         responseData.module = SERVER_MODULE;
         responseData.message = SERVER_MAP_NAME_UPDATION_FAILURE_MESSAGE;
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+    }
+};
+
+export const updateHeartbeat = async (request, response) => {
+    const responseData = {
+        status: false,
+        statusCode: 0,
+        message: "",
+        data: null,
+        error: null,
+        module: SERVER_MODULE,
+    };
+
+    try {
+        const serverId = request.params.id;
+
+        const updateServerResponse = await updateHeartbeatInDb(serverId);
+
+        responseData.status = true;
+        responseData.statusCode = RESPONSE_CODE_SUCCESS;
+        responseData.message = SERVER_HEARTBEAT_UPDATION_SUCCESS_MESSAGE;
+        responseData.data = { serverId: updateServerResponse };
+
+        return responseSender(response, responseData.status, responseData.statusCode,
+            responseData.message, responseData.data, responseData.error, responseData.module);
+    } catch (error) {
+        console.error("Error in updateHeartbeat: ", error);
+
+        responseData.error = error;
+        responseData.module = SERVER_MODULE;
+        responseData.message = SERVER_HEARTBEAT_UPDATION_FAILURE_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

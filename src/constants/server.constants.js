@@ -6,6 +6,8 @@ export const SERVER_PLAYER_COUNT_UPDATION_SUCCESS_MESSAGE = "Server player count
 export const SERVER_PLAYER_COUNT_UPDATION_FAILURE_MESSAGE = "Error updating server player count.";
 export const SERVER_MAP_NAME_UPDATION_SUCCESS_MESSAGE = "Server map name updated.";
 export const SERVER_MAP_NAME_UPDATION_FAILURE_MESSAGE = "Error updating server map name.";
+export const SERVER_HEARTBEAT_UPDATION_SUCCESS_MESSAGE = "Server heartbeat updated.";
+export const SERVER_HEARTBEAT_UPDATION_FAILURE_MESSAGE = "Error updating server heartbeat.";
 
 export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_001: "Server current players must be a number.",

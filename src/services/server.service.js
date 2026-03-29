@@ -89,3 +89,22 @@ export const updateMapNameInDb = async (serverId, serverData) => {
         throw error;
     }
 };
+
+export const updateHeartbeatInDb = async (serverId) => {
+    try {
+        const serverResponse = await db
+            .update(servers)
+            .set({
+                last_seen_at: sql`NOW()`,
+            })
+            .where(
+                eq(servers.id, serverId),
+            )
+            .returning();
+
+        return serverResponse[0].id;
+    } catch (error) {
+        console.error("Error in updateHeartbeatInDb: ", error);
+        throw error;
+    }
+};
