@@ -34,3 +34,11 @@ export const mapUpdatePlayerCountRequest = (serverData) => {
 
     return mappedServerData;
 };
+
+export const mapUpdateMapNameRequest = (serverData) => {
+    const mappedServerData = {
+        map_name: serverData.mapName,
+    };
+
+    return mappedServerData;
+};

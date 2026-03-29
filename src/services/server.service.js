@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { servers } from "../db/schema/servers.schema.js";
@@ -59,6 +59,32 @@ export const updatePlayerCountInDb = async (serverId, serverData) => {
         return serverResponse[0].id;
     } catch (error) {
         console.error("Error in updatePlayerCountInDb: ", error);
+        throw error;
+    }
+};
+
+export const updateMapNameInDb = async (serverId, serverData) => {
+    try {
+        const serverResponse = await db
+            .update(servers)
+            .set({
+                map_id: db
+                    .select({ id: maps.id })
+                    .from(maps)
+                    .where(
+                        eq(maps.name, serverData.map_name),
+                    )
+                    .limit(1),
+                last_seen_at: sql`NOW()`,
+            })
+            .where(
+                eq(servers.id, serverId),
+            )
+            .returning();
+
+        return serverResponse[0].id;
+    } catch (error) {
+        console.error("Error in updateMapNameInDb: ", error);
         throw error;
     }
 };

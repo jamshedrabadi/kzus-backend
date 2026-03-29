@@ -13,3 +13,12 @@ export const updatePlayerCountSchema = Joi.object({
             "number.positive": VALIDATION_ERROR_MESSAGES.ERR_MSG_004,
         }),
 });
+
+export const updateMapNameSchema = Joi.object({
+    mapName: Joi.string().trim().required()
+        .messages({
+            "string.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_005,
+            "string.empty": VALIDATION_ERROR_MESSAGES.ERR_MSG_006,
+            "any.required": VALIDATION_ERROR_MESSAGES.ERR_MSG_007,
+        }),
+});
