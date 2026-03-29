@@ -20,9 +20,10 @@ export const getServerListFromDb = async () => {
                 server_current_players: servers.current_players,
                 server_map_id: servers.map_id,
                 server_map_name: maps.name,
-                server_last_seen: servers.last_seen,
+                server_last_seen_at: servers.last_seen_at,
                 server_display_server: servers.display_server,
                 server_display_order: servers.display_order,
+                server_created_at: servers.created_at,
             })
             .from(servers)
             .innerJoin(country,
@@ -68,13 +69,13 @@ export const updateMapNameInDb = async (serverId, serverData) => {
         const serverResponse = await db
             .update(servers)
             .set({
-                map_id: db
+                map_id: sql`${db
                     .select({ id: maps.id })
                     .from(maps)
                     .where(
                         eq(maps.name, serverData.map_name),
                     )
-                    .limit(1),
+                    .limit(1)}`,
                 last_seen_at: sql`NOW()`,
             })
             .where(

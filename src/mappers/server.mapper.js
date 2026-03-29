@@ -18,9 +18,10 @@ export const mapGetServerListResponse = (serverData) => {
             serverCurrentPlayers: server.server_current_players,
             serverMapId: server.server_map_id,
             serverMapName: server.server_map_name,
-            serverLastSeen: server.server_last_seen,
+            serverLastSeenAt: server.server_last_seen_at,
             serverDisplayServer: server.server_display_server,
             serverDisplayOrder: server.server_display_ordeer,
+            serverCreatedAt: server.server_created_at,
         };
     });
 
