@@ -1,5 +1,7 @@
 export const SERVER_MODULE = "server";
 
+export const SERVER_ACTIVE_STATUS_THRESHOLD = 150000; // 2.5 minutes (in ms)
+
 export const SERVER_LIST_FOUND_MESSAGE = "Server list found.";
 export const SERVER_LIST_NOT_FOUND_MESSAGE = "Server list not found.";
 export const SERVER_PLAYER_COUNT_UPDATION_SUCCESS_MESSAGE = "Server player count updated.";

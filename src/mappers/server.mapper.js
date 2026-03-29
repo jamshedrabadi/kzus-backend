@@ -2,6 +2,9 @@ import {
     COUNTRY_FLAG_URL,
     COUNTRY_FLAG_EXTENSION,
 } from "../constants/country.constants.js";
+import {
+    SERVER_ACTIVE_STATUS_THRESHOLD,
+} from "../constants/server.constants.js";
 
 export const mapGetServerListResponse = (serverData) => {
     const mappedPlayerData = serverData.map((server) => {
@@ -22,10 +25,16 @@ export const mapGetServerListResponse = (serverData) => {
             serverDisplayServer: server.server_display_server,
             serverDisplayOrder: server.server_display_ordeer,
             serverCreatedAt: server.server_created_at,
+            serverIsActive: checkServerStatus(server.server_last_seen_at),
         };
     });
 
     return mappedPlayerData;
+};
+
+export const checkServerStatus = (lastSeenAt) => {
+    return lastSeenAt &&
+        ((Date.now() - new Date(lastSeenAt).getTime()) < SERVER_ACTIVE_STATUS_THRESHOLD) || false;
 };
 
 export const mapUpdatePlayerCountRequest = (serverData) => {
