@@ -2,8 +2,4 @@ node_modules
 .env
 
 references
-
-src/db/seeds/dev.seed.js
-src/db/seeds/dev.player.seed.js
-src/db/seeds/dev.map.seed.js
-src/db/seeds/dev.record.seed.js
+src/db/seeds/dev_seeds

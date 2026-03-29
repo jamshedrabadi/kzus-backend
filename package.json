@@ -10,7 +10,7 @@
         "lint": "npx eslint ./src",
         "db:push": "npx drizzle-kit push",
         "db:seed": "node src/db/seeds/seed.js",
-        "db:seed-dev": "node src/db/seeds/dev.seed.js",
+        "db:seed-dev": "node src/db/seeds/dev_seeds/dev.seed.js",
         "start": "node src/server.js",
         "start-dev": "node --watch src/server.js"
     },

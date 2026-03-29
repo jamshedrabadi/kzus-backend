@@ -8,7 +8,7 @@ import {
     timestamp,
 } from "drizzle-orm/pg-core";
 
-export const server = pgTable("server", {
+export const servers = pgTable("servers", {
     id: serial("id").primaryKey(),
 
     name: varchar("name", { length: 255 }).notNull(),
@@ -31,6 +31,6 @@ export const server = pgTable("server", {
 
     created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 }, (table) => [
-    uniqueIndex("server_ip_port_unique")
+    uniqueIndex("servers_ip_port_unique")
         .on(table.ip, table.port),
 ]);
