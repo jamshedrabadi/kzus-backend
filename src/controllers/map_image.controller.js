@@ -5,14 +5,16 @@ import {
     uploadMapImageSchema,
 } from "../validators/map_image.validator.js";
 import {
+    validateFile,
+} from "../file_helpers/map_image.file_helper.js";
+import {
     MAP_IMAGE_MODULE,
+    MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
+    MAP_IMAGE_UPLOAD_FAILURE_MESSAGE,
 } from "../constants/map_image.constants.js";
 import {
     RESPONSE_CODE_SUCCESS,
 } from "../constants/http.constants.js";
-import {
-    VALIDATION_ERROR_MESSAGES,
-} from "../constants/map_image.constants.js";
 
 export const uploadMapImage = async (request, response) => {
     const responseData = {
@@ -26,11 +28,13 @@ export const uploadMapImage = async (request, response) => {
 
     try {
         const mapImageData = request.body;
+        const mapImageFile = request.mapImage;
 
         await uploadMapImageSchema.validateAsync(mapImageData);
 
-        if (!request.file) {
-            throw({ details: [{ message: VALIDATION_ERROR_MESSAGES.ERR_MSG_011 }] });
+        const validateFileResponse = validateFile(mapImageFile);
+        if (validateFileResponse) {
+            throw({ details: [{ message: validateFileResponse }] });
         }
 
         // TODO: file validation
@@ -39,7 +43,7 @@ export const uploadMapImage = async (request, response) => {
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
-        responseData.message = "suc"; // TODO
+        responseData.message = MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE;
         responseData.data = { mapImageId: "done" }; // TODO
 
         return responseSender(response, responseData.status, responseData.statusCode,
@@ -48,7 +52,7 @@ export const uploadMapImage = async (request, response) => {
         console.error("Error in uploadMapImage: ", error);
 
         responseData.error = error;
-        responseData.message = error.message;
+        responseData.message = MAP_IMAGE_UPLOAD_FAILURE_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

@@ -1,12 +1,8 @@
 import express from "express";
 const router = express.Router();
 
-import {
-    MAP_IMAGE_SIZE_LIMIT,
-} from "../constants/map_image.constants.js";
-
 import { createUploader } from "../middlewares/upload.middleware.js";
-const mapImageUploadMiddleware = createUploader({ fileSize: MAP_IMAGE_SIZE_LIMIT }).single("file");
+const mapImageUploadMiddleware = createUploader().single("map_image");
 
 import {
     uploadMapImage,
