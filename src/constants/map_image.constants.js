@@ -11,6 +11,9 @@ export const MAP_IMAGE_ALLOWED_FILE_TYPES = [
     "image/webp",
 ];
 
+export const MAP_IMAGE_MIN_ASPECT_RATIO = 1.70;
+export const MAP_IMAGE_MAX_ASPECT_RATIO = 1.85;
+
 export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_001: "Map image ID must be a number.",
     ERR_MSG_002: "Map image ID must be an integer.",
@@ -25,4 +28,5 @@ export const VALIDATION_ERROR_MESSAGES = {
     ERR_MSG_011: "Map image file is required.",
     ERR_MSG_012: "Map image file type must be one of JPEG, PNG, WEBP.",
     ERR_MSG_013: "Map image file size is too big.",
+    ERR_MSG_014: "Map image file aspect ratio must be ~16:9.",
 };

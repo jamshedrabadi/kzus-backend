@@ -32,12 +32,10 @@ export const uploadMapImage = async (request, response) => {
 
         await uploadMapImageSchema.validateAsync(mapImageData);
 
-        const validateFileResponse = validateFile(mapImageFile);
+        const validateFileResponse = await validateFile(mapImageFile);
         if (validateFileResponse) {
             throw({ details: [{ message: validateFileResponse }] });
         }
-
-        // TODO: file validation
 
         // TODO: file upload
 
