@@ -40,7 +40,8 @@ export const responseSender = (response, status, statusCode, message, data, erro
         responseMessage = dbError.message;
         responseErrors = dbError.errors;
     } else {
-        responseStatusCode = isNaN(statusCode) ? RESPONSE_CODE_DATA_NOT_FOUND : statusCode;
+        responseStatusCode = (!statusCode || isNaN(statusCode))
+            ? RESPONSE_CODE_DATA_NOT_FOUND : statusCode;
         responseMessage = (!message || (message.length === 0 || Object.keys(message).length === 0))
             ? { success: false, errorMessage: RESPONSE_MESSAGE_DATA_NOT_FOUND } : message;
         responseData = data;
