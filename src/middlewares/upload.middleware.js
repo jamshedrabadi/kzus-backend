@@ -1,10 +1,12 @@
 import multer from "multer";
 
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB
-    },
-});
+const storage = multer.memoryStorage();
 
-export const uploadSingleImage = upload.single("file");
+export const createUploader = (options = {}) => {
+    return multer({
+        storage: storage,
+        limits: {
+            fileSize: options.fileSize,
+        },
+    });
+};

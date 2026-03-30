@@ -10,6 +10,9 @@ import {
 import {
     RESPONSE_CODE_SUCCESS,
 } from "../constants/http.constants.js";
+import {
+    VALIDATION_ERROR_MESSAGES,
+} from "../constants/map_image.constants.js";
 
 export const uploadMapImage = async (request, response) => {
     const responseData = {
@@ -26,6 +29,10 @@ export const uploadMapImage = async (request, response) => {
 
         await uploadMapImageSchema.validateAsync(mapImageData);
 
+        if (!request.file) {
+            throw({ details: [{ message: VALIDATION_ERROR_MESSAGES.ERR_MSG_011 }] });
+        }
+
         // TODO: file validation
 
         // TODO: file upload
@@ -38,10 +45,10 @@ export const uploadMapImage = async (request, response) => {
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
     } catch (error) {
-        console.error("Error in updateHeartbeat: ", error);
+        console.error("Error in uploadMapImage: ", error);
 
         responseData.error = error;
-        responseData.message = "fai"; // TODO
+        responseData.message = error.message;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
