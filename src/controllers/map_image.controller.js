@@ -28,7 +28,7 @@ export const uploadMapImage = async (request, response) => {
 
     try {
         const mapImageData = request.body;
-        const mapImageFile = request.mapImage;
+        const mapImageFile = request.file;
 
         await uploadMapImageSchema.validateAsync(mapImageData);
 
