@@ -1,11 +1,13 @@
 import {
     responseSender,
+    formatValidationError,
 } from "../utils/response.utils.js";
 import {
     uploadMapImageSchema,
 } from "../validators/map_image.validator.js";
 import {
     validateFile,
+    convertFileTypeAndResize,
 } from "../file_helpers/map_image.file_helper.js";
 import {
     MAP_IMAGE_MODULE,
@@ -34,8 +36,11 @@ export const uploadMapImage = async (request, response) => {
 
         const validateFileResponse = await validateFile(mapImageFile);
         if (validateFileResponse) {
-            throw({ details: [{ message: validateFileResponse }] });
+            throw (formatValidationError(validateFileResponse)); // validation error format
         }
+
+        const convertedMapImage = await convertFileTypeAndResize(mapImageFile);
+        // console.log("convertedMapImage --- ", convertedMapImage);
 
         // TODO: file upload
 

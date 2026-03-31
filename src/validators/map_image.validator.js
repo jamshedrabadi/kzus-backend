@@ -24,4 +24,5 @@ export const uploadMapImageSchema = Joi.object({
             "number.integer": VALIDATION_ERROR_MESSAGES.ERR_MSG_009,
             "number.positive": VALIDATION_ERROR_MESSAGES.ERR_MSG_010,
         }),
+    mapImage: Joi.any().optional(),
 });

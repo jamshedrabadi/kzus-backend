@@ -80,3 +80,8 @@ export const getDatabaseError = (dbError, module) => {
 
     return { code, message, errors };
 };
+
+export const formatValidationError = (validationErrorMessage) => {
+    return { details: [{ message: validationErrorMessage }] };
+};
+
