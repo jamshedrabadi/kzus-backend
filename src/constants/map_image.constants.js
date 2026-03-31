@@ -2,6 +2,10 @@ export const MAP_IMAGE_MODULE = "map_image";
 
 export const MAP_IMAGE_SIZE_LIMIT = 5 * 1024 * 1024; // 5 MB
 
+export const MAP_IMAGE_FOLDER_NAME = "map_images";
+export const MAP_IMAGE_CONTENT_TYPE = "image/webp";
+export const MAP_IMAGE_FILE_TYPE = "webp";
+
 export const MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE = "Map image uploaded successfully.";
 export const MAP_IMAGE_UPLOAD_FAILURE_MESSAGE = "Error uploading map image.";
 

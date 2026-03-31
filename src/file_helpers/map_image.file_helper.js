@@ -6,6 +6,8 @@ import {
     MAP_IMAGE_SIZE_LIMIT,
     MAP_IMAGE_MIN_ASPECT_RATIO,
     MAP_IMAGE_MAX_ASPECT_RATIO,
+    MAP_IMAGE_FOLDER_NAME,
+    MAP_IMAGE_FILE_TYPE,
 } from "../constants/map_image.constants.js";
 
 export const validateFile = async (file) => {
@@ -65,4 +67,8 @@ export const convertFileTypeAndResize = async (file) => {
     } catch (error) {
         console.error("Error in convertFileTypeAndResize:", error);
     }
+};
+
+export const getNewFileKey = (mapImageData) => {
+    return `${MAP_IMAGE_FOLDER_NAME}/${mapImageData.map_id}/${crypto.randomUUID()}.${MAP_IMAGE_FILE_TYPE}`;
 };

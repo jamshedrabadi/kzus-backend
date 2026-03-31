@@ -2,7 +2,7 @@ import Joi from "../lib/joi.js";
 import { VALIDATION_ERROR_MESSAGES } from "../constants/map_image.constants.js";
 
 export const uploadMapImageSchema = Joi.object({
-    id: Joi.number().integer().optional()
+    imageId: Joi.number().integer().optional()
         .positive()
         .messages({
             "number.base": VALIDATION_ERROR_MESSAGES.ERR_MSG_001,

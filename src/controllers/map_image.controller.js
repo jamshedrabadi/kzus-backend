@@ -8,11 +8,19 @@ import {
 import {
     validateFile,
     convertFileTypeAndResize,
+    getNewFileKey,
 } from "../file_helpers/map_image.file_helper.js";
+import {
+    uploadToR2,
+} from "../services/r2.service.js";
+import {
+    mapUploadMapImageRequest,
+} from "../mappers/map_image.mapper.js";
 import {
     MAP_IMAGE_MODULE,
     MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
     MAP_IMAGE_UPLOAD_FAILURE_MESSAGE,
+    MAP_IMAGE_CONTENT_TYPE,
 } from "../constants/map_image.constants.js";
 import {
     RESPONSE_CODE_SUCCESS,
@@ -39,10 +47,14 @@ export const uploadMapImage = async (request, response) => {
             throw (formatValidationError(validateFileResponse)); // validation error format
         }
 
-        const convertedMapImage = await convertFileTypeAndResize(mapImageFile);
-        // console.log("convertedMapImage --- ", convertedMapImage);
+        const mappedMapImageData = mapUploadMapImageRequest(mapImageData);
 
-        // TODO: file upload
+        const convertedMapImageBuffer = await convertFileTypeAndResize(mapImageFile);
+
+        const newKey = getNewFileKey(mappedMapImageData);
+
+        const uploadResponse =
+            await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE);
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
