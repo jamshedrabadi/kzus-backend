@@ -5,28 +5,35 @@ import {
 
 import { r2 } from "../lib/r2.js";
 import {
-    BASE_URL,
     R2_BUCKET,
 } from "../constants/r2.constants.js";
 
 export const uploadToR2 = async (buffer, key, contentType) => {
-    const command = new PutObjectCommand({
-        Bucket: R2_BUCKET,
-        Key: key, // e.g. maps/123/abc.webp
-        Body: buffer,
-        ContentType: contentType, // "image/webp"
-    });
+    try {
+        const command = new PutObjectCommand({
+            Bucket: R2_BUCKET,
+            Key: key, // e.g. maps/123/abc.webp
+            Body: buffer,
+            ContentType: contentType, // "image/webp"
+        });
 
-    await r2.send(command);
+        await r2.send(command);
 
-    return `${BASE_URL}/${key}`;
+        return key;
+    } catch (error) {
+        console.error("Error in uploadToR2: ", error);
+    }
 };
 
 export const deleteFromR2 = async (key) => {
-    const command = new DeleteObjectCommand({
-        Bucket: R2_BUCKET,
-        Key: key,
-    });
+    try {
+        const command = new DeleteObjectCommand({
+            Bucket: R2_BUCKET,
+            Key: key,
+        });
 
-    await r2.send(command);
+        return await r2.send(command);
+    } catch (error) {
+        console.error("Error in uploadToR2: ", error);
+    }
 };

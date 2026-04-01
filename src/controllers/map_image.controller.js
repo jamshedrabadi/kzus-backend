@@ -12,10 +12,14 @@ import {
 } from "../file_helpers/map_image.file_helper.js";
 import {
     uploadToR2,
+    deleteFromR2,
 } from "../services/r2.service.js";
 import {
     mapUploadMapImageRequest,
 } from "../mappers/map_image.mapper.js";
+import {
+    upsertMapImage,
+} from "../services/map_image.service.js";
 import {
     MAP_IMAGE_MODULE,
     MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
@@ -25,6 +29,9 @@ import {
 import {
     RESPONSE_CODE_SUCCESS,
 } from "../constants/http.constants.js";
+import {
+    BASE_URL,
+} from "../constants/r2.constants.js";
 
 export const uploadMapImage = async (request, response) => {
     const responseData = {
@@ -53,13 +60,23 @@ export const uploadMapImage = async (request, response) => {
 
         const newKey = getNewFileKey(mappedMapImageData);
 
-        const uploadResponse =
-            await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE);
+        await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE);
+
+        const upsertMapImageResponse = await upsertMapImage(mappedMapImageData, newKey);
+        if (!upsertMapImageResponse) { // error in DB functions
+            throw new Error("Image not found for existing image ID.");
+        }
+        if (upsertMapImageResponse.oldKey) { // delete old image from r2
+            await deleteFromR2(upsertMapImageResponse.oldKey);
+        }
 
         responseData.status = true;
         responseData.statusCode = RESPONSE_CODE_SUCCESS;
         responseData.message = MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE;
-        responseData.data = { mapImageId: "done" }; // TODO
+        responseData.data = {
+            mapImageId: upsertMapImageResponse.mapImageResponse,
+            mapImageUrl: `${BASE_URL}/${newKey}`,
+        };
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
