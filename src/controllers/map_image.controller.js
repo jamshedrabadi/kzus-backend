@@ -18,6 +18,7 @@ import {
     mapUploadMapImageRequest,
 } from "../mappers/map_image.mapper.js";
 import {
+    getExistingMapImage,
     upsertMapImage,
 } from "../services/map_image.service.js";
 import {
@@ -25,8 +26,10 @@ import {
     MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
     MAP_IMAGE_UPLOAD_FAILURE_MESSAGE,
     MAP_IMAGE_CONTENT_TYPE,
+    MAP_IMAGE_EXISTING_ID_NOT_FOUND,
 } from "../constants/map_image.constants.js";
 import {
+    RESPONSE_CODE_DATA_NOT_FOUND,
     RESPONSE_CODE_SUCCESS,
 } from "../constants/http.constants.js";
 import {
@@ -47,6 +50,8 @@ export const uploadMapImage = async (request, response) => {
         const mapImageData = request.body;
         const mapImageFile = request.file;
 
+        let oldKey = null;
+
         await uploadMapImageSchema.validateAsync(mapImageData);
 
         const validateFileResponse = await validateFile(mapImageFile);
@@ -60,13 +65,25 @@ export const uploadMapImage = async (request, response) => {
 
         const newKey = getNewFileKey(mappedMapImageData);
 
-        await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE);
+        if (mapImageData.image_id) { // check for existing id to be replaced
+            const existingMapImage = await getExistingMapImage(mapImageData.image_id);
+            if (!existingMapImage) {
+                responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
+                responseData.message = MAP_IMAGE_EXISTING_ID_NOT_FOUND;
+
+                return responseSender(response, responseData.status, responseData.statusCode,
+                    responseData.message, responseData.data, responseData.error,
+                    responseData.module);
+            }
+
+            oldKey = existingMapImage.image_url;
+        }
+
+        await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE); // upload new
 
         const upsertMapImageResponse = await upsertMapImage(mappedMapImageData, newKey);
-        if (!upsertMapImageResponse) { // error in DB functions
-            throw new Error("Image not found for existing image ID.");
-        }
-        if (upsertMapImageResponse.oldKey) { // delete old image from r2
+
+        if (oldKey) { // delete old image from r2
             await deleteFromR2(upsertMapImageResponse.oldKey);
         }
 

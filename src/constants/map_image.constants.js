@@ -8,6 +8,7 @@ export const MAP_IMAGE_FILE_TYPE = "webp";
 
 export const MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE = "Map image uploaded successfully.";
 export const MAP_IMAGE_UPLOAD_FAILURE_MESSAGE = "Error uploading map image.";
+export const MAP_IMAGE_EXISTING_ID_NOT_FOUND = "Image not found for existing image ID.";
 
 export const MAP_IMAGE_ALLOWED_FILE_TYPES = [
     "image/jpeg",
