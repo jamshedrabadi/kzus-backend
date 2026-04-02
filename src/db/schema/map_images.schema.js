@@ -17,7 +17,7 @@ export const mapImages = pgTable("map_images", {
             onUpdate: "cascade",
         }),
 
-    image_url: text("image_url").notNull(),
+    image_key: text("image_key").notNull(),
 
     display_order: integer("display_order"),
 }, (table) => [

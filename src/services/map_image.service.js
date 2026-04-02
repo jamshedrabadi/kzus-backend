@@ -26,7 +26,7 @@ export const getExistingMapImage = async (imageId) => {
             .select({
                 id: mapImages.id,
                 map_id: mapImages.map_id,
-                image_url: mapImages.image_url,
+                image_key: mapImages.image_key,
                 display_order: mapImages.display_order,
             })
             .from(mapImages)
@@ -48,7 +48,7 @@ export const updateMapImageInDb = async (mapImageData, imageKey) => {
             .update(mapImages)
             .set({
                 display_order: mapImageData.display_order,
-                image_url: imageKey,
+                image_key: imageKey,
             })
             .where(
                 eq(mapImages.id, mapImageData.image_id),
@@ -68,7 +68,7 @@ export const insertMapImageInDb = async (mapImageData, imageKey) => {
             .insert(mapImages)
             .values({
                 ...mapImageData,
-                image_url: imageKey,
+                image_key: imageKey,
             })
             .returning();
 

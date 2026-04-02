@@ -76,7 +76,7 @@ export const uploadMapImage = async (request, response) => {
                     responseData.module);
             }
 
-            oldKey = existingMapImage.image_url;
+            oldKey = existingMapImage.image_key;
         }
 
         await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE); // upload new
