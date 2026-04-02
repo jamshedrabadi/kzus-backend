@@ -19,6 +19,7 @@ import {
 } from "../mappers/map_image.mapper.js";
 import {
     getExistingMapImage,
+    getExistingMapImageCount,
     upsertMapImage,
 } from "../services/map_image.service.js";
 import {
@@ -26,11 +27,14 @@ import {
     MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
     MAP_IMAGE_UPLOAD_FAILURE_MESSAGE,
     MAP_IMAGE_CONTENT_TYPE,
-    MAP_IMAGE_EXISTING_ID_NOT_FOUND,
+    MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE,
+    MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE,
+    MAP_IMAGE_MAX_LIMIT,
 } from "../constants/map_image.constants.js";
 import {
     RESPONSE_CODE_DATA_NOT_FOUND,
     RESPONSE_CODE_SUCCESS,
+    RESPONSE_CODE_UNPROCESSABLE_ENTITY,
 } from "../constants/http.constants.js";
 import {
     BASE_URL,
@@ -61,15 +65,12 @@ export const uploadMapImage = async (request, response) => {
 
         const mappedMapImageData = mapUploadMapImageRequest(mapImageData);
 
-        const convertedMapImageBuffer = await convertFileTypeAndResize(mapImageFile);
-
-        const newKey = getNewFileKey(mappedMapImageData);
-
-        if (mappedMapImageData.image_id) { // check for existing id to be replaced
+        if (mappedMapImageData.image_id) {
+            // edit map image - check for existing id to be replaced
             const existingMapImage = await getExistingMapImage(mappedMapImageData.image_id);
             if (!existingMapImage) {
                 responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
-                responseData.message = MAP_IMAGE_EXISTING_ID_NOT_FOUND;
+                responseData.message = MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE;
 
                 return responseSender(response, responseData.status, responseData.statusCode,
                     responseData.message, responseData.data, responseData.error,
@@ -77,7 +78,22 @@ export const uploadMapImage = async (request, response) => {
             }
 
             oldKey = existingMapImage.image_key;
+        } else {
+            // insert map image - check for max images per map
+            const existingMapImageCount = getExistingMapImageCount(mappedMapImageData.map_id);
+            if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
+                responseData.statusCode = RESPONSE_CODE_UNPROCESSABLE_ENTITY;
+                responseData.message = MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE;
+
+                return responseSender(response, responseData.status, responseData.statusCode,
+                    responseData.message, responseData.data, responseData.error,
+                    responseData.module);
+            }
         }
+
+        const convertedMapImageBuffer = await convertFileTypeAndResize(mapImageFile);
+
+        const newKey = getNewFileKey(mappedMapImageData);
 
         await uploadToR2(convertedMapImageBuffer, newKey, MAP_IMAGE_CONTENT_TYPE); // upload new
 

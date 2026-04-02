@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { mapImages } from "../db/schema/map_images.schema.js";
@@ -38,6 +38,24 @@ export const getExistingMapImage = async (imageId) => {
         return existingMapImage[0];
     } catch (error) {
         console.error("Error in getExistingMapImage: ", error);
+        throw error;
+    }
+};
+
+export const getExistingMapImageCount = async (mapId) => {
+    try {
+        const existingMapImageCount = await db
+            .select({
+                map_images_count: sql`COUNT(*)`,
+            })
+            .from(mapImages)
+            .where(
+                eq(mapImages.map_id, mapId),
+            );
+
+        return existingMapImageCount[0].map_images_count;
+    } catch (error) {
+        console.error("Error in getExistingMapImageCount: ", error);
         throw error;
     }
 };
