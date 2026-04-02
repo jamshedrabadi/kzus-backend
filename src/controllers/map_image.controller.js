@@ -65,8 +65,8 @@ export const uploadMapImage = async (request, response) => {
 
         const newKey = getNewFileKey(mappedMapImageData);
 
-        if (mapImageData.image_id) { // check for existing id to be replaced
-            const existingMapImage = await getExistingMapImage(mapImageData.image_id);
+        if (mappedMapImageData.image_id) { // check for existing id to be replaced
+            const existingMapImage = await getExistingMapImage(mappedMapImageData.image_id);
             if (!existingMapImage) {
                 responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
                 responseData.message = MAP_IMAGE_EXISTING_ID_NOT_FOUND;
@@ -84,7 +84,7 @@ export const uploadMapImage = async (request, response) => {
         const upsertMapImageResponse = await upsertMapImage(mappedMapImageData, newKey);
 
         if (oldKey) { // delete old image from r2
-            await deleteFromR2(upsertMapImageResponse.oldKey);
+            await deleteFromR2(oldKey);
         }
 
         responseData.status = true;
