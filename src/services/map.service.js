@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { maps } from "../db/schema/maps.schema.js";
@@ -9,6 +9,7 @@ import { players } from "../db/schema/players.schema.js";
 import { country } from "../db/schema/country.schema.js";
 import { records } from "../db/schema/records.schema.js";
 import { worldRecords } from "../db/schema/world_records.schema.js";
+import { mapImages } from "../db/schema/map_images.schema.js";
 import {
     RECORD_MODE_PRO,
 } from "../constants/record.constants.js";
@@ -149,6 +150,30 @@ export const getMapWorldRecordsFromDb = async (mapId) => {
         return result;
     } catch (error) {
         console.error("Error in getMapWorldRecordsFromDb: ", error);
+        throw error;
+    }
+};
+
+export const getMapImagesFromDb = async (mapId) => {
+    try {
+        const result = await db
+            .select({
+                id: mapImages.id,
+                map_id: mapImages.map_id,
+                image_key: mapImages.image_key,
+                display_order: mapImages.display_order,
+            })
+            .from(mapImages)
+            .where(
+                eq(mapImages.map_id, mapId),
+            ).orderBy(
+                asc(mapImages.display_order),
+                asc(mapImages.id),
+            );
+
+        return result;
+    } catch (error) {
+        console.error("Error in getMapImagesFromDb: ", error);
         throw error;
     }
 };

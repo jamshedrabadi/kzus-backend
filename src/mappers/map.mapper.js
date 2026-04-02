@@ -6,6 +6,9 @@ import {
     COUNTRY_FLAG_URL,
     COUNTRY_FLAG_EXTENSION,
 } from "../constants/country.constants.js";
+import {
+    BASE_URL,
+} from "../constants/r2.constants.js";
 
 export const mapCreateOrUpdateMapRequest = (mapData) => {
     const mappedMapData = {
@@ -18,7 +21,7 @@ export const mapCreateOrUpdateMapRequest = (mapData) => {
     return mappedMapData;
 };
 
-export const mapGetMapResponse = (mapData, mapStats, mapWorldRecords) => {
+export const mapGetMapResponse = (mapData, mapStats, mapWorldRecords, mapImages) => {
     const mappedMapData = {
         map: {
             mapId: mapData[0].map_id,
@@ -67,6 +70,12 @@ export const mapGetMapResponse = (mapData, mapStats, mapWorldRecords) => {
             countryFlag: `${COUNTRY_FLAG_URL}${wr.country_code}${COUNTRY_FLAG_EXTENSION}`,
             playerName: wr.player_name,
             recordDate: wr.record_date,
+        })),
+        images: mapImages.map((image) => ({
+            id: image.id,
+            mapId: image.map_id,
+            imageUrl: `${BASE_URL}/${image.image_key}`,
+            displayOrder: image.display_order,
         })),
     };
 
