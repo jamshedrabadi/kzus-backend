@@ -28,7 +28,7 @@ export const parseApiTextResponse = (textResponse, apiName) => {
                 map_route: routeData.mapRoute,
                 time: convertSecondsToMs(time),
                 player_name: player,
-                country_code: country !== 'n-a' ? country : null,
+                country_code: country !== "n-a" ? country : null,
                 record_date: apiName === API_NAME_KZCOM
                     ? convertFromKzcomDate(date) : convertFromCosyDate(date),
             });
