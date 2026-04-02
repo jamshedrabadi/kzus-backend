@@ -1,7 +1,8 @@
 import { S3Client } from "@aws-sdk/client-s3";
+import { R2_BUCKET_REGION } from "../constants/r2.constants.js";
 
 export const r2 = new S3Client({
-    region: "auto",
+    region: R2_BUCKET_REGION,
     endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
     credentials: {
         accessKeyId: process.env.R2_ACCESS_KEY_ID,
