@@ -70,129 +70,164 @@ export const upsertRecordInDb = async (recordData) => {
 };
 
 export const checkExistingRecord = async (tx, recordData) => {
-    const existingRecord = await tx
-        .select({
-            id: records.id,
-            time: records.time,
-            place: records.place,
-        })
-        .from(records)
-        .where(
-            and(
-                eq(records.player_id, recordData.player_id),
-                eq(records.map_id, recordData.map_id),
-                eq(records.mode, recordData.mode),
-            ),
-        )
-        .limit(1);
+    try {
+        const existingRecord = await tx
+            .select({
+                id: records.id,
+                time: records.time,
+                place: records.place,
+            })
+            .from(records)
+            .where(
+                and(
+                    eq(records.player_id, recordData.player_id),
+                    eq(records.map_id, recordData.map_id),
+                    eq(records.mode, recordData.mode),
+                ),
+            )
+            .limit(1);
 
-    return existingRecord;
+        return existingRecord;
+    } catch (error) {
+        console.error("Error in checkExistingRecord: ", error);
+        throw error;
+    }
 };
 
 export const getNewRank = async (tx, recordData) => {
-    const rankResult = await tx
-        .select({
-            rank: sql`COUNT(*) + 1`,
-        })
-        .from(records)
-        .where(
-            and(
-                eq(records.map_id, recordData.map_id),
-                eq(records.mode, recordData.mode),
-                lte(records.time, recordData.time),
-            ),
-        );
+    try {
+        const rankResult = await tx
+            .select({
+                rank: sql`COUNT(*) + 1`,
+            })
+            .from(records)
+            .where(
+                and(
+                    eq(records.map_id, recordData.map_id),
+                    eq(records.mode, recordData.mode),
+                    lte(records.time, recordData.time),
+                ),
+            );
 
-    return Number(rankResult[0].rank);
+        return Number(rankResult[0].rank);
+    } catch (error) {
+        console.error("Error in getNewRank: ", error);
+        throw error;
+    }
 };
 
 export const getRecordsOnMap = async (tx, recordData) => {
-    const recordsResult = await tx
-        .select({
-            total: sql`COUNT(*)`,
-        })
-        .from(records)
-        .where(
-            and(
-                eq(records.map_id, recordData.map_id),
-                eq(records.mode, recordData.mode),
-            ),
-        );
+    try {
+        const recordsResult = await tx
+            .select({
+                total: sql`COUNT(*)`,
+            })
+            .from(records)
+            .where(
+                and(
+                    eq(records.map_id, recordData.map_id),
+                    eq(records.mode, recordData.mode),
+                ),
+            );
 
-    return Number(recordsResult[0].total);
+        return Number(recordsResult[0].total);
+    } catch (error) {
+        console.error("Error in getRecordsOnMap: ", error);
+        throw error;
+    }
 };
 
 export const incrementSlowerTimes = async (tx, recordData, newRank, oldRank = null) => {
-    const conditions = [
-        eq(records.map_id, recordData.map_id),
-        eq(records.mode, recordData.mode),
-        gte(records.place, newRank),
-    ];
-    if (oldRank) {
-        conditions.push(lt(records.place, oldRank));
-    }
+    try {
+        const conditions = [
+            eq(records.map_id, recordData.map_id),
+            eq(records.mode, recordData.mode),
+            gte(records.place, newRank),
+        ];
+        if (oldRank) {
+            conditions.push(lt(records.place, oldRank));
+        }
 
-    return await tx
-        .update(records)
-        .set({
-            place: sql`${records.place} + 1`,
-        })
-        .where(
-            and(...conditions),
-        );
+        return await tx
+            .update(records)
+            .set({
+                place: sql`${records.place} + 1`,
+            })
+            .where(
+                and(...conditions),
+            );
+    } catch (error) {
+        console.error("Error in incrementSlowerTimes: ", error);
+        throw error;
+    }
 };
 
 export const insertRecord = async (tx, recordData, newRank) => {
-    return await tx
-        .insert(records)
-        .values({
-            ...recordData,
-            place: newRank,
-            points: 0,
-        });
+    try {
+        return await tx
+            .insert(records)
+            .values({
+                ...recordData,
+                place: newRank,
+                points: 0,
+            });
+    } catch (error) {
+        console.error("Error in insertRecord: ", error);
+        throw error;
+    }
 };
 
 export const updateRecord = async (tx, recordData, newRank, playerRecordId) => {
-    return await tx
-        .update(records)
-        .set({
-            time: recordData.time,
-            place: newRank,
-            improvements: sql`${records.improvements} + 1`,
-            updated_at: sql`NOW()`,
-        })
-        .where(
-            eq(records.id, playerRecordId),
-        );
+    try {
+        return await tx
+            .update(records)
+            .set({
+                time: recordData.time,
+                place: newRank,
+                improvements: sql`${records.improvements} + 1`,
+                updated_at: sql`NOW()`,
+            })
+            .where(
+                eq(records.id, playerRecordId),
+            );
+    } catch (error) {
+        console.error("Error in updateRecord: ", error);
+        throw error;
+    }
 };
 
 export const recalculatePoints = async (
     tx, recordData, totalRecords, pointsCalcStart, pointsCalcEnd) => {
 
-    return await tx
-        .update(records)
-        .set({
-            points: sql`
-                FLOOR(
-                    ${RECORD_BASE_POINTS}
-                    * ${difficulty.multiplier}
-                    * SQRT(${totalRecords})
-                    * (1 / SQRT(${records.place}))
-                )`,
-        })
-        .from(maps)
-        .innerJoin(difficulty,
-            eq(maps.difficulty_id, difficulty.id),
-        )
-        .where(
-            and(
-                eq(records.map_id, maps.id),
-                eq(records.map_id, recordData.map_id),
-                eq(records.mode, RECORD_MODE_PRO),
-                gte(records.place, pointsCalcStart),
-                lte(records.place, pointsCalcEnd),
-            ),
-        );
+    try {
+        return await tx
+            .update(records)
+            .set({
+                points: sql`
+                    FLOOR(
+                        ${RECORD_BASE_POINTS}
+                        * ${difficulty.multiplier}
+                        * SQRT(${totalRecords})
+                        * (1 / SQRT(${records.place}))
+                    )`,
+            })
+            .from(maps)
+            .innerJoin(difficulty,
+                eq(maps.difficulty_id, difficulty.id),
+            )
+            .where(
+                and(
+                    eq(records.map_id, maps.id),
+                    eq(records.map_id, recordData.map_id),
+                    eq(records.mode, RECORD_MODE_PRO),
+                    gte(records.place, pointsCalcStart),
+                    lte(records.place, pointsCalcEnd),
+                ),
+            );
+    } catch (error) {
+        console.error("Error in recalculatePoints: ", error);
+        throw error;
+    }
 };
 
 export const getRecordListFromDb = async () => {
