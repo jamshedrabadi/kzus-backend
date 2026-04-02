@@ -80,7 +80,7 @@ export const uploadMapImage = async (request, response) => {
             oldKey = existingMapImage.image_key;
         } else {
             // insert map image - check for max images per map
-            const existingMapImageCount = getExistingMapImageCount(mappedMapImageData.map_id);
+            const existingMapImageCount = await getExistingMapImageCount(mappedMapImageData.map_id);
             if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
                 responseData.statusCode = RESPONSE_CODE_UNPROCESSABLE_ENTITY;
                 responseData.message = MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE;
