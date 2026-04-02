@@ -76,6 +76,7 @@ export const fetchWorldRecordApisData = async () => {
         return [...kzcomWorldRecordList, ...cosyWorldRecordList];
     } catch (error) {
         console.error("Error in fetchWorldRecordApisData: ", error);
+        throw error;
     }
 };
 
@@ -85,6 +86,7 @@ export const getApiTextResponse = async (url) => {
         return await response.text();
     } catch (error) {
         console.error("Error in getApiTextResponse: ", error);
+        throw error;
     }
 };
 
@@ -93,6 +95,7 @@ export const truncateWorldRecords = async (tx) => {
         return await tx.execute(sql`TRUNCATE TABLE world_records RESTART IDENTITY CASCADE`);
     } catch (error) {
         console.error("Error in truncateWorldRecords: ", error);
+        throw error;
     }
 };
 
@@ -153,5 +156,6 @@ export const insertWorldRecordData = async (worldRecordData, tx) => {
         `);
     } catch (error) {
         console.error("Error in insertWorldRecordData: ", error);
+        throw error;
     }
 };

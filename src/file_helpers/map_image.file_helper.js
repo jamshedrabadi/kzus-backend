@@ -28,6 +28,7 @@ export const validateFile = async (file) => {
         return null;
     } catch (error) {
         console.error("Error in validateFile:", error);
+        throw error;
     }
 };
 
@@ -55,6 +56,7 @@ export const checkValidFileAspectRatio = async (file) => {
             false;
     } catch (error) {
         console.error("Error in checkValidFileAspectRatio:", error);
+        throw error;
     }
 };
 
@@ -66,6 +68,7 @@ export const convertFileTypeAndResize = async (file) => {
             .toBuffer();
     } catch (error) {
         console.error("Error in convertFileTypeAndResize:", error);
+        throw error;
     }
 };
 

@@ -22,6 +22,7 @@ export const uploadToR2 = async (buffer, key, contentType) => {
         return key;
     } catch (error) {
         console.error("Error in uploadToR2: ", error);
+        throw error;
     }
 };
 
@@ -35,5 +36,6 @@ export const deleteFromR2 = async (key) => {
         return await r2.send(command);
     } catch (error) {
         console.error("Error in uploadToR2: ", error);
+        throw error;
     }
 };
