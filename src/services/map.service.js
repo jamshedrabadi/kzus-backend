@@ -1,4 +1,4 @@
-import { and, asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, ne, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { maps } from "../db/schema/maps.schema.js";
@@ -47,6 +47,31 @@ export const updateMapInDb = async (mapId, mapData) => {
         return mapResponse[0].id;
     } catch (error) {
         console.error("Error in updateMapInDb: ", error);
+        throw error;
+    }
+};
+
+export const checkExistingMapName = async (mapData, mapId = null) => {
+    try {
+        const conditions = [
+            eq(maps.name, mapData.name),
+        ];
+        if (mapId) {
+            conditions.push(ne(maps.id, mapId));
+        }
+
+        const existingMap = await db
+            .select({
+                map_count: sql`COUNT(*)`,
+            })
+            .from(maps)
+            .where(
+                and(...conditions),
+            );
+
+        return existingMap[0].map_count;
+    } catch (error) {
+        console.error("Error in checkExistingMapName: ", error);
         throw error;
     }
 };

@@ -1,4 +1,4 @@
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, ne, sql } from "drizzle-orm";
 
 import { db } from "../db/db-connection.js";
 import { players } from "../db/schema/players.schema.js";
@@ -26,7 +26,7 @@ export const createPlayerInDb = async (playerData) => {
     }
 };
 
-export const updatePlayerInDb = async (playerId, playerData) => {
+export const updatePlayerInDb = async (playerId, playerData = null) => {
     try {
         const playerResponse = await db
             .update(players)
@@ -44,6 +44,31 @@ export const updatePlayerInDb = async (playerId, playerData) => {
         return playerResponse[0].id;
     } catch (error) {
         console.error("Error in updatePlayerInDb: ", error);
+        throw error;
+    }
+};
+
+export const checkExistingPlayerSteamId = async (playerData, playerId) => {
+    try {
+        const conditions = [
+            eq(players.steam_id, playerData.steam_id),
+        ];
+        if (playerId) {
+            conditions.push(ne(players.id, playerId));
+        }
+
+        const existingPlayer = await db
+            .select({
+                player_count: sql`COUNT(*)`,
+            })
+            .from(players)
+            .where(
+                and(...conditions),
+            );
+
+        return existingPlayer[0].player_count;
+    } catch (error) {
+        console.error("Error in checkExistingPlayerSteamId: ", error);
         throw error;
     }
 };

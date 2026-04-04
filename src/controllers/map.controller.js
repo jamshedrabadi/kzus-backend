@@ -6,8 +6,10 @@ import {
     getMapWorldRecordsFromDb,
     getMapImagesFromDb,
     getMapListFromDb,
+    checkExistingMapName,
 } from "../services/map.service.js";
 import {
+    responseDuplicateError,
     responseError,
     responseNotFoundError,
     responseSuccess,
@@ -32,6 +34,7 @@ import {
     MAP_NOT_FOUND_MESSAGE,
     MAP_LIST_FOUND_MESSAGE,
     MAP_LIST_NOT_FOUND_MESSAGE,
+    DUPLICATE_MAP_NAME_MESSAGE,
 } from "../constants/map.constants.js";
 import {
 } from "../constants/common.constants.js";
@@ -49,6 +52,14 @@ export const createMap = async (request, response) => {
         }
 
         const mappedMapData = mapCreateOrUpdateMapRequest(mapData);
+
+        const existingMap = await checkExistingMapName(mappedMapData);
+        if (existingMap > 0) {
+            return responseDuplicateError(
+                response,
+                DUPLICATE_MAP_NAME_MESSAGE,
+            );
+        }
 
         const createMapResponse = await createMapInDb(mappedMapData);
 
@@ -79,6 +90,14 @@ export const updateMap = async (request, response) => {
         }
 
         const mappedMapData = mapCreateOrUpdateMapRequest(mapData);
+
+        const existingMap = await checkExistingMapName(mappedMapData, mapId);
+        if (existingMap > 0) {
+            return responseDuplicateError(
+                response,
+                DUPLICATE_MAP_NAME_MESSAGE,
+            );
+        }
 
         const updateMapResponse = await updateMapInDb(mapId, mappedMapData);
 

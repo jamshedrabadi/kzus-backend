@@ -4,8 +4,10 @@ import {
     getPlayerDataFromDb,
     getPlayerStatsFromDb,
     getPlayerListFromDb,
+    checkExistingPlayerSteamId,
 } from "../services/player.service.js";
 import {
+    responseDuplicateError,
     responseError,
     responseNotFoundError,
     responseSuccess,
@@ -30,6 +32,7 @@ import {
     PLAYER_NOT_FOUND_MESSAGE,
     PLAYER_LIST_FOUND_MESSAGE,
     PLAYER_LIST_NOT_FOUND_MESSAGE,
+    DUPLICATE_PLAYER_STEAMID_MESSAGE,
 } from "../constants/player.constants.js";
 import {
 } from "../constants/common.constants.js";
@@ -47,6 +50,14 @@ export const createPlayer = async (request, response) => {
         }
 
         const mappedPlayerData = mapCreateOrUpdatePlayerRequest(playerData);
+
+        const existingPlayers = await checkExistingPlayerSteamId(mappedPlayerData);
+        if (existingPlayers > 0) {
+            return responseDuplicateError(
+                response,
+                DUPLICATE_PLAYER_STEAMID_MESSAGE,
+            );
+        }
 
         const createPlayerResponse = await createPlayerInDb(mappedPlayerData);
 
@@ -77,6 +88,14 @@ export const updatePlayer = async (request, response) => {
         }
 
         const mappedPlayerData = mapCreateOrUpdatePlayerRequest(playerData);
+
+        const existingPlayers = await checkExistingPlayerSteamId(mappedPlayerData, playerId);
+        if (existingPlayers > 0) {
+            return responseDuplicateError(
+                response,
+                DUPLICATE_PLAYER_STEAMID_MESSAGE,
+            );
+        }
 
         const updatePlayerResponse = await updatePlayerInDb(playerId, mappedPlayerData);
 
