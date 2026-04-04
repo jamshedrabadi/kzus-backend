@@ -35,7 +35,7 @@ export const upsertRecord = async (request, response) => {
 
         const validateRequest = upsertRecordSchema.validate(recordData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -45,7 +45,7 @@ export const upsertRecord = async (request, response) => {
 
         const upsertedRecord = await upsertRecordInDb(mappedRecordData);
         if (!upsertedRecord.success) {
-            responseDuplicateError(
+            return responseDuplicateError(
                 response,
                 RECORD_BETTER_RECORD_EXISTS_MESSAGE,
             );
@@ -59,7 +59,7 @@ export const upsertRecord = async (request, response) => {
     } catch (error) {
         console.error("Error in upsertRecord: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -67,7 +67,7 @@ export const getRecordList = async (request, response) => {
     try {
         const recordListResponse = await getRecordListFromDb();
         if (!recordListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 RECORD_LIST_NOT_FOUND_MESSAGE,
             );
@@ -84,6 +84,6 @@ export const getRecordList = async (request, response) => {
     } catch (error) {
         console.error("Error in getRecordList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

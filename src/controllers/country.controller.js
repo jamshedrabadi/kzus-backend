@@ -23,7 +23,7 @@ export const getCountryList = async (request, response) => {
     try {
         const countryListResponse = await getCountryListFromDb();
         if (!countryListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 COUNTRY_LIST_NOT_FOUND_MESSAGE,
             );
@@ -40,6 +40,6 @@ export const getCountryList = async (request, response) => {
     } catch (error) {
         console.error("Error in getCountryList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

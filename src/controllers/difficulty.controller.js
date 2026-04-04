@@ -23,7 +23,7 @@ export const getDifficultyList = async (request, response) => {
     try {
         const difficultyListResponse = await getDifficultyListFromDb();
         if (!difficultyListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 DIFFICULTY_LIST_NOT_FOUND_MESSAGE,
             );
@@ -40,6 +40,6 @@ export const getDifficultyList = async (request, response) => {
     } catch (error) {
         console.error("Error in getDifficultyList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

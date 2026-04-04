@@ -36,7 +36,7 @@ export const getServerList = async (request, response) => {
     try {
         const serverListResponse = await getServerListFromDb();
         if (!serverListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 SERVER_LIST_NOT_FOUND_MESSAGE,
             );
@@ -53,7 +53,7 @@ export const getServerList = async (request, response) => {
     } catch (error) {
         console.error("Error in getServerList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -64,7 +64,7 @@ export const updatePlayerCount = async (request, response) => {
 
         const validateRequest = updatePlayerCountSchema.validate(serverData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -82,7 +82,7 @@ export const updatePlayerCount = async (request, response) => {
     } catch (error) {
         console.error("Error in updatePlayerCount: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -93,7 +93,7 @@ export const updateMapName = async (request, response) => {
 
         const validateRequest = updateMapNameSchema.validate(serverData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -111,7 +111,7 @@ export const updateMapName = async (request, response) => {
     } catch (error) {
         console.error("Error in updateMapName: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -129,6 +129,6 @@ export const updateHeartbeat = async (request, response) => {
     } catch (error) {
         console.error("Error in updateHeartbeat: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

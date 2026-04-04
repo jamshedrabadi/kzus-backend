@@ -42,7 +42,7 @@ export const createMap = async (request, response) => {
 
         const validateRequest = createOrUpdateMapSchema.validate(mapData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -61,7 +61,7 @@ export const createMap = async (request, response) => {
     } catch (error) {
         console.error("Error in createMap: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -72,7 +72,7 @@ export const updateMap = async (request, response) => {
 
         const validateRequest = createOrUpdateMapSchema.validate(mapData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -91,7 +91,7 @@ export const updateMap = async (request, response) => {
     } catch (error) {
         console.error("Error in updateMap: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -107,7 +107,7 @@ export const getMapData = async (request, response) => {
                 getMapImagesFromDb(mapId),
             ]);
         if (!mapResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 MAP_NOT_FOUND_MESSAGE,
             );
@@ -125,7 +125,7 @@ export const getMapData = async (request, response) => {
     } catch (error) {
         console.error("Error in getMapData: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -133,7 +133,7 @@ export const getMapList = async (request, response) => {
     try {
         const mapListResponse = await getMapListFromDb();
         if (!mapListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 MAP_LIST_NOT_FOUND_MESSAGE,
             );
@@ -150,6 +150,6 @@ export const getMapList = async (request, response) => {
     } catch (error) {
         console.error("Error in getMapList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

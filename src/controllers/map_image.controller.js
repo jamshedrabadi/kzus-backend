@@ -49,7 +49,7 @@ export const uploadMapImage = async (request, response) => {
 
         const validateRequest = uploadMapImageSchema.validate(mapImageData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -66,7 +66,7 @@ export const uploadMapImage = async (request, response) => {
             // edit map image - check for existing id to be replaced
             const existingMapImage = await getExistingMapImage(mappedMapImageData.image_id);
             if (!existingMapImage) {
-                responseNotFoundError(
+                return responseNotFoundError(
                     response,
                     MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE,
                 );
@@ -77,7 +77,7 @@ export const uploadMapImage = async (request, response) => {
             // insert map image - check for max images per map
             const existingMapImageCount = await getExistingMapImageCount(mappedMapImageData.map_id);
             if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
-                responseDuplicateError(
+                return responseDuplicateError(
                     response,
                     MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE,
                 );
@@ -110,6 +110,6 @@ export const uploadMapImage = async (request, response) => {
     } catch (error) {
         console.error("Error in uploadMapImage: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

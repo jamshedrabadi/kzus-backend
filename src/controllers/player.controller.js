@@ -40,7 +40,7 @@ export const createPlayer = async (request, response) => {
 
         const validateRequest = createOrUpdatePlayerSchema.validate(playerData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -59,7 +59,7 @@ export const createPlayer = async (request, response) => {
     } catch (error) {
         console.error("Error in createPlayer: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -70,7 +70,7 @@ export const updatePlayer = async (request, response) => {
 
         const validateRequest = createOrUpdatePlayerSchema.validate(playerData);
         if (validateRequest.error) {
-            responseValidationError(
+            return responseValidationError(
                 response,
                 validateRequest.error,
             );
@@ -89,7 +89,7 @@ export const updatePlayer = async (request, response) => {
     } catch (error) {
         console.error("Error in updatePlayer: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -102,7 +102,7 @@ export const getPlayerData = async (request, response) => {
             getPlayerStatsFromDb(playerId),
         ]);
         if (!playerResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 PLAYER_NOT_FOUND_MESSAGE,
             );
@@ -119,7 +119,7 @@ export const getPlayerData = async (request, response) => {
     } catch (error) {
         console.error("Error in getPlayerData: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
 
@@ -127,7 +127,7 @@ export const getPlayerList = async (request, response) => {
     try {
         const playerListResponse = await getPlayerListFromDb();
         if (!playerListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 PLAYER_LIST_NOT_FOUND_MESSAGE,
             );
@@ -144,6 +144,6 @@ export const getPlayerList = async (request, response) => {
     } catch (error) {
         console.error("Error in getPlayerList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

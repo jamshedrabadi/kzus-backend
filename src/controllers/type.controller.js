@@ -23,7 +23,7 @@ export const getTypeList = async (request, response) => {
     try {
         const typeListResponse = await getTypeListFromDb();
         if (!typeListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 TYPE_LIST_NOT_FOUND_MESSAGE,
             );
@@ -40,6 +40,6 @@ export const getTypeList = async (request, response) => {
     } catch (error) {
         console.error("Error in getTypeList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };

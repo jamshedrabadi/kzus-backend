@@ -23,7 +23,7 @@ export const getLengthList = async (request, response) => {
     try {
         const lengthListResponse = await getLengthListFromDb();
         if (!lengthListResponse.length) {
-            responseNotFoundError(
+            return responseNotFoundError(
                 response,
                 LENGTH_LIST_NOT_FOUND_MESSAGE,
             );
@@ -40,6 +40,6 @@ export const getLengthList = async (request, response) => {
     } catch (error) {
         console.error("Error in getLengthList: ", error);
 
-        responseError(response, error);
+        return responseError(response, error);
     }
 };
