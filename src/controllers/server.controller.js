@@ -107,7 +107,6 @@ export const updatePlayerCount = async (request, response) => {
         console.error("Error in updatePlayerCount: ", error);
 
         responseData.error = error;
-        responseData.module = SERVER_MODULE;
         responseData.message = SERVER_PLAYER_COUNT_UPDATION_FAILURE_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
@@ -146,7 +145,6 @@ export const updateMapName = async (request, response) => {
         console.error("Error in updateMapName: ", error);
 
         responseData.error = error;
-        responseData.module = SERVER_MODULE;
         responseData.message = SERVER_MAP_NAME_UPDATION_FAILURE_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
@@ -180,7 +178,6 @@ export const updateHeartbeat = async (request, response) => {
         console.error("Error in updateHeartbeat: ", error);
 
         responseData.error = error;
-        responseData.module = SERVER_MODULE;
         responseData.message = SERVER_HEARTBEAT_UPDATION_FAILURE_MESSAGE;
 
         return responseSender(response, responseData.status, responseData.statusCode,

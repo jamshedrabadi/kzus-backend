@@ -66,7 +66,6 @@ export const upsertRecord = async (request, response) => {
         console.error("Error in upsertRecord: ", error);
 
         responseData.error = error;
-        responseData.module = RECORD_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
@@ -108,7 +107,6 @@ export const getRecordList = async (request, response) => {
 
         responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
         responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
-        responseData.error = error;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);

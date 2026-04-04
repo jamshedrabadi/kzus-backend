@@ -65,7 +65,6 @@ export const createPlayer = async (request, response) => {
         console.error("Error in createPlayer: ", error);
 
         responseData.error = error;
-        responseData.module = PLAYER_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
@@ -103,7 +102,6 @@ export const updatePlayer = async (request, response) => {
         console.error("Error in updatePlayer: ", error);
 
         responseData.error = error;
-        responseData.module = PLAYER_MODULE;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
@@ -190,7 +188,6 @@ export const getPlayerList = async (request, response) => {
 
         responseData.statusCode = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
         responseData.message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
-        responseData.error = error;
 
         return responseSender(response, responseData.status, responseData.statusCode,
             responseData.message, responseData.data, responseData.error, responseData.module);
