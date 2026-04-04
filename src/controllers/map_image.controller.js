@@ -1,6 +1,10 @@
 import {
-    responseSender,
     formatValidationError,
+    responseSuccess,
+    responseNotFoundError,
+    responseError,
+    responseCustomError,
+    responseValidationError,
 } from "../utils/response.utils.js";
 import {
     uploadMapImageSchema,
@@ -23,17 +27,14 @@ import {
     upsertMapImage,
 } from "../services/map_image.service.js";
 import {
-    MAP_IMAGE_MODULE,
     MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
-    MAP_IMAGE_UPLOAD_FAILURE_MESSAGE,
     MAP_IMAGE_CONTENT_TYPE,
     MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE,
     MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE,
     MAP_IMAGE_MAX_LIMIT,
 } from "../constants/map_image.constants.js";
 import {
-    RESPONSE_CODE_DATA_NOT_FOUND,
-    RESPONSE_CODE_SUCCESS,
+    RESPONSE_CODE_CREATED,
     RESPONSE_CODE_UNPROCESSABLE_ENTITY,
 } from "../constants/http.constants.js";
 import {
@@ -41,22 +42,19 @@ import {
 } from "../constants/r2.constants.js";
 
 export const uploadMapImage = async (request, response) => {
-    const responseData = {
-        status: false,
-        statusCode: 0,
-        message: "",
-        data: null,
-        error: null,
-        module: MAP_IMAGE_MODULE,
-    };
-
     try {
         const mapImageData = request.body;
         const mapImageFile = request.file;
 
         let oldKey = null;
 
-        await uploadMapImageSchema.validateAsync(mapImageData);
+        const validateRequest = uploadMapImageSchema.validate(mapImageData);
+        if (validateRequest.error) {
+            responseValidationError(
+                response,
+                validateRequest.error,
+            );
+        }
 
         const validateFileResponse = await validateFile(mapImageFile);
         if (validateFileResponse) {
@@ -69,12 +67,10 @@ export const uploadMapImage = async (request, response) => {
             // edit map image - check for existing id to be replaced
             const existingMapImage = await getExistingMapImage(mappedMapImageData.image_id);
             if (!existingMapImage) {
-                responseData.statusCode = RESPONSE_CODE_DATA_NOT_FOUND;
-                responseData.message = MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE;
-
-                return responseSender(response, responseData.status, responseData.statusCode,
-                    responseData.message, responseData.data, responseData.error,
-                    responseData.module);
+                responseNotFoundError(
+                    response,
+                    MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE,
+                );
             }
 
             oldKey = existingMapImage.image_key;
@@ -82,12 +78,11 @@ export const uploadMapImage = async (request, response) => {
             // insert map image - check for max images per map
             const existingMapImageCount = await getExistingMapImageCount(mappedMapImageData.map_id);
             if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
-                responseData.statusCode = RESPONSE_CODE_UNPROCESSABLE_ENTITY;
-                responseData.message = MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE;
-
-                return responseSender(response, responseData.status, responseData.statusCode,
-                    responseData.message, responseData.data, responseData.error,
-                    responseData.module);
+                responseCustomError(
+                    response,
+                    RESPONSE_CODE_UNPROCESSABLE_ENTITY,
+                    MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE,
+                );
             }
         }
 
@@ -103,23 +98,20 @@ export const uploadMapImage = async (request, response) => {
             await deleteFromR2(oldKey);
         }
 
-        responseData.status = true;
-        responseData.statusCode = RESPONSE_CODE_SUCCESS;
-        responseData.message = MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE;
-        responseData.data = {
+        const mapImageResponse = {
             mapImageId: upsertMapImageResponse.mapImageResponse,
             mapImageUrl: `${BASE_URL}/${newKey}`,
         };
 
-        return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.data, responseData.error, responseData.module);
+        return responseSuccess(
+            response,
+            RESPONSE_CODE_CREATED,
+            MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE,
+            mapImageResponse,
+        );
     } catch (error) {
         console.error("Error in uploadMapImage: ", error);
 
-        responseData.error = error;
-        responseData.message = MAP_IMAGE_UPLOAD_FAILURE_MESSAGE;
-
-        return responseSender(response, responseData.status, responseData.statusCode,
-            responseData.message, responseData.data, responseData.error, responseData.module);
+        responseError(response, error);
     }
 };
