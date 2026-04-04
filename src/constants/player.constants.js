@@ -1,8 +1,5 @@
-export const PLAYER_MODULE = "player";
-
 export const PLAYER_CREATION_SUCCESS_MESSAGE = "Player created successfully.";
 export const PLAYER_UPDATION_SUCCESS_MESSAGE = "Player updated successfully.";
-export const PLAYER_SAVE_FAILURE_MESSAGE = "Error saving player data.";
 export const DUPLICATE_PLAYER_STEAMID_MESSAGE = "Player with this steam id already exists.";
 export const PLAYER_FOUND_MESSAGE = "Player data found.";
 export const PLAYER_NOT_FOUND_MESSAGE = "Player not found.";

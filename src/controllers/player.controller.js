@@ -34,8 +34,6 @@ import {
     PLAYER_LIST_NOT_FOUND_MESSAGE,
     DUPLICATE_PLAYER_STEAMID_MESSAGE,
 } from "../constants/player.constants.js";
-import {
-} from "../constants/common.constants.js";
 
 export const createPlayer = async (request, response) => {
     try {

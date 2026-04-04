@@ -1,5 +1,3 @@
-export const MAP_IMAGE_MODULE = "map_image";
-
 export const MAP_IMAGE_MAX_LIMIT = 5;
 export const MAP_IMAGE_SIZE_LIMIT = 5 * 1024 * 1024; // 5 MB
 
@@ -8,7 +6,6 @@ export const MAP_IMAGE_CONTENT_TYPE = "image/webp";
 export const MAP_IMAGE_FILE_TYPE = "webp";
 
 export const MAP_IMAGE_UPLOAD_SUCCESS_MESSAGE = "Map image uploaded successfully.";
-export const MAP_IMAGE_UPLOAD_FAILURE_MESSAGE = "Error uploading map image.";
 export const MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE = "Existing image ID not found.";
 export const MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE = `Maximum image limit reached for the map.`;
 

@@ -26,8 +26,6 @@ import {
     RECORD_LIST_FOUND_MESSAGE,
     RECORD_LIST_NOT_FOUND_MESSAGE,
 } from "../constants/record.constants.js";
-import {
-} from "../constants/common.constants.js";
 
 export const upsertRecord = async (request, response) => {
     try {

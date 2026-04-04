@@ -66,28 +66,6 @@ export const responseError = (response, error) => {
         });
 };
 
-/*
- * export const getDatabaseError = (dbError, module) => {
- *     let code = RESPONSE_CODE_INTERNAL_SERVER_ERROR;
- *     let message = RESPONSE_MESSAGE_DATA_NOT_FOUND;
- *     let errors = [];
- *     const dbErrorCode = (dbError && dbError.cause && dbError.cause.code) || null;
- *     if (dbErrorCode && dbErrorCode === POSTGRES_VIOLATION_CODES.UNIQUE_CONSTRAINT
- *         && module === PLAYER_MODULE) {
- *         code = RESPONSE_CODE_DUPLICATE;
- *         message = PLAYER_SAVE_FAILURE_MESSAGE;
- *         errors = [DUPLICATE_PLAYER_STEAMID_MESSAGE];
- *     }
- *     if (dbErrorCode && dbErrorCode === POSTGRES_VIOLATION_CODES.UNIQUE_CONSTRAINT
- *         && module === MAP_MODULE) {
- *         code = RESPONSE_CODE_DUPLICATE;
- *         message = MAP_SAVE_FAILURE_MESSAGE;
- *         errors = [DUPLICATE_MAP_NAME];
- *     }
- *     return { code, message, errors };
- * };
- */
-
 export const formatValidationError = (validationErrorMessage) => {
     return { details: [{ message: validationErrorMessage }] };
 };

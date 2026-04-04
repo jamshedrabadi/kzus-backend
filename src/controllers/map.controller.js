@@ -36,8 +36,6 @@ import {
     MAP_LIST_NOT_FOUND_MESSAGE,
     DUPLICATE_MAP_NAME_MESSAGE,
 } from "../constants/map.constants.js";
-import {
-} from "../constants/common.constants.js";
 
 export const createMap = async (request, response) => {
     try {

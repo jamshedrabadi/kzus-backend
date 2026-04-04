@@ -1,5 +1,3 @@
-export const COUNTRY_MODULE = "country";
-
 export const COUNTRY_FLAG_URL = "https://flagcdn.com/";
 export const COUNTRY_FLAG_EXTENSION = ".svg";
 
