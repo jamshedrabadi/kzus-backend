@@ -68,7 +68,10 @@ export const createPlayer = async (request, response) => {
     } catch (error) {
         console.error("Error in createPlayer: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -106,7 +109,10 @@ export const updatePlayer = async (request, response) => {
     } catch (error) {
         console.error("Error in updatePlayer: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -136,7 +142,10 @@ export const getPlayerData = async (request, response) => {
     } catch (error) {
         console.error("Error in getPlayerData: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -161,6 +170,9 @@ export const getPlayerList = async (request, response) => {
     } catch (error) {
         console.error("Error in getPlayerList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

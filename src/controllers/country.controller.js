@@ -38,6 +38,9 @@ export const getCountryList = async (request, response) => {
     } catch (error) {
         console.error("Error in getCountryList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

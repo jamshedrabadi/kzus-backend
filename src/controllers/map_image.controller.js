@@ -110,6 +110,9 @@ export const uploadMapImage = async (request, response) => {
     } catch (error) {
         console.error("Error in uploadMapImage: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

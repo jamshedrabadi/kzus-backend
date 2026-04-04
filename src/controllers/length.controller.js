@@ -38,6 +38,9 @@ export const getLengthList = async (request, response) => {
     } catch (error) {
         console.error("Error in getLengthList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

@@ -51,7 +51,10 @@ export const getServerList = async (request, response) => {
     } catch (error) {
         console.error("Error in getServerList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -80,7 +83,10 @@ export const updatePlayerCount = async (request, response) => {
     } catch (error) {
         console.error("Error in updatePlayerCount: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -109,7 +115,10 @@ export const updateMapName = async (request, response) => {
     } catch (error) {
         console.error("Error in updateMapName: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -127,6 +136,9 @@ export const updateHeartbeat = async (request, response) => {
     } catch (error) {
         console.error("Error in updateHeartbeat: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

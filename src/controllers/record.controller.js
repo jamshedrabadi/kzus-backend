@@ -57,7 +57,10 @@ export const upsertRecord = async (request, response) => {
     } catch (error) {
         console.error("Error in upsertRecord: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -82,6 +85,9 @@ export const getRecordList = async (request, response) => {
     } catch (error) {
         console.error("Error in getRecordList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

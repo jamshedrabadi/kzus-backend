@@ -55,13 +55,13 @@ export const responseNotFoundError = (response, message) => {
         });
 };
 
-export const responseError = (response, error) => {
+export const responseError = (response, message) => {
     return response
         .status(RESPONSE_CODE_INTERNAL_SERVER_ERROR)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
-            errors: [error.message],
+            errors: [message],
             data: null,
         });
 };

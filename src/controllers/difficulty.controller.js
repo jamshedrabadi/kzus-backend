@@ -38,6 +38,9 @@ export const getDifficultyList = async (request, response) => {
     } catch (error) {
         console.error("Error in getDifficultyList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

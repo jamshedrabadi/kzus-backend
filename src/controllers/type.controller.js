@@ -38,6 +38,9 @@ export const getTypeList = async (request, response) => {
     } catch (error) {
         console.error("Error in getTypeList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };

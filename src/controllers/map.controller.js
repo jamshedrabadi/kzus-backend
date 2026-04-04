@@ -70,7 +70,10 @@ export const createMap = async (request, response) => {
     } catch (error) {
         console.error("Error in createMap: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -108,7 +111,10 @@ export const updateMap = async (request, response) => {
     } catch (error) {
         console.error("Error in updateMap: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -142,7 +148,10 @@ export const getMapData = async (request, response) => {
     } catch (error) {
         console.error("Error in getMapData: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
 
@@ -167,6 +176,9 @@ export const getMapList = async (request, response) => {
     } catch (error) {
         console.error("Error in getMapList: ", error);
 
-        return responseError(response, error);
+        return responseError(
+            response,
+            error.message,
+        );
     }
 };
