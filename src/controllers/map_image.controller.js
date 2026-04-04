@@ -3,8 +3,8 @@ import {
     responseSuccess,
     responseNotFoundError,
     responseError,
-    responseCustomError,
     responseValidationError,
+    responseDuplicateError,
 } from "../utils/response.utils.js";
 import {
     uploadMapImageSchema,
@@ -35,7 +35,6 @@ import {
 } from "../constants/map_image.constants.js";
 import {
     RESPONSE_CODE_CREATED,
-    RESPONSE_CODE_UNPROCESSABLE_ENTITY,
 } from "../constants/http.constants.js";
 import {
     BASE_URL,
@@ -78,9 +77,8 @@ export const uploadMapImage = async (request, response) => {
             // insert map image - check for max images per map
             const existingMapImageCount = await getExistingMapImageCount(mappedMapImageData.map_id);
             if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
-                responseCustomError(
+                responseDuplicateError(
                     response,
-                    RESPONSE_CODE_UNPROCESSABLE_ENTITY,
                     MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE,
                 );
             }

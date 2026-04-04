@@ -3,7 +3,7 @@ import {
     getRecordListFromDb,
 } from "../services/record.service.js";
 import {
-    responseCustomError,
+    responseDuplicateError,
     responseError,
     responseNotFoundError,
     responseSuccess,
@@ -18,7 +18,6 @@ import {
 } from "../mappers/record.mapper.js";
 import {
     RESPONSE_CODE_CREATED,
-    RESPONSE_CODE_DUPLICATE,
     RESPONSE_CODE_SUCCESS,
 } from "../constants/http.constants.js";
 import {
@@ -46,9 +45,8 @@ export const upsertRecord = async (request, response) => {
 
         const upsertedRecord = await upsertRecordInDb(mappedRecordData);
         if (!upsertedRecord.success) {
-            responseCustomError(
+            responseDuplicateError(
                 response,
-                RESPONSE_CODE_DUPLICATE,
                 RECORD_BETTER_RECORD_EXISTS_MESSAGE,
             );
         }

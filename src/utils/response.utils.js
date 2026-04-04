@@ -8,6 +8,7 @@ import {
     RESPONSE_MESSAGE_VALIDATION_ERROR,
     RESPONSE_MESSAGE_CONFLICT_ERROR,
     RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
+    RESPONSE_MESSAGE_NOT_FOUND_ERROR,
 } from "../constants/common.constants.js";
 
 export const responseSuccess = (response, code, message, data) => {
@@ -38,7 +39,7 @@ export const responseDuplicateError = (response, message) => {
         .send({
             status: false,
             message: RESPONSE_MESSAGE_CONFLICT_ERROR,
-            errors: message,
+            errors: [message],
             data: null,
         });
 };
@@ -48,19 +49,8 @@ export const responseNotFoundError = (response, message) => {
         .status(RESPONSE_CODE_DATA_NOT_FOUND)
         .send({
             status: false,
-            message: message,
-            errors: null,
-            data: null,
-        });
-};
-
-export const responseCustomError = (response, code, message) => {
-    return response
-        .status(code)
-        .send({
-            status: false,
-            message: message,
-            errors: null,
+            message: RESPONSE_MESSAGE_NOT_FOUND_ERROR,
+            errors: [message],
             data: null,
         });
 };
@@ -71,7 +61,7 @@ export const responseError = (response, error) => {
         .send({
             status: false,
             message: RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
-            errors: error.message,
+            errors: [error.message],
             data: null,
         });
 };
