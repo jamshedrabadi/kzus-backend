@@ -9,6 +9,7 @@ import morgan from "morgan";
 
 import { dbConnection } from "./db/db-connection.js";
 import { importRoutes } from "./routes/index.js";
+import { ensureRequestBody } from "./middlewares/common.middlware.js";
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
 app.use(morgan("dev"));
+
+app.use(ensureRequestBody); // make sure request.body is always {} not undefined
 
 importRoutes(app);
 
