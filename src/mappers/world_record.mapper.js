@@ -65,6 +65,15 @@ export const parseCosyRecordLine = (recordLine) => {
     return [map, time, player, country, date];
 };
 
+export const parseMapAndRoute = (mapName) => {
+    const match = mapName.match(/^(.+?)(\[(.+)\])?$/); // only for maps like "xyz" or "xyz[xyz]"
+
+    const baseMapName = match[1];
+    const mapRoute = match[3] || null;
+
+    return { baseMapName, mapRoute };
+};
+
 export const convertFromKzcomDate = (date) => { // dd/mm/yyyy to yyyy-mm-dd (ISO)
     const [day, month, year] = date.split("/");
     return `${year}-${month}-${day}`;
@@ -74,11 +83,11 @@ export const convertFromCosyDate = (date) => { // unix time to yyyy-mm-dd (ISO)
     return new Date(Math.round(Number(date) * 1000)).toISOString().slice(0, 10);
 };
 
-export const parseMapAndRoute = (mapName) => {
-    const match = mapName.match(/^(.+?)(\[(.+)\])?$/); // only for maps like "xyz" or "xyz[xyz]"
+export const getCombinedRecordList = (kzcomRecords, cosyRecords) => {
+    const map = new Map();
 
-    const baseMapName = match[1];
-    const mapRoute = match[3] || null;
+    cosyRecords.forEach(obj => map.set(obj.map_name, obj)); // lower priority
+    kzcomRecords.forEach(obj => map.set(obj.map_name, obj)); // higher priority
 
-    return { baseMapName, mapRoute };
+    return Array.from(map.values()); // removes duplicate maps, prioritizes kzcom records
 };

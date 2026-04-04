@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import { db } from "../db/db-connection.js";
 import {
     parseApiTextResponse,
+    getCombinedRecordList,
 } from "../mappers/world_record.mapper.js";
 import {
     storeCronJobInDb,
@@ -72,8 +73,10 @@ export const fetchWorldRecordApisData = async () => {
 
         const kzcomWorldRecordList = parseApiTextResponse(kzcomApiTextResponse, API_NAME_KZCOM);
         const cosyWorldRecordList = parseApiTextResponse(cosyApiTextResponse, API_NAME_COSY);
+        
+        const combinedRecordList = getCombinedRecordList(kzcomWorldRecordList, cosyWorldRecordList);
 
-        return [...kzcomWorldRecordList, ...cosyWorldRecordList];
+        return combinedRecordList;
     } catch (error) {
         console.error("Error in fetchWorldRecordApisData: ", error);
         throw error;
