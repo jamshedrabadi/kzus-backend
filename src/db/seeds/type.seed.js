@@ -12,11 +12,11 @@ export const seedType = async () => {
         await tx.execute(sql`TRUNCATE TABLE type RESTART IDENTITY CASCADE;`);
 
         await tx.insert(type).values([
-            { name: "climb" },
-            { name: "bhop" },
-            { name: "slide" },
-            { name: "mix" },
-            { name: "special" },
+            { name: "Climb" },
+            { name: "Bhop" },
+            { name: "Slide" },
+            { name: "Mix" },
+            { name: "Special" },
         ]);
     });
 

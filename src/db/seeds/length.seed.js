@@ -12,11 +12,11 @@ export const seedLength = async () => {
         await tx.execute(sql`TRUNCATE TABLE length RESTART IDENTITY CASCADE;`);
 
         await tx.insert(length).values([
-            { name: "very-short" },
-            { name: "short" },
-            { name: "average" },
-            { name: "long" },
-            { name: "very-long" },
+            { name: "Very-Short" },
+            { name: "Short" },
+            { name: "Middle" },
+            { name: "Long" },
+            { name: "Very-Long" },
         ]);
     });
 

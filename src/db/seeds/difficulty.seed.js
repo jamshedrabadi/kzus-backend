@@ -12,16 +12,16 @@ export const seedDifficulty = async () => {
         await tx.execute(sql`TRUNCATE TABLE difficulty RESTART IDENTITY CASCADE;`);
 
         await tx.insert(difficulty).values([
-            { name: "beginner", multiplier: "0.25" },
-            { name: "easy", multiplier: "0.35" },
-            { name: "easy-medium", multiplier: "0.50" },
-            { name: "medium", multiplier: "0.70" },
-            { name: "medium-hard", multiplier: "1.00" },
-            { name: "hard", multiplier: "1.50" },
-            { name: "hard-extreme", multiplier: "2.20" },
-            { name: "extreme", multiplier: "3.20" },
-            { name: "extreme-death", multiplier: "4.50" },
-            { name: "death", multiplier: "6.00" },
+            { name: "Beginner", multiplier: "0.25" },
+            { name: "Easy", multiplier: "0.35" },
+            { name: "Easy-Medium", multiplier: "0.50" },
+            { name: "Medium", multiplier: "0.70" },
+            { name: "Medium-Hard", multiplier: "1.00" },
+            { name: "Hard", multiplier: "1.50" },
+            { name: "Hard-Extreme", multiplier: "2.20" },
+            { name: "Extreme", multiplier: "3.20" },
+            { name: "Extreme-Death", multiplier: "4.50" },
+            { name: "Death", multiplier: "6.00" },
         ]);
     });
 
