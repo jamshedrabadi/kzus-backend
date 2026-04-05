@@ -1,8 +1,6 @@
 import {
     responseError,
-    responseNotFoundError,
     responseSuccess,
-    responseValidationError,
 } from "../utils/response.utils.js";
 import {
     getServerListFromDb,
@@ -27,14 +25,18 @@ import {
     SERVER_HEARTBEAT_UPDATION_SUCCESS_MESSAGE,
 } from "../constants/server.constants.js";
 import {
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND_ERROR,
     RESPONSE_CODE_SUCCESS,
+    VALIDATION_ERROR,
 } from "../constants/response.constants.js";
 
 export const getServerList = async (request, response) => {
     try {
         const serverListResponse = await getServerListFromDb();
         if (!serverListResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [SERVER_LIST_NOT_FOUND_MESSAGE],
             );
@@ -52,6 +54,7 @@ export const getServerList = async (request, response) => {
         console.error("Error in getServerList: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -65,7 +68,8 @@ export const updatePlayerCount = async (request, response) => {
 
         const validateRequest = updatePlayerCountSchema.validate(serverData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -84,6 +88,7 @@ export const updatePlayerCount = async (request, response) => {
         console.error("Error in updatePlayerCount: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -97,7 +102,8 @@ export const updateMapName = async (request, response) => {
 
         const validateRequest = updateMapNameSchema.validate(serverData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -116,6 +122,7 @@ export const updateMapName = async (request, response) => {
         console.error("Error in updateMapName: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -137,6 +144,7 @@ export const updateHeartbeat = async (request, response) => {
         console.error("Error in updateHeartbeat: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );

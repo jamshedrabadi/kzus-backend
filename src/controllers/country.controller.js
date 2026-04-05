@@ -1,6 +1,5 @@
 import {
     responseError,
-    responseNotFoundError,
     responseSuccess,
 } from "../utils/response.utils.js";
 import {
@@ -14,6 +13,8 @@ import {
     COUNTRY_LIST_NOT_FOUND_MESSAGE,
 } from "../constants/country.constants.js";
 import {
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND_ERROR,
     RESPONSE_CODE_SUCCESS,
 } from "../constants/response.constants.js";
 
@@ -21,7 +22,8 @@ export const getCountryList = async (request, response) => {
     try {
         const countryListResponse = await getCountryListFromDb();
         if (!countryListResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [COUNTRY_LIST_NOT_FOUND_MESSAGE],
             );
@@ -39,6 +41,7 @@ export const getCountryList = async (request, response) => {
         console.error("Error in getCountryList: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );

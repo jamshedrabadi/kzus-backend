@@ -1,12 +1,5 @@
 import {
-    RESPONSE_CODE_UNPROCESSABLE_ENTITY_ERROR,
-    RESPONSE_CODE_CONFLICT_ERROR,
-    RESPONSE_CODE_DATA_NOT_FOUND_ERROR,
-    RESPONSE_CODE_INTERNAL_SERVER_ERROR,
-    RESPONSE_MESSAGE_VALIDATION_ERROR,
-    RESPONSE_MESSAGE_CONFLICT_ERROR,
-    RESPONSE_MESSAGE_NOT_FOUND_ERROR,
-    RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
+    RESPONSE_TYPE_MAPPING,
 } from "../constants/response.constants.js";
 
 export const responseSuccess = (response, code, message, data) => {
@@ -20,45 +13,14 @@ export const responseSuccess = (response, code, message, data) => {
         });
 };
 
-export const responseValidationError = (response, errors) => {
-    return response
-        .status(RESPONSE_CODE_UNPROCESSABLE_ENTITY_ERROR)
-        .send({
-            status: false,
-            message: RESPONSE_MESSAGE_VALIDATION_ERROR,
-            errors: errors,
-            data: null,
-        });
-};
+export const responseError = (type, response, errors) => {
+    const { status, message } = RESPONSE_TYPE_MAPPING[type];
 
-export const responseDuplicateError = (response, errors) => {
     return response
-        .status(RESPONSE_CODE_CONFLICT_ERROR)
+        .status(status)
         .send({
             status: false,
-            message: RESPONSE_MESSAGE_CONFLICT_ERROR,
-            errors: errors,
-            data: null,
-        });
-};
-
-export const responseNotFoundError = (response, errors) => {
-    return response
-        .status(RESPONSE_CODE_DATA_NOT_FOUND_ERROR)
-        .send({
-            status: false,
-            message: RESPONSE_MESSAGE_NOT_FOUND_ERROR,
-            errors: errors,
-            data: null,
-        });
-};
-
-export const responseError = (response, errors) => {
-    return response
-        .status(RESPONSE_CODE_INTERNAL_SERVER_ERROR)
-        .send({
-            status: false,
-            message: RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
+            message: message,
             errors: errors,
             data: null,
         });

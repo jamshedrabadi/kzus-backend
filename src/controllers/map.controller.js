@@ -9,11 +9,8 @@ import {
     checkExistingMapName,
 } from "../services/map.service.js";
 import {
-    responseDuplicateError,
     responseError,
-    responseNotFoundError,
     responseSuccess,
-    responseValidationError,
 } from "../utils/response.utils.js";
 import {
     createOrUpdateMapSchema,
@@ -26,6 +23,10 @@ import {
 import {
     RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
+    VALIDATION_ERROR,
+    CONFLICT_ERROR,
+    NOT_FOUND_ERROR,
+    INTERNAL_SERVER_ERROR,
 } from "../constants/response.constants.js";
 import {
     MAP_CREATION_SUCCESS_MESSAGE,
@@ -43,7 +44,8 @@ export const createMap = async (request, response) => {
 
         const validateRequest = createOrUpdateMapSchema.validate(mapData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -53,7 +55,8 @@ export const createMap = async (request, response) => {
 
         const existingMap = await checkExistingMapName(mappedMapData);
         if (existingMap > 0) {
-            return responseDuplicateError(
+            return responseError(
+                CONFLICT_ERROR,
                 response,
                 [DUPLICATE_MAP_NAME_MESSAGE],
             );
@@ -71,6 +74,7 @@ export const createMap = async (request, response) => {
         console.error("Error in createMap: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -84,7 +88,8 @@ export const updateMap = async (request, response) => {
 
         const validateRequest = createOrUpdateMapSchema.validate(mapData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -94,7 +99,8 @@ export const updateMap = async (request, response) => {
 
         const existingMap = await checkExistingMapName(mappedMapData, mapId);
         if (existingMap > 0) {
-            return responseDuplicateError(
+            return responseError(
+                CONFLICT_ERROR,
                 response,
                 [DUPLICATE_MAP_NAME_MESSAGE],
             );
@@ -112,6 +118,7 @@ export const updateMap = async (request, response) => {
         console.error("Error in updateMap: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -130,7 +137,8 @@ export const getMapData = async (request, response) => {
                 getMapImagesFromDb(mapId),
             ]);
         if (!mapResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [MAP_NOT_FOUND_MESSAGE],
             );
@@ -149,6 +157,7 @@ export const getMapData = async (request, response) => {
         console.error("Error in getMapData: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -159,7 +168,8 @@ export const getMapList = async (request, response) => {
     try {
         const mapListResponse = await getMapListFromDb();
         if (!mapListResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [MAP_LIST_NOT_FOUND_MESSAGE],
             );
@@ -177,6 +187,7 @@ export const getMapList = async (request, response) => {
         console.error("Error in getMapList: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );

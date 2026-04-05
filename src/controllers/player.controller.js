@@ -7,11 +7,8 @@ import {
     checkExistingPlayerSteamId,
 } from "../services/player.service.js";
 import {
-    responseDuplicateError,
     responseError,
-    responseNotFoundError,
     responseSuccess,
-    responseValidationError,
 } from "../utils/response.utils.js";
 import {
     createOrUpdatePlayerSchema,
@@ -24,6 +21,10 @@ import {
 import {
     RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
+    VALIDATION_ERROR,
+    CONFLICT_ERROR,
+    NOT_FOUND_ERROR,
+    INTERNAL_SERVER_ERROR,
 } from "../constants/response.constants.js";
 import {
     PLAYER_CREATION_SUCCESS_MESSAGE,
@@ -41,7 +42,8 @@ export const createPlayer = async (request, response) => {
 
         const validateRequest = createOrUpdatePlayerSchema.validate(playerData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -51,7 +53,8 @@ export const createPlayer = async (request, response) => {
 
         const existingPlayers = await checkExistingPlayerSteamId(mappedPlayerData);
         if (existingPlayers > 0) {
-            return responseDuplicateError(
+            return responseError(
+                CONFLICT_ERROR,
                 response,
                 [DUPLICATE_PLAYER_STEAMID_MESSAGE],
             );
@@ -69,6 +72,7 @@ export const createPlayer = async (request, response) => {
         console.error("Error in createPlayer: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -82,7 +86,8 @@ export const updatePlayer = async (request, response) => {
 
         const validateRequest = createOrUpdatePlayerSchema.validate(playerData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -92,7 +97,8 @@ export const updatePlayer = async (request, response) => {
 
         const existingPlayers = await checkExistingPlayerSteamId(mappedPlayerData, playerId);
         if (existingPlayers > 0) {
-            return responseDuplicateError(
+            return responseError(
+                CONFLICT_ERROR,
                 response,
                 [DUPLICATE_PLAYER_STEAMID_MESSAGE],
             );
@@ -110,6 +116,7 @@ export const updatePlayer = async (request, response) => {
         console.error("Error in updatePlayer: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -125,7 +132,8 @@ export const getPlayerData = async (request, response) => {
             getPlayerStatsFromDb(playerId),
         ]);
         if (!playerResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [PLAYER_NOT_FOUND_MESSAGE],
             );
@@ -143,6 +151,7 @@ export const getPlayerData = async (request, response) => {
         console.error("Error in getPlayerData: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -153,7 +162,8 @@ export const getPlayerList = async (request, response) => {
     try {
         const playerListResponse = await getPlayerListFromDb();
         if (!playerListResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [PLAYER_LIST_NOT_FOUND_MESSAGE],
             );
@@ -171,6 +181,7 @@ export const getPlayerList = async (request, response) => {
         console.error("Error in getPlayerList: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );

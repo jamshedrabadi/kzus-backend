@@ -1,6 +1,5 @@
 import {
     responseError,
-    responseNotFoundError,
     responseSuccess,
 } from "../utils/response.utils.js";
 import {
@@ -14,6 +13,8 @@ import {
     DIFFICULTY_LIST_NOT_FOUND_MESSAGE,
 } from "../constants/difficulty.constants.js";
 import {
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND_ERROR,
     RESPONSE_CODE_SUCCESS,
 } from "../constants/response.constants.js";
 
@@ -21,7 +22,8 @@ export const getDifficultyList = async (request, response) => {
     try {
         const difficultyListResponse = await getDifficultyListFromDb();
         if (!difficultyListResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [DIFFICULTY_LIST_NOT_FOUND_MESSAGE],
             );
@@ -39,6 +41,7 @@ export const getDifficultyList = async (request, response) => {
         console.error("Error in getDifficultyList: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );

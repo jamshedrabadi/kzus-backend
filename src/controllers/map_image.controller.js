@@ -1,10 +1,7 @@
 import {
     formatValidationError,
     responseSuccess,
-    responseNotFoundError,
     responseError,
-    responseValidationError,
-    responseDuplicateError,
 } from "../utils/response.utils.js";
 import {
     uploadMapImageSchema,
@@ -34,7 +31,11 @@ import {
     MAP_IMAGE_MAX_LIMIT,
 } from "../constants/map_image.constants.js";
 import {
+    CONFLICT_ERROR,
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND_ERROR,
     RESPONSE_CODE_CREATED,
+    VALIDATION_ERROR,
 } from "../constants/response.constants.js";
 import {
     BASE_URL,
@@ -49,7 +50,8 @@ export const uploadMapImage = async (request, response) => {
 
         const validateRequest = uploadMapImageSchema.validate(mapImageData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -66,7 +68,8 @@ export const uploadMapImage = async (request, response) => {
             // edit map image - check for existing id to be replaced
             const existingMapImage = await getExistingMapImage(mappedMapImageData.image_id);
             if (!existingMapImage) {
-                return responseNotFoundError(
+                return responseError(
+                    NOT_FOUND_ERROR,
                     response,
                     [MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE],
                 );
@@ -77,7 +80,8 @@ export const uploadMapImage = async (request, response) => {
             // insert map image - check for max images per map
             const existingMapImageCount = await getExistingMapImageCount(mappedMapImageData.map_id);
             if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
-                return responseDuplicateError(
+                return responseError(
+                    CONFLICT_ERROR,
                     response,
                     [MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE],
                 );
@@ -111,6 +115,7 @@ export const uploadMapImage = async (request, response) => {
         console.error("Error in uploadMapImage: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );

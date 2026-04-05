@@ -3,11 +3,8 @@ import {
     getRecordListFromDb,
 } from "../services/record.service.js";
 import {
-    responseDuplicateError,
     responseError,
-    responseNotFoundError,
     responseSuccess,
-    responseValidationError,
 } from "../utils/response.utils.js";
 import {
     upsertRecordSchema,
@@ -17,8 +14,12 @@ import {
     mapGetRecordListResponse,
 } from "../mappers/record.mapper.js";
 import {
+    CONFLICT_ERROR,
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND_ERROR,
     RESPONSE_CODE_CREATED,
     RESPONSE_CODE_SUCCESS,
+    VALIDATION_ERROR,
 } from "../constants/response.constants.js";
 import {
     RECORD_CREATION_SUCCESS_MESSAGE,
@@ -33,7 +34,8 @@ export const upsertRecord = async (request, response) => {
 
         const validateRequest = upsertRecordSchema.validate(recordData);
         if (validateRequest.error) {
-            return responseValidationError(
+            return responseError(
+                VALIDATION_ERROR,
                 response,
                 validateRequest.error.details.map(err => err.message),
             );
@@ -43,7 +45,8 @@ export const upsertRecord = async (request, response) => {
 
         const upsertedRecord = await upsertRecordInDb(mappedRecordData);
         if (!upsertedRecord.success) {
-            return responseDuplicateError(
+            return responseError(
+                CONFLICT_ERROR,
                 response,
                 [RECORD_BETTER_RECORD_EXISTS_MESSAGE],
             );
@@ -58,6 +61,7 @@ export const upsertRecord = async (request, response) => {
         console.error("Error in upsertRecord: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
@@ -68,7 +72,8 @@ export const getRecordList = async (request, response) => {
     try {
         const recordListResponse = await getRecordListFromDb();
         if (!recordListResponse.length) {
-            return responseNotFoundError(
+            return responseError(
+                NOT_FOUND_ERROR,
                 response,
                 [RECORD_LIST_NOT_FOUND_MESSAGE],
             );
@@ -86,6 +91,7 @@ export const getRecordList = async (request, response) => {
         console.error("Error in getRecordList: ", error);
 
         return responseError(
+            INTERNAL_SERVER_ERROR,
             response,
             [error.message],
         );
