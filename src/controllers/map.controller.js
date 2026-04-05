@@ -9,6 +9,7 @@ import {
     checkExistingMapName,
 } from "../services/map.service.js";
 import {
+    formatValidationErrorResponse,
     responseError,
     responseSuccess,
 } from "../utils/response.utils.js";
@@ -47,7 +48,7 @@ export const createMap = async (request, response) => {
             return responseError(
                 VALIDATION_ERROR,
                 response,
-                validateRequest.error.details.map(err => err.message),
+                formatValidationErrorResponse(validateRequest.error),
             );
         }
 
@@ -91,7 +92,7 @@ export const updateMap = async (request, response) => {
             return responseError(
                 VALIDATION_ERROR,
                 response,
-                validateRequest.error.details.map(err => err.message),
+                formatValidationErrorResponse(validateRequest.error),
             );
         }
 

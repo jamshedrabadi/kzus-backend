@@ -26,7 +26,10 @@ export const responseError = (type, response, errors) => {
         });
 };
 
-export const formatValidationError = (validationErrorMessage) => {
-    return { details: [{ message: validationErrorMessage }] };
+export const formatValidationErrorResponse = (error) => {
+    return error.details.map(err => err.message);
 };
 
+export const convertToValidationError = (errorMessage) => {
+    return { details: [{ message: errorMessage }] };
+};

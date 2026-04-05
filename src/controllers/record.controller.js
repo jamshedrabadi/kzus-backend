@@ -3,6 +3,7 @@ import {
     getRecordListFromDb,
 } from "../services/record.service.js";
 import {
+    formatValidationErrorResponse,
     responseError,
     responseSuccess,
 } from "../utils/response.utils.js";
@@ -37,7 +38,7 @@ export const upsertRecord = async (request, response) => {
             return responseError(
                 VALIDATION_ERROR,
                 response,
-                validateRequest.error.details.map(err => err.message),
+                formatValidationErrorResponse(validateRequest.error),
             );
         }
 

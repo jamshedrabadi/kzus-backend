@@ -1,7 +1,8 @@
 import {
-    formatValidationError,
-    responseSuccess,
+    convertToValidationError,
+    formatValidationErrorResponse,
     responseError,
+    responseSuccess,
 } from "../utils/response.utils.js";
 import {
     uploadMapImageSchema,
@@ -53,13 +54,17 @@ export const uploadMapImage = async (request, response) => {
             return responseError(
                 VALIDATION_ERROR,
                 response,
-                validateRequest.error.details.map(err => err.message),
+                formatValidationErrorResponse(validateRequest.error),
             );
         }
 
         const validateFileResponse = await validateFile(mapImageFile);
         if (validateFileResponse) {
-            throw (formatValidationError(validateFileResponse)); // validation error format
+            return responseError(
+                VALIDATION_ERROR,
+                response,
+                formatValidationErrorResponse(convertToValidationError(validateFileResponse)),
+            );
         }
 
         const mappedMapImageData = mapUploadMapImageRequest(mapImageData);

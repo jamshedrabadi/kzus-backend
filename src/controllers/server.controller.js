@@ -1,4 +1,5 @@
 import {
+    formatValidationErrorResponse,
     responseError,
     responseSuccess,
 } from "../utils/response.utils.js";
@@ -71,7 +72,7 @@ export const updatePlayerCount = async (request, response) => {
             return responseError(
                 VALIDATION_ERROR,
                 response,
-                validateRequest.error.details.map(err => err.message),
+                formatValidationErrorResponse(validateRequest.error),
             );
         }
 
@@ -105,7 +106,7 @@ export const updateMapName = async (request, response) => {
             return responseError(
                 VALIDATION_ERROR,
                 response,
-                validateRequest.error.details.map(err => err.message),
+                formatValidationErrorResponse(validateRequest.error),
             );
         }
 
