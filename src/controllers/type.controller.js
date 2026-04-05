@@ -23,7 +23,7 @@ export const getTypeList = async (request, response) => {
         if (!typeListResponse.length) {
             return responseNotFoundError(
                 response,
-                TYPE_LIST_NOT_FOUND_MESSAGE,
+                [TYPE_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -40,7 +40,7 @@ export const getTypeList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

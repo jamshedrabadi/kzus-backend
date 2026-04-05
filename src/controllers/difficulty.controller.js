@@ -23,7 +23,7 @@ export const getDifficultyList = async (request, response) => {
         if (!difficultyListResponse.length) {
             return responseNotFoundError(
                 response,
-                DIFFICULTY_LIST_NOT_FOUND_MESSAGE,
+                [DIFFICULTY_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -40,7 +40,7 @@ export const getDifficultyList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

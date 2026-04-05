@@ -43,7 +43,7 @@ export const createPlayer = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -53,7 +53,7 @@ export const createPlayer = async (request, response) => {
         if (existingPlayers > 0) {
             return responseDuplicateError(
                 response,
-                DUPLICATE_PLAYER_STEAMID_MESSAGE,
+                [DUPLICATE_PLAYER_STEAMID_MESSAGE],
             );
         }
 
@@ -70,7 +70,7 @@ export const createPlayer = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -84,7 +84,7 @@ export const updatePlayer = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -94,7 +94,7 @@ export const updatePlayer = async (request, response) => {
         if (existingPlayers > 0) {
             return responseDuplicateError(
                 response,
-                DUPLICATE_PLAYER_STEAMID_MESSAGE,
+                [DUPLICATE_PLAYER_STEAMID_MESSAGE],
             );
         }
 
@@ -111,7 +111,7 @@ export const updatePlayer = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -127,7 +127,7 @@ export const getPlayerData = async (request, response) => {
         if (!playerResponse.length) {
             return responseNotFoundError(
                 response,
-                PLAYER_NOT_FOUND_MESSAGE,
+                [PLAYER_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -144,7 +144,7 @@ export const getPlayerData = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -155,7 +155,7 @@ export const getPlayerList = async (request, response) => {
         if (!playerListResponse.length) {
             return responseNotFoundError(
                 response,
-                PLAYER_LIST_NOT_FOUND_MESSAGE,
+                [PLAYER_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -172,7 +172,7 @@ export const getPlayerList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

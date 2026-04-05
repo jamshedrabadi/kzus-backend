@@ -23,7 +23,7 @@ export const getLengthList = async (request, response) => {
         if (!lengthListResponse.length) {
             return responseNotFoundError(
                 response,
-                LENGTH_LIST_NOT_FOUND_MESSAGE,
+                [LENGTH_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -40,7 +40,7 @@ export const getLengthList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

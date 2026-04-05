@@ -22,46 +22,46 @@ export const responseSuccess = (response, code, message, data) => {
         });
 };
 
-export const responseValidationError = (response, error) => {
+export const responseValidationError = (response, errors) => {
     return response
         .status(RESPONSE_CODE_UNPROCESSABLE_ENTITY)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_VALIDATION_ERROR,
-            errors: error.details.map(err => err.message),
+            errors: errors,
             data: null,
         });
 };
 
-export const responseDuplicateError = (response, message) => {
+export const responseDuplicateError = (response, errors) => {
     return response
         .status(RESPONSE_CODE_DUPLICATE)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_CONFLICT_ERROR,
-            errors: [message],
+            errors: errors,
             data: null,
         });
 };
 
-export const responseNotFoundError = (response, message) => {
+export const responseNotFoundError = (response, errors) => {
     return response
         .status(RESPONSE_CODE_DATA_NOT_FOUND)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_NOT_FOUND_ERROR,
-            errors: [message],
+            errors: errors,
             data: null,
         });
 };
 
-export const responseError = (response, message) => {
+export const responseError = (response, errors) => {
     return response
         .status(RESPONSE_CODE_INTERNAL_SERVER_ERROR)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
-            errors: [message],
+            errors: errors,
             data: null,
         });
 };

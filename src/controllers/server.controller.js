@@ -36,7 +36,7 @@ export const getServerList = async (request, response) => {
         if (!serverListResponse.length) {
             return responseNotFoundError(
                 response,
-                SERVER_LIST_NOT_FOUND_MESSAGE,
+                [SERVER_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -53,7 +53,7 @@ export const getServerList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -67,7 +67,7 @@ export const updatePlayerCount = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -85,7 +85,7 @@ export const updatePlayerCount = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -99,7 +99,7 @@ export const updateMapName = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -117,7 +117,7 @@ export const updateMapName = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -138,7 +138,7 @@ export const updateHeartbeat = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

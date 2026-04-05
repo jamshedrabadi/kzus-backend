@@ -51,7 +51,7 @@ export const uploadMapImage = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -68,7 +68,7 @@ export const uploadMapImage = async (request, response) => {
             if (!existingMapImage) {
                 return responseNotFoundError(
                     response,
-                    MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE,
+                    [MAP_IMAGE_EXISTING_ID_NOT_FOUND_MESSAGE],
                 );
             }
 
@@ -79,7 +79,7 @@ export const uploadMapImage = async (request, response) => {
             if (existingMapImageCount > MAP_IMAGE_MAX_LIMIT) {
                 return responseDuplicateError(
                     response,
-                    MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE,
+                    [MAP_IMAGE_MAX_LIMIT_REACHED_MESSAGE],
                 );
             }
         }
@@ -112,7 +112,7 @@ export const uploadMapImage = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

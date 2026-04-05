@@ -23,7 +23,7 @@ export const getCountryList = async (request, response) => {
         if (!countryListResponse.length) {
             return responseNotFoundError(
                 response,
-                COUNTRY_LIST_NOT_FOUND_MESSAGE,
+                [COUNTRY_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -40,7 +40,7 @@ export const getCountryList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

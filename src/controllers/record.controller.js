@@ -35,7 +35,7 @@ export const upsertRecord = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -45,7 +45,7 @@ export const upsertRecord = async (request, response) => {
         if (!upsertedRecord.success) {
             return responseDuplicateError(
                 response,
-                RECORD_BETTER_RECORD_EXISTS_MESSAGE,
+                [RECORD_BETTER_RECORD_EXISTS_MESSAGE],
             );
         }
 
@@ -59,7 +59,7 @@ export const upsertRecord = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -70,7 +70,7 @@ export const getRecordList = async (request, response) => {
         if (!recordListResponse.length) {
             return responseNotFoundError(
                 response,
-                RECORD_LIST_NOT_FOUND_MESSAGE,
+                [RECORD_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -87,7 +87,7 @@ export const getRecordList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };

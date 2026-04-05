@@ -45,7 +45,7 @@ export const createMap = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -55,7 +55,7 @@ export const createMap = async (request, response) => {
         if (existingMap > 0) {
             return responseDuplicateError(
                 response,
-                DUPLICATE_MAP_NAME_MESSAGE,
+                [DUPLICATE_MAP_NAME_MESSAGE],
             );
         }
 
@@ -72,7 +72,7 @@ export const createMap = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -86,7 +86,7 @@ export const updateMap = async (request, response) => {
         if (validateRequest.error) {
             return responseValidationError(
                 response,
-                validateRequest.error,
+                validateRequest.error.details.map(err => err.message),
             );
         }
 
@@ -96,7 +96,7 @@ export const updateMap = async (request, response) => {
         if (existingMap > 0) {
             return responseDuplicateError(
                 response,
-                DUPLICATE_MAP_NAME_MESSAGE,
+                [DUPLICATE_MAP_NAME_MESSAGE],
             );
         }
 
@@ -113,7 +113,7 @@ export const updateMap = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -132,7 +132,7 @@ export const getMapData = async (request, response) => {
         if (!mapResponse.length) {
             return responseNotFoundError(
                 response,
-                MAP_NOT_FOUND_MESSAGE,
+                [MAP_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -150,7 +150,7 @@ export const getMapData = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
@@ -161,7 +161,7 @@ export const getMapList = async (request, response) => {
         if (!mapListResponse.length) {
             return responseNotFoundError(
                 response,
-                MAP_LIST_NOT_FOUND_MESSAGE,
+                [MAP_LIST_NOT_FOUND_MESSAGE],
             );
         }
 
@@ -178,7 +178,7 @@ export const getMapList = async (request, response) => {
 
         return responseError(
             response,
-            error.message,
+            [error.message],
         );
     }
 };
