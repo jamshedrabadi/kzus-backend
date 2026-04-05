@@ -1,15 +1,13 @@
 import {
-    RESPONSE_CODE_DATA_NOT_FOUND,
-    RESPONSE_CODE_DUPLICATE,
+    RESPONSE_CODE_UNPROCESSABLE_ENTITY_ERROR,
+    RESPONSE_CODE_CONFLICT_ERROR,
+    RESPONSE_CODE_DATA_NOT_FOUND_ERROR,
     RESPONSE_CODE_INTERNAL_SERVER_ERROR,
-    RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-} from "../constants/http.constants.js";
-import {
     RESPONSE_MESSAGE_VALIDATION_ERROR,
     RESPONSE_MESSAGE_CONFLICT_ERROR,
-    RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
     RESPONSE_MESSAGE_NOT_FOUND_ERROR,
-} from "../constants/common.constants.js";
+    RESPONSE_MESSAGE_INTERNAL_SERVER_ERROR,
+} from "../constants/response.constants.js";
 
 export const responseSuccess = (response, code, message, data) => {
     return response
@@ -24,7 +22,7 @@ export const responseSuccess = (response, code, message, data) => {
 
 export const responseValidationError = (response, errors) => {
     return response
-        .status(RESPONSE_CODE_UNPROCESSABLE_ENTITY)
+        .status(RESPONSE_CODE_UNPROCESSABLE_ENTITY_ERROR)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_VALIDATION_ERROR,
@@ -35,7 +33,7 @@ export const responseValidationError = (response, errors) => {
 
 export const responseDuplicateError = (response, errors) => {
     return response
-        .status(RESPONSE_CODE_DUPLICATE)
+        .status(RESPONSE_CODE_CONFLICT_ERROR)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_CONFLICT_ERROR,
@@ -46,7 +44,7 @@ export const responseDuplicateError = (response, errors) => {
 
 export const responseNotFoundError = (response, errors) => {
     return response
-        .status(RESPONSE_CODE_DATA_NOT_FOUND)
+        .status(RESPONSE_CODE_DATA_NOT_FOUND_ERROR)
         .send({
             status: false,
             message: RESPONSE_MESSAGE_NOT_FOUND_ERROR,

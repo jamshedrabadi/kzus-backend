@@ -2,7 +2,7 @@ import multer from "multer";
 
 import {
     GLOBAL_FILE_SIZE_LIMIT,
-} from "../constants/common.constants.js";
+} from "../constants/file.constants.js";
 
 const storage = multer.memoryStorage();
 

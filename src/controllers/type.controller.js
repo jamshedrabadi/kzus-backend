@@ -15,7 +15,7 @@ import {
 } from "../constants/type.constants.js";
 import {
     RESPONSE_CODE_SUCCESS,
-} from "../constants/http.constants.js";
+} from "../constants/response.constants.js";
 
 export const getTypeList = async (request, response) => {
     try {

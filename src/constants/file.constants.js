@@ -1,0 +1,1 @@
+export const GLOBAL_FILE_SIZE_LIMIT = 1024 * 1024 * 1024; // 1 GB

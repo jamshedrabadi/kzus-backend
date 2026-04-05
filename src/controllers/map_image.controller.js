@@ -35,7 +35,7 @@ import {
 } from "../constants/map_image.constants.js";
 import {
     RESPONSE_CODE_CREATED,
-} from "../constants/http.constants.js";
+} from "../constants/response.constants.js";
 import {
     BASE_URL,
 } from "../constants/r2.constants.js";

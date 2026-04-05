@@ -15,7 +15,7 @@ import {
 } from "../constants/difficulty.constants.js";
 import {
     RESPONSE_CODE_SUCCESS,
-} from "../constants/http.constants.js";
+} from "../constants/response.constants.js";
 
 export const getDifficultyList = async (request, response) => {
     try {

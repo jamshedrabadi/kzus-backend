@@ -1,6 +1,6 @@
 import BaseJoi from "joi";
 
-import { JOI_GLOBAL_OBJECT_UNKNOWN_MESSAGE } from "../constants/common.constants.js";
+import { JOI_GLOBAL_OBJECT_UNKNOWN_MESSAGE } from "../constants/joi.constants.js";
 
 const Joi = BaseJoi.defaults(schema =>
     schema

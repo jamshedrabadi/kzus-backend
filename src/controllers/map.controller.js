@@ -26,7 +26,7 @@ import {
 import {
     RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
-} from "../constants/http.constants.js";
+} from "../constants/response.constants.js";
 import {
     MAP_CREATION_SUCCESS_MESSAGE,
     MAP_UPDATION_SUCCESS_MESSAGE,

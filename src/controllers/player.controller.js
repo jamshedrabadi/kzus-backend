@@ -24,7 +24,7 @@ import {
 import {
     RESPONSE_CODE_SUCCESS,
     RESPONSE_CODE_CREATED,
-} from "../constants/http.constants.js";
+} from "../constants/response.constants.js";
 import {
     PLAYER_CREATION_SUCCESS_MESSAGE,
     PLAYER_UPDATION_SUCCESS_MESSAGE,
